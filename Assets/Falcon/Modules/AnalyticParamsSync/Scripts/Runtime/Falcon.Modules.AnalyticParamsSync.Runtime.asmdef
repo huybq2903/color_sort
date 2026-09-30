@@ -1,0 +1,25 @@
+{
+    "name": "Falcon.Modules.AnalyticParamsSync.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:325b69635cac24541ab8f770fa8374f7",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:65832fe276d1e4b909fe6fcdd9d6953a",
+        "GUID:ceaacd142bc327243a451dad65f00441",
+        "GUID:06db4b302b90f6647bd9dca1bb15b73b",
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:fccb0bdb2a347442894b14b279085764",
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:872dfc33841346a296a36c76a11b39ed",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.ui.purchase",
+  "displayName": "UI Purchase",
+  "version": "1.0.6",
+  "unity": "6000.0",
+  "description": "Giao diện Purchase",
+  "author": {
+    "name": "HuyBQ",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.helpers.configimporter.editor": "1.0.10"
+  }
+}

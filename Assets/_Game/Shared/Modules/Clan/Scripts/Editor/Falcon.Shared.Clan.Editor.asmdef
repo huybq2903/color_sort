@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Shared.Clan.Editor",
+    "rootNamespace": "Game.Shared.Clan.Editor",
+    "references": [
+        "Falcon.Shared.Clan",
+        "Falcon.Shared.Common",
+        "Falcon.Helpers.ConfigImporter.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

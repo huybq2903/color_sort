@@ -1,0 +1,17 @@
+{
+    "name": "Falcon.Helpers.Devkit.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:fccb0bdb2a347442894b14b279085764",
+        "GUID:00c479e63b1c74419820a39073267645"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

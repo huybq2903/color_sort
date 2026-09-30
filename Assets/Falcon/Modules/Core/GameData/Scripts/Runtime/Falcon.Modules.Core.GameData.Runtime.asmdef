@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.Core.GameData.Runtime",
+    "rootNamespace": "Falcon.Modules.Core.GameData.Runtime",
+    "references": [
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

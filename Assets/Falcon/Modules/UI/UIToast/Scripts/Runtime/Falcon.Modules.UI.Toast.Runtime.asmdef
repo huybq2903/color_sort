@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Modules.UI.Toast.Runtime",
+    "rootNamespace": "Falcon.Modules.UI.Toast.Runtime",
+    "references": [
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2",
+        "GUID:0bb31301bca16194bab291db776d9b97",
+        "GUID:e705f0f32326c3440bef6730b5fb01ba",
+        "GUID:b5c13a93afb0bb546b34b365bfadd008",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

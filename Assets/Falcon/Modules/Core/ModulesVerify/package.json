@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.core.modulesverify",
+  "displayName": "Verify Modules",
+  "version": "1.0.05",
+  "unity": "6000.0",
+  "description": "Verify Falcon Modules",
+  "author": {
+    "name": "author",
+    "email": "author@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.freflection": "1.0.1",
+    "falcon.modules.core.network": "1.0.01"
+  }
+}

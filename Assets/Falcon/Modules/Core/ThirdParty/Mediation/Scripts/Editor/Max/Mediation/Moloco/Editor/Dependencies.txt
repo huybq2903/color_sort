@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+    <androidPackages>
+        <androidPackage spec="com.applovin.mediation:moloco-adapter:{androidVersion}" />
+    </androidPackages>
+    <iosPods>
+        <iosPod name="AppLovinMediationMolocoAdapter" version="{iOSVersion}" />
+    </iosPods>
+</dependencies>

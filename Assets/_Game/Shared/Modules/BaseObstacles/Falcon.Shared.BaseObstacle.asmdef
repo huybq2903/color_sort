@@ -1,0 +1,24 @@
+{
+    "name": "Falcon.Shared.BaseObstacle",
+    "rootNamespace": "Falcon.Shared.BaseObstacle",
+    "references": [
+        "Falcon.Shared.BaseInGame",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Shared.Tutorial",
+        "Falcon.Shared.Common",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.UnityLocalization",
+        "Unity.TextMeshPro",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

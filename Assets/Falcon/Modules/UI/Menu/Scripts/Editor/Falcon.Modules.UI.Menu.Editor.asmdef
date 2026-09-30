@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.UI.Menu.Editor",
+    "rootNamespace": "Falcon.Modules.UI.Menu.Editor",
+    "references": [
+        "Falcon.Modules.UI.Menu.Runtime",
+        "Falcon.Helpers.ConfigImporter.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

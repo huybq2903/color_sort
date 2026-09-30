@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Shared.Audio",
+    "rootNamespace": "Falcon.Shared.Audio",
+    "references": [
+        "UniTask",
+        "UniTask.DOTween",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Shared.Common",
+        "CandyCoded.HapticFeedback"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Falcon.Helpers.Devkit.Tests",
+    "rootNamespace": "Falcon.Helpers.Devkit.Tests",
+    "references": [
+        "GUID:e40859931b53463c8d7a15dbc1cac26f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

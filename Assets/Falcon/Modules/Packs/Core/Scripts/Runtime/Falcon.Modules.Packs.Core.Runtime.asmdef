@@ -1,0 +1,22 @@
+{
+    "name": "Falcon.Modules.Packs.Core.Runtime",
+    "rootNamespace": "Falcon.Modules.Packs.Core.Runtime",
+    "references": [
+        "Localize",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Modules.Core.Network.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.UI",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

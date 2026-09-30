@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.ui.adbreak",
+  "displayName": "UI AdBreak",
+  "version": "1.0.6",
+  "unity": "6000.0",
+  "description": "Hiện ad break trước khi show interstitial",
+  "author": {
+    "name": "dongvv",
+    "email": "dongvv@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.ui": "1.0.5",
+    "falcon.helpers.configimporter.editor": "1.0.7"
+  }
+}

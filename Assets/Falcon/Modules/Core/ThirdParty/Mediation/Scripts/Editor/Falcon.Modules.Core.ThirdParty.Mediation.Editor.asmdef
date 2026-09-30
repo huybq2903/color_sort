@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Modules.Core.ThirdParty.Mediation.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ceaacd142bc327243a451dad65f00441"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

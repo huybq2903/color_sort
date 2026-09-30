@@ -1,0 +1,28 @@
+{
+    "name": "Falcon.Shared.BaseEvents",
+    "rootNamespace": "Falcon.Shared.BaseEvents",
+    "references": [
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.Network.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Modules.UnityLocalization",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Shared.Common",
+        "Falcon.Shared.RewardFlow",
+        "Unity.TextMeshPro",
+        "ACTk.Runtime",
+        "UniTask",
+        "UniTask.DOTween"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

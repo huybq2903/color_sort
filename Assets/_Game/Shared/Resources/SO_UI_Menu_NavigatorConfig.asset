@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bf71bacc8b5ae94a8898d9e28e0b60b, type: 3}
+  m_Name: SO_UI_Menu_NavigatorConfig
+  m_EditorClassIdentifier: 
+  maxNumberTab: 5
+  termI2NameTabs:
+  - ui.menu.tab_shop
+  - ui.menu.tab_leaderboard
+  - ui.menu.tab_home
+  - ui.menu.tab_team
+  - Collection
+  sprIconActives:
+  - {fileID: 21300000, guid: 443480e39ee17f44cb47c1455c76fda6, type: 3}
+  - {fileID: 21300000, guid: 73a7d478cae0212408e3a049beeb66da, type: 3}
+  - {fileID: 21300000, guid: ccf55b7876820354eb737671a37f528f, type: 3}
+  - {fileID: 21300000, guid: c83a6dada9f78a949910d2ddb245b1e2, type: 3}
+  - {fileID: 21300000, guid: 4fa9a1e897d3fcc4a9710955448bef4d, type: 3}
+  sprIconDeactives:
+  - {fileID: 21300000, guid: 443480e39ee17f44cb47c1455c76fda6, type: 3}
+  - {fileID: 21300000, guid: 73a7d478cae0212408e3a049beeb66da, type: 3}
+  - {fileID: 21300000, guid: ccf55b7876820354eb737671a37f528f, type: 3}
+  - {fileID: 21300000, guid: c83a6dada9f78a949910d2ddb245b1e2, type: 3}
+  - {fileID: 21300000, guid: 4fa9a1e897d3fcc4a9710955448bef4d, type: 3}
+  heightViewport: 240
+  heightScrollBarSelected: 220
+  scaleIconDeactive: 0.8
+  scaleIconActive: 1
+  anchorPosYIconDeactive: 0
+  anchorPosYIconActive: 73
+  scaleText: 1
+  anchorPosYText: -60
+  durationScaleIconDeactive: 0.175
+  easeScaleIconDeactive: 4
+  durationScaleIconActive: 0.275
+  easeScaleIconActive: 27
+  durationMoveIcon: 0.175
+  easeMoveIcon: 4
+  durationScaleText: 0.25
+  easeScaleText: 27

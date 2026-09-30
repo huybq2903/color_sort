@@ -1,0 +1,26 @@
+{
+    "name": "Falcon.Shared.BaseLevelEditor",
+    "rootNamespace": "Falcon.Shared.BaseLevelEditor",
+    "references": [
+        "Falcon.Shared.BaseInGame",
+        "Falcon.Shared.Common",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Unity.InputSystem",
+        "StandaloneFileBrowser",
+        "Imui"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WSA",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

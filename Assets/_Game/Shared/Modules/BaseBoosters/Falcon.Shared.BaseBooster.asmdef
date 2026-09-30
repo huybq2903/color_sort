@@ -1,0 +1,28 @@
+{
+    "name": "Falcon.Shared.BaseBooster",
+    "rootNamespace": "Falcon.Shared.BaseBooster",
+    "references": [
+        "Falcon.Shared.Tutorial",
+        "Falcon.Shared.BaseInGame",
+        "Falcon.Shared.Common",
+        "Falcon.Shared.Mediation",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.UnityLocalization",
+        "Falcon.Helpers.EventBus",
+        "Unity.TextMeshPro",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

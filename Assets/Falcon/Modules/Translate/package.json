@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.translate",
+  "displayName": "Translate Module",
+  "version": "1.0.5",
+  "unity": "6000.0",
+  "description": "Dịch ngôn ngữ bằng google dịch",
+  "author": {
+    "name": "VietHQ",
+    "email": "viethq@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.accountdata": "1.1.2",
+    "falcon.modules.core.network": "1.1.3"
+  }
+}

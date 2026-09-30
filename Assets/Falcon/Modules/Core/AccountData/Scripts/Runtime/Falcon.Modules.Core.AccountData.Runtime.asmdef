@@ -1,0 +1,22 @@
+{
+    "name": "Falcon.Modules.Core.AccountData.Runtime",
+    "rootNamespace": "Falcon.Modules.Core.AccountData.Runtime",
+    "references": [
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:05b8c2e0d8dfaf94585fcd29c651d57e",
+        "GUID:0bb31301bca16194bab291db776d9b97",
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:fccb0bdb2a347442894b14b279085764"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

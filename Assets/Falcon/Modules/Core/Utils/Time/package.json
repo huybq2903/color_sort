@@ -1,0 +1,14 @@
+{
+  "name": "falcon.modules.core.utils.time",
+  "displayName": "Falcon Core Utils Time",
+  "version": "1.0.5",
+  "unity": "6000.0",
+  "description": "Time utilities for Falcon framework.",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.network": "1.0.6"
+  }
+}

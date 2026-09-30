@@ -1,0 +1,18 @@
+{
+    "name": "SaveGamePro.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:28e5c658c35bd51439aae96873bd1aec"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

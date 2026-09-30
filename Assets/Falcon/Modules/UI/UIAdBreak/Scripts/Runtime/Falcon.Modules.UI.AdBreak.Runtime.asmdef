@@ -1,0 +1,16 @@
+{
+    "name": "Falcon.Modules.UI.AdBreak.Runtime",
+    "rootNamespace": "Falcon.Modules.UI.AdBreak.Runtime",
+    "references": [
+        "GUID:35f7b73eec9af504199c1337fa5a6587"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

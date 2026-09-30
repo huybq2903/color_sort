@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.UI.Level.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:030ec50e0a8af8542b6a34343797b725",
+        "GUID:aef7ce0b2e9ee1f46a1eb96b6af03998"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

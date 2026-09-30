@@ -1,0 +1,12 @@
+{
+  "name": "falcon.helpers.eventbus",
+  "displayName": "Falcon Helper - EventBus",
+  "version": "1.0.9",
+  "unity": "6000.0",
+  "description": "Event Bus",
+  "author": {
+    "name": "minhddv",
+    "email": "minhddv@falcongames.com"
+  },
+  "dependencies": {}
+}

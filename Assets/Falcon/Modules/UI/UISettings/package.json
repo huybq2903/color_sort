@@ -1,0 +1,18 @@
+{
+  "name": "falcon.modules.ui.settings",
+  "displayName": "UI Setting",
+  "version": "2.0.1",
+  "unity": "6000.0",
+  "description": "Giao diện cài đặt âm thanh, rung. Thông tin điều khoản, ...",
+  "author": {
+    "name": "dongvv",
+    "email": "dongvv@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.helpers.gamedatautils": "1.0.2",
+    "falcon.modules.core.accountdata": "1.1.2",
+    "falcon.modules.core.ui": "1.2.1",
+    "falcon.helpers.configimporter.editor": "1.0.10"
+  }
+}

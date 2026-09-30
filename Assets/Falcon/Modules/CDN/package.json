@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.cdn",
+  "displayName": "Lưu trữ file trên CDN",
+  "version": "1.0.7",
+  "unity": "6000.0",
+  "description": "Tải file từ CDN",
+  "author": {
+    "name": "leehuyyhoangg",
+    "email": "hoanglh@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.saveload": "1.0.7",
+    "falcon.helpers.devkit": "1.1.9"
+  }
+}

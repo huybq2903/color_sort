@@ -1,0 +1,1 @@
+Simple Scroll-Snap Plugin for handling scroll-snapping"

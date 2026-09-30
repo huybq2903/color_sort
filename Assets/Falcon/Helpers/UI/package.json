@@ -1,0 +1,12 @@
+{
+  "name": "falcon.helpers.ui",
+  "displayName": "Falcon Helper - UI",
+  "version": "1.0.31",
+  "unity": "6000.0",
+  "description": "Helper classes for UI",
+  "author": {
+    "name": "dongvv",
+    "email": "dongvv@falcongames.com"
+  },
+  "dependencies": {}
+}

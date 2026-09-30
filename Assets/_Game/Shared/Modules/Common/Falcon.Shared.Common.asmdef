@@ -1,0 +1,25 @@
+{
+    "name": "Falcon.Shared.Common",
+    "rootNamespace": "Falcon.Shared.Common",
+    "references": [
+        "Unity.TextMeshPro",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "ACTk.Runtime",
+        "spine-csharp",
+        "spine-unity",
+        "DOTween.Modules",
+        "UniTask",
+        "UniTask.DOTween",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Shared.Audio.Editor",
+    "rootNamespace": "Falcon.Shared.Audio.Editor",
+    "references": [
+        "Falcon.Shared.Audio",
+        "Unity.Addressables",
+        "Unity.Addressables.Editor",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

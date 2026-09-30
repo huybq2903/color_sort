@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Popup
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Popup
+  m_GUID: 31b4fd3fc043e31478065c8916b8d4d0
+  m_SerializeEntries:
+  - m_GUID: 190d7af8171e45929805a296f5d0dad5
+    m_Address: UIPopupHelpResource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d90e190500c91249a52e4e4a6c6f841
+    m_Address: PopupEditProfile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 501c720135c74630bffa4717292bff8e
+    m_Address: UIPopupChooseLogo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e45cbc3117e4fc1a3658af6eaae0656
+    m_Address: UIPopupClanInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68f6a552295d5684ea7e8b18932ce55a
+    m_Address: PopupEditProfileName
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7220adc044f3d3548a833b027baadc1d
+    m_Address: UIPopup_Settings_Language
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7892c8aaeacaf644695c4dbba4fdb7c6
+    m_Address: UIPopupRefillLives
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae51ef0e735706a48b33adbd640811e0
+    m_Address: PopupProfile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c826aef277af79a4f9111e35bcc86a9f
+    m_Address: UIPopup_Settings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 00bf5458974d04f46a1d0e3abd6d7181, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1b980a21fc8e6a94fa40e7f7584768c7, type: 2}
+    - {fileID: 11400000, guid: f90c40b38fddc3b47bc25e93567b738f, type: 2}

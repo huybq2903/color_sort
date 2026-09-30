@@ -1,0 +1,17 @@
+{
+    "name": "Falcon.Modules.Core.Utils.Time.Demo",
+    "rootNamespace": "Falcon.Modules.Core.Utils.Time.Demo",
+    "references": [
+        "GUID:799e75dd593e95f4da0f24fb5fdd3e16",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

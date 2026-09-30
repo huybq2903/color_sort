@@ -1,0 +1,22 @@
+{
+  "name": "falcon.modules.level.core",
+  "displayName": "Falcon Level Core",
+  "version": "1.3.11",
+  "unity": "6000.0",
+  "description": "Core module for Falcon Level management",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.abtestingbyserverlogic": "1.0.4",
+    "falcon.modules.actionlog": "1.0.8",
+    "falcon.modules.core.bigdata": "1.3.2",
+    "falcon.helpers.freflection": "1.0.6",
+    "falcon.helpers.devkit": "1.3.0",
+    "falcon.modules.core.remoteconfig": "1.1.6",
+    "falcon.modules.core.accountdata": "1.2.0",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.modules.core.network": "2.0.5"
+  }
+}

@@ -1,0 +1,541 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ULocGame_pt
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: pt
+  m_SharedData: {fileID: 11400000, guid: 1e5eed70a79a01a408ed3388c0c382af, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 28579642907283456
+    m_Localized: Toque para retirar os objetos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449280
+    m_Localized: Arraste o item para um local e solte para o colocar!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449281
+    m_Localized: "Incr\xEDvel! Mais uma vez!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690210545664
+    m_Localized: Jogar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677952
+    m_Localized: Brevemente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677953
+    m_Localized: Obter uma Caixa extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677954
+    m_Localized: Combinar automaticamente 3 setas!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872256
+    m_Localized: Obtenha um Poste Extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872257
+    m_Localized: Mova 3 setas para fora para limpar slots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872258
+    m_Localized: Escolhe qualquer seta, mesmo as bloqueadas!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872259
+    m_Localized: "Fora do Espa\xE7o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872260
+    m_Localized: "Gr\xE1tis"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872261
+    m_Localized: Continuar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872262
+    m_Localized: Reiniciar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872263
+    m_Localized: "Um novo come\xE7o!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872264
+    m_Localized: "Perder 1 Vida e Recome\xE7ar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872265
+    m_Localized: Tem a certeza?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872266
+    m_Localized: "Perder\xE1s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872267
+    m_Localized: Sair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872268
+    m_Localized: Desistir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872269
+    m_Localized: Ouro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41933045452845056
+    m_Localized: Vidas cheias
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956468019200
+    m_Localized: "Sem An\xFAncios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956472213504
+    m_Localized: "Desbloquear N\xEDvel {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382986129408
+    m_Localized: "N\xE3o \xE9 poss\xEDvel adicionar mais um espa\xE7o de espera"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382990323712
+    m_Localized: Sem poste na barra de espera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41969681318359040
+    m_Localized: "Usar b\xF3nus"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43700320564490240
+    m_Localized: Modo Escuro/Claro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44098253080309760
+    m_Localized: Manter para ver o tabuleiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068608
+    m_Localized: "N\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068609
+    m_Localized: Muito bem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751697129472
+    m_Localized: "N\xEDvel Falhado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751701323776
+    m_Localized: "Progresso do N\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46361195147673600
+    m_Localized: Toque numa seta para desatarrachar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46697132947914752
+    m_Localized: Toque para recentrar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438249390080
+    m_Localized: "Ainda n\xE3o desbloqueado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361600
+    m_Localized: "Nome n\xE3o \xE9 v\xE1lido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361601
+    m_Localized: "N\xE3o \xE9 poss\xEDvel usar o nome padr\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361602
+    m_Localized: Aguarde, por favor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361603
+    m_Localized: "N\xE3o \xE9 poss\xEDvel abrir mais caixas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361604
+    m_Localized: "A vassoura est\xE1 ativada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555904
+    m_Localized: A aguardar que o fio se acomode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555905
+    m_Localized: "O \xEDman est\xE1 ativado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555906
+    m_Localized: "A primeira caixa est\xE1 cheia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991089221632
+    m_Localized: Perfil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164672
+    m_Localized: Nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164673
+    m_Localized: Digite seu nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164674
+    m_Localized: Escreva algo (140 caracteres)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164675
+    m_Localized: Salvar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164676
+    m_Localized: Avatar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164677
+    m_Localized: Quadro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47112087031496704
+    m_Localized: Alterar nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49543409326866432
+    m_Localized: "Por favor, ligue-se \xE0 rede ou ao Wi-Fi para continuar a jogar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49544770844082176
+    m_Localized: Sem internet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678464
+    m_Localized: "Conclui n\xEDveis para adicionar Ouro ao teu Porquinho"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678465
+    m_Localized: Valor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678466
+    m_Localized: 'Reiniciar em:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50672779894439936
+    m_Localized: Comece a acumular!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51020162120364032
+    m_Localized: "Dispon\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297854124032
+    m_Localized: Cofrinho
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375917871104
+    m_Localized: "Festa da Pi\xF1ata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814144
+    m_Localized: "Conclua os n\xEDveis para colecionar {0} doces\\n e quebrar a pr\xF3xima
+      Pi\xF1ata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814145
+    m_Localized: "Parab\xE9ns!!! \\nPodes receber o presente agora!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814146
+    m_Localized: O evento terminou! \nAinda pode receber o presente!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814147
+    m_Localized: Evento terminado!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814148
+    m_Localized: Concluir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055311073280
+    m_Localized: Preencha a caixa com \n<color=#FF1616> 3 setas da mesma cor!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850496
+    m_Localized: Reivindicar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850497
+    m_Localized: Ativado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850498
+    m_Localized: Ativo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850499
+    m_Localized: "Banco de B\xF3nus"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850500
+    m_Localized: "Ativa o {0} para desbloquear o Banco de B\xF3nus no final dos n\xEDveis!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850501
+    m_Localized: Passagem de Seta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850502
+    m_Localized: "Ativar o {0} dar\xE1 a voc\xEA a chance de obter recompensas especiais"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850503
+    m_Localized: '{0} vida em vez de {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850504
+    m_Localized: "Ter\xE1s um b\xF3nus exclusivo at\xE9 o evento terminar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850505
+    m_Localized: "{0} come\xE7ou!  \nColete a chave para desbloquear a Recompensa
+      Especial"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850506
+    m_Localized: "{0} terminou! \\nNovo Arrow Pass come\xE7ar\xE1 em breve!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850507
+    m_Localized: "Vencer N\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850508
+    m_Localized: Recolher Chave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850509
+    m_Localized: Reclamar Recompensas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850510
+    m_Localized: Toque para continuar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850511
+    m_Localized: Colecione mais chaves para desbloquear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850512
+    m_Localized: "Recompensa premium n\xE3o est\xE1 ativa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850513
+    m_Localized: "Esta recompensa j\xE1 foi reivindicada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850514
+    m_Localized: Clique para reclamar esta recompensa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850515
+    m_Localized: "Aqui est\xE3o as suas recompensas n\xE3o reclamadas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57193728230633472
+    m_Localized: "Ativar o Passe de Seta dar\xE1 uma oportunidade de obter recompensas
+      especiais"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57225919274405888
+    m_Localized: "Caminho bloqueado! Remova a seta \xE0 frente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076018671616
+    m_Localized: "Conclu\xEDdo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003264
+    m_Localized: Torre de Gatos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003265
+    m_Localized: "N\xEDvel de sequ\xEAncia de vit\xF3rias para avan\xE7ar!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003266
+    m_Localized: Chegaste ao topo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003267
+    m_Localized: Tempo restante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58697177665097728
+    m_Localized: Combine 3 setas da mesma cor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58993758662545408
+    m_Localized: "Apenas 1 espa\xE7o restante! Usa um apoio!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59400713805746176
+    m_Localized: "Apenas 1 espa\xE7o restante! Use a caixa adicional!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59718114195968000
+    m_Localized: Combine a cor da seta com a caixa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59782361707167744
+    m_Localized: "Complete n\xEDveis consecutivos e fa\xE7a o gato saltar para o
+      topo!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235722215424
+    m_Localized: Puxe a camada exterior primeiro para desfazer o Emaranhado de Fios!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575552
+    m_Localized: Remova a seta bloqueadora para revelar a cor da Seta Oculta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575553
+    m_Localized: Puxe as Setas com Chaves para libertar o Outro Trancado!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575554
+    m_Localized: Puxe qualquer Flecha para quebrar a Zona Bloqueada!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575555
+    m_Localized: Puxa as Setas para quebrar a Caixa de Gelo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575556
+    m_Localized: Puxe qualquer seta para quebrar o caixote de fios um a um!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575557
+    m_Localized: Puxa qualquer Flecha para quebrar a Flecha de Gelo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71376246412136448
+    m_Localized: "Puxe qualquer seta para desbloquear e revelar o que est\xE1 por
+      baixo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725737918464
+    m_Localized: Salto na Piscina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889984
+    m_Localized: Iniciar o desafio com {0} jogadores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889985
+    m_Localized: "Avan\xE7a para os pr\xF3ximos n\xEDveis para pr\xE9mios maiores"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889986
+    m_Localized: "Se falhares um n\xEDvel, falhar\xE1s o desafio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889987
+    m_Localized: Jogador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889988
+    m_Localized: "Conclui {0} n\xEDveis para completar o desafio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889989
+    m_Localized: Desafio falhado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889990
+    m_Localized: "Parab\xE9ns! Completaste o desafio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889991
+    m_Localized: "N\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889992
+    m_Localized: "Ser\xE1s eliminado em {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889993
+    m_Localized: "A encontrar jogadores ao seu n\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889994
+    m_Localized: "Grande Pr\xE9mio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889995
+    m_Localized: "Voc\xEA venceu o desafio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889996
+    m_Localized: Partilha as recompensas com {0} jogadores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889997
+    m_Localized: "Parab\xE9ns"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948454559744
+    m_Localized: Combine \n<color=#FF1616> 3 setas da mesma cor!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948475531264
+    m_Localized: Combine 3 setas da mesma cor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79257081229344768
+    m_Localized: Combine 3 setas da mesma cor para as eliminar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81126741595205632
+    m_Localized: "Apenas 1 espa\xE7o restante! Fa\xE7a o seu pr\xF3ximo movimento
+      com cuidado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81522732613840896
+    m_Localized: Combine todas as setas para ganhar!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81835551062306816
+    m_Localized: "Esvazie 3 espa\xE7os para continuar a jogar!"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

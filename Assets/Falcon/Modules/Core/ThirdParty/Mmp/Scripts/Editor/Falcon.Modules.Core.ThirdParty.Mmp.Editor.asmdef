@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Modules.Core.ThirdParty.Mmp.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8ce5c1bb64bf43c5a756872437e81d07"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

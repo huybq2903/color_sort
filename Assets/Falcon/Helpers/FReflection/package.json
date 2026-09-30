@@ -1,0 +1,12 @@
+{
+  "name": "falcon.helpers.freflection",
+  "displayName": "Falcon Helper - Reflection",
+  "version": "1.0.6",
+  "unity": "6000.0",
+  "description": "Scan project and get all types of IFReflection.",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {}
+}

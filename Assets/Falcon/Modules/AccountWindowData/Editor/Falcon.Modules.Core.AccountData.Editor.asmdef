@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.Core.AccountData.Editor",
+    "rootNamespace": "Falcon.Modules.Core.AccountData.Editor",
+    "references": [
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

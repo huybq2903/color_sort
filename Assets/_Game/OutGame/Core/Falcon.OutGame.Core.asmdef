@@ -1,0 +1,25 @@
+{
+    "name": "Falcon.OutGame.Core",
+    "rootNamespace": "Falcon.OutGame.Core",
+    "references": [
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.UI.Level.Runtime",
+        "Falcon.Modules.UI.Menu.Runtime",
+        "Falcon.Modules.Level.Core.Runtime",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Shared.RewardFlow",
+        "Falcon.Shared.Common",
+        "Unity.TextMeshPro",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

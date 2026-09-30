@@ -1,0 +1,243 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0b0c553be8edd4682e9180fdd13e37, type: 3}
+  m_Name: Falcon.Modules.UI.Settings.Runtime_I2Languages
+  m_EditorClassIdentifier: 
+  mSource:
+    UserAgreesToHaveItOnTheScene: 0
+    UserAgreesToHaveItInsideThePluginsFolder: 0
+    GoogleLiveSyncIsUptoDate: 0
+    mTerms:
+    - Term: Font
+      TermType: 1
+      Description: 
+      Languages:
+      - MikadoBlack
+      - MikadoBlack
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSansThai-Bold
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: Font_TMP
+      TermType: 9
+      Description: 
+      Languages:
+      - MikadoBlack SDF
+      - MikadoBlack SDF
+      - NotoSans-Bold Chinese (Simplified) SDF
+      - NotoSans-Bold Chinese (Traditional) SDF
+      - NotoSans-Bold Japanese SDF
+      - NotoSans-Bold Korea SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSansThai-Bold SDF
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ui.settings.title
+      TermType: 0
+      Description: 
+      Languages:
+      - Settings
+      - "C\xE0i \u0110\u1EB7t"
+      - "\u8BBE\u7F6E"
+      - "\u8A2D\u5B9A"
+      - "\u8A2D\u5B9A"
+      - "\uC124\uC815"
+      - "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+      - "Param\xE8tres"
+      - Einstellungen
+      - Pengaturan
+      - Impostazioni
+      - "Configura\xE7\xF5es"
+      - Ajustes
+      - Ayarlar
+      - "\u0E01\u0E32\u0E23\u0E15\u0E31\u0E49\u0E07\u0E04\u0E48\u0E32"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ui.settings.customer_care
+      TermType: 0
+      Description: 
+      Languages:
+      - Customer Care
+      - "Ch\u0103m S\xF3c Kh\xE1ch H\xE0ng"
+      - "\u5BA2\u6237\u670D\u52A1"
+      - "\u5BA2\u6236\u670D\u52D9"
+      - "\u30AB\u30B9\u30BF\u30DE\u30FC\u30B1\u30A2"
+      - "\uACE0\uAC1D \uC11C\uBE44\uC2A4"
+      - "\u041E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u043D\u0438\u0435
+        \u041A\u043B\u0438\u0435\u043D\u0442\u043E\u0432"
+      - Service Client
+      - Kundendienst
+      - Layanan Pelanggan
+      - Assistenza Clienti
+      - Atendimento Ao Cliente
+      - "Atenci\xF3n Al Cliente"
+      - "M\xFC\u015Fteri Hizmetleri"
+      - "\u0E01\u0E32\u0E23\u0E14\u0E39\u0E41\u0E25\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ui.settings.terms_of_use
+      TermType: 0
+      Description: 
+      Languages:
+      - Terms of use
+      - "\u0110i\u1EC1u kho\u1EA3n s\u1EED d\u1EE5ng"
+      - "\u4F7F\u7528\u6761\u6B3E"
+      - "\u4F7F\u7528\u689D\u6B3E"
+      - "\u5229\u7528\u898F\u7D04"
+      - "\uC774\uC6A9\uC57D\uAD00"
+      - "\u0423\u0441\u043B\u043E\u0432\u0438\u044F \u044D\u043A\u0441\u043F\u043B\u0443\u0430\u0442\u0430\u0446\u0438\u0438"
+      - Conditions d'utilisation
+      - Nutzungsbedingungen
+      - Ketentuan penggunaan
+      - Termini di utilizzo
+      - Termos de uso
+      - Condiciones de uso
+      - "Kullan\u0131m ko\u015Fullar\u0131"
+      - "\u0E40\u0E07\u0E37\u0E48\u0E2D\u0E19\u0E44\u0E02\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ui.settings.privacy_policy
+      TermType: 0
+      Description: 
+      Languages:
+      - Privacy Policy
+      - "Ch\xEDnh S\xE1ch B\u1EA3o M\u1EADt"
+      - "\u9690\u79C1\u653F\u7B56"
+      - "\u96B1\u79C1\u6B0A\u653F\u7B56"
+      - "\u30D7\u30E9\u30A4\u30D0\u30B7\u30FC\u30DD\u30EA\u30B7\u30FC"
+      - "\uAC1C\uC778\uC815\uBCF4 \uBCF4\uD638\uC815\uCC45"
+      - "\u041F\u043E\u043B\u0438\u0442\u0438\u043A\u0430 \u041A\u043E\u043D\u0444\u0438\u0434\u0435\u043D\u0446\u0438\u0430\u043B\u044C\u043D\u043E\u0441\u0442\u0438"
+      - "Politique De Confidentialit\xE9"
+      - Datenschutzrichtlinie
+      - Kebijakan Privasi
+      - Politica Sulla Riservatezza
+      - "Pol\xEDtica De Privacidade"
+      - "Pol\xEDtica De Privacidad"
+      - "Gizlilik Politikas\u0131"
+      - "\u0E19\u0E42\u0E22\u0E1A\u0E32\u0E22\u0E04\u0E27\u0E32\u0E21\u0E40\u0E1B\u0E47\u0E19\u0E2A\u0E48\u0E27\u0E19\u0E15\u0E31\u0E27"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ui.settings.language
+      TermType: 0
+      Description: 
+      Languages:
+      - Language
+      - "Ng\xF4n Ng\u1EEF"
+      - "\u8BED\u8A00"
+      - "\u8A9E\u8A00"
+      - "\u8A00\u8A9E"
+      - "\uC5B8\uC5B4"
+      - "\u042F\u0437\u044B\u043A"
+      - Langue
+      - Sprache
+      - Bahasa
+      - Lingua
+      - Linguagem
+      - Idioma
+      - Dil
+      - "\u0E20\u0E32\u0E29\u0E32"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    CaseInsensitiveTerms: 0
+    OnMissingTranslation: 1
+    mTerm_AppName: 
+    mLanguages:
+    - Name: English
+      Code: en
+      Flags: 0
+    - Name: Vietnamese
+      Code: vi
+      Flags: 0
+    - Name: Chinese (Simplified)
+      Code: zh-CN
+      Flags: 0
+    - Name: Chinese (Traditional)
+      Code: zh-TW
+      Flags: 0
+    - Name: Japanese
+      Code: ja
+      Flags: 0
+    - Name: Korean
+      Code: ko
+      Flags: 0
+    - Name: Russian
+      Code: ru
+      Flags: 0
+    - Name: French
+      Code: fr
+      Flags: 0
+    - Name: German
+      Code: de
+      Flags: 0
+    - Name: Indonesian
+      Code: id
+      Flags: 0
+    - Name: Italian
+      Code: it
+      Flags: 0
+    - Name: Portuguese (Portugal)
+      Code: pt-PT
+      Flags: 0
+    - Name: Spanish
+      Code: es
+      Flags: 0
+    - Name: Turkish
+      Code: tr
+      Flags: 0
+    - Name: Thai
+      Code: th
+      Flags: 0
+    IgnoreDeviceLanguage: 0
+    _AllowUnloadingLanguages: 0
+    Google_WebServiceURL: https://script.google.com/macros/s/AKfycbwdJxdT9sS8fdLqGPun5NDkQNoc_3gwCsTVEe9mLG-NWWZVO7vc3DRYYJ0KcsXhwlFK/exec
+    Google_SpreadsheetKey: 1hq7ZXOh8c2DrWQbFHmjow5PtW5t2hGL2WujFrqdO2Us
+    Google_SpreadsheetName: I2Loc Framework Puzzle
+    Google_LastUpdatedVersion: 1756264943127
+    Google_Password: 123456
+    GoogleUpdateFrequency: 3
+    GoogleInEditorCheckFrequency: 2
+    GoogleUpdateSynchronization: 1
+    GoogleUpdateDelay: 0
+    Assets:
+    - {fileID: 11400000, guid: d16b15b7a2769634eae3fdb4b9ca82b9, type: 2}
+    - {fileID: 11400000, guid: 58c5984a94e39e143bc55196b61c0f66, type: 2}
+    - {fileID: 11400000, guid: c554098bcf56002449a47f26ccc99698, type: 2}
+    - {fileID: 11400000, guid: b5c479b6c7b684e42b9fb8d0542935fb, type: 2}
+    - {fileID: 11400000, guid: a5ade99cdd585ab40a709c059536be5d, type: 2}
+    - {fileID: 11400000, guid: eaf529f275266b44f92a3dd71455748e, type: 2}
+    - {fileID: 12800000, guid: 155f81a3d4a6c6f499337d5ddcebb289, type: 3}
+    - {fileID: 12800000, guid: 9968bbcee520c664680029984d53bbd2, type: 3}
+    - {fileID: 11400000, guid: 71531bbde2329b146924569c23f2102b, type: 2}
+    - {fileID: 12800000, guid: 33bfe5a4c6a7feb40be5e3f474264904, type: 3}
+    Spreadsheet_LocalFileName: C:/Users/NC/Downloads/Localization.csv
+    Spreadsheet_LocalCSVSeparator: ','
+    Spreadsheet_LocalCSVEncoding: utf-8
+    Spreadsheet_SpecializationAsRows: 1
+    Spreadsheet_SortRows: 1

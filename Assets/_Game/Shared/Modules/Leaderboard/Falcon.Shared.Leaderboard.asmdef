@@ -1,0 +1,26 @@
+{
+    "name": "Falcon.Shared.Leaderboard",
+    "rootNamespace": "Game.Shared.Leaderboard",
+    "references": [
+        "Falcon.Shared.Common",
+        "Falcon.Shared.Tab",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.Network.Runtime",
+        "Falcon.Modules.UI.Menu.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Helpers.FReflection.Runtime",
+        "SuperScrollView",
+        "Unity.TextMeshPro",
+        "UniTask",
+        "UniTask.DOTween"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

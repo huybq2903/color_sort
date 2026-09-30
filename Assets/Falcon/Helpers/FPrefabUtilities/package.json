@@ -1,0 +1,12 @@
+{
+  "name": "falcon.helpers.fprefabutilities",
+  "displayName": "Falcon Helper - FPrefab Utilities",
+  "version": "1.0.6",
+  "unity": "6000.0",
+  "description": "Prefab Helper",
+  "author": {
+    "name": "viethq",
+    "email": "viethq@falcongames.com"
+  },
+  "dependencies": {}
+}

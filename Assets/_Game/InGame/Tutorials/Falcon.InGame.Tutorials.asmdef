@@ -1,0 +1,17 @@
+{
+    "name": "Falcon.InGame.Tutorials",
+    "rootNamespace": "Falcon.InGame.Tutorials",
+    "references": [
+        "Falcon.Shared.BaseInGame",
+        "Falcon.Shared.Tutorial"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

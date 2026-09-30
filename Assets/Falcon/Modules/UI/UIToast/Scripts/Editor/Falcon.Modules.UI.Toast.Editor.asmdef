@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.UI.Toast.Editor",
+    "rootNamespace": "Falcon.Modules.UI.Toast.Editor",
+    "references": [
+        "GUID:1c7056213401b8546902e86406c1bf80",
+        "GUID:aef7ce0b2e9ee1f46a1eb96b6af03998"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,542 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ULocGame_es
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: 1e5eed70a79a01a408ed3388c0c382af, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 28579642907283456
+    m_Localized: Toca para sacar los objetos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449280
+    m_Localized: "Arrastra el objeto a un lugar y su\xE9ltalo para colocarlo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449281
+    m_Localized: "\xA1Incre\xEDble! \xA1Una vez m\xE1s!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690210545664
+    m_Localized: Jugar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677952
+    m_Localized: "Pr\xF3ximamente"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677953
+    m_Localized: Obtener una caja extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677954
+    m_Localized: "\xA1Combina autom\xE1ticamente 3 flechas!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872256
+    m_Localized: Obtener un poste extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872257
+    m_Localized: Mueve 3 flechas para liberar espacios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872258
+    m_Localized: "\xA1Elige cualquier flecha, incluso las bloqueadas!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872259
+    m_Localized: Fuera de Espacio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872260
+    m_Localized: Gratis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872261
+    m_Localized: Continuar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872262
+    m_Localized: Reiniciar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872263
+    m_Localized: "\xA1Un nuevo comienzo!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872264
+    m_Localized: Perder 1 Vida Y Reiniciar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872265
+    m_Localized: "\xBFEst\xE1s seguro?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872266
+    m_Localized: "Perder\xE1s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872267
+    m_Localized: Salir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872268
+    m_Localized: Rendirse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872269
+    m_Localized: Oro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41933045452845056
+    m_Localized: Vidas completas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956468019200
+    m_Localized: Sin anuncios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956472213504
+    m_Localized: Desbloquear nivel {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382986129408
+    m_Localized: "No se puede a\xF1adir otro espacio de espera"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382990323712
+    m_Localized: Sin barra de espera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41969681318359040
+    m_Localized: Usar potenciador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43700320564490240
+    m_Localized: Modo Oscuro/Claro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44098253080309760
+    m_Localized: "Mant\xE9n presionado para ver el tablero"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068608
+    m_Localized: Nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068609
+    m_Localized: "\xA1Bien hecho!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751697129472
+    m_Localized: Nivel fallido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751701323776
+    m_Localized: Progreso del Nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46361195147673600
+    m_Localized: Toca una flecha para desenredar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46697132947914752
+    m_Localized: Toca para recentrar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438249390080
+    m_Localized: "A\xFAn no desbloqueado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361600
+    m_Localized: "El nombre no es v\xE1lido."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361601
+    m_Localized: No se puede usar el nombre predeterminado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361602
+    m_Localized: Por favor, espera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361603
+    m_Localized: "No se puede abrir m\xE1s cajas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361604
+    m_Localized: "La escoba est\xE1 activada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555904
+    m_Localized: Esperando a que el hilo se asiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555905
+    m_Localized: "El im\xE1n est\xE1 activado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555906
+    m_Localized: "La primera caja est\xE1 llena"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991089221632
+    m_Localized: Perfil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164672
+    m_Localized: Nombre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164673
+    m_Localized: Escribe tu nombre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164674
+    m_Localized: Escribe algo (140 caracteres)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164675
+    m_Localized: Ahorrar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164676
+    m_Localized: Avatar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164677
+    m_Localized: Marco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47112087031496704
+    m_Localized: Cambiar nombre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49543409326866432
+    m_Localized: "Por favor, con\xE9ctate a la red o Wifi para continuar jugando."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49544770844082176
+    m_Localized: "Sin conexi\xF3n a internet"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678464
+    m_Localized: "Completa niveles para a\xF1adir Oro a tu Hucha"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678465
+    m_Localized: Valor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678466
+    m_Localized: 'Reiniciar en:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50672779894439936
+    m_Localized: "\xA1Empieza a acumular!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51020162120364032
+    m_Localized: Disponible
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297854124032
+    m_Localized: Hucha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375917871104
+    m_Localized: "Fiesta de Pi\xF1ata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814144
+    m_Localized: "Supera niveles para recoger {0} caramelos\\n para romper la siguiente
+      Pi\xF1ata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814145
+    m_Localized: "\xA1Felicidades! \\n\xA1Puedes tomar el regalo ahora!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814146
+    m_Localized: "\xA1El evento ha terminado! \\n\xA1A\xFAn puedes recibir el regalo!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814147
+    m_Localized: "\xA1El evento ha terminado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814148
+    m_Localized: Finalizar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055311073280
+    m_Localized: Llena la caja con \n<color=#FF1616> 3 flechas del mismo color!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850496
+    m_Localized: Reclamar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850497
+    m_Localized: Activado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850498
+    m_Localized: Activo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850499
+    m_Localized: Banco de Bonos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850500
+    m_Localized: "\xA1Activa el {0} para desbloquear el Banco de Bonificaci\xF3n
+      al final de los niveles!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850501
+    m_Localized: Paso de Flecha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850502
+    m_Localized: "Activar el {0} te dar\xE1 la oportunidad de obtener recompensas
+      especiales"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850503
+    m_Localized: '{0} vida en lugar de {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850504
+    m_Localized: "Tendr\xE1s un bono exclusivo hasta que termine el evento."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850505
+    m_Localized: "\xA1{0} ha comenzado!  \nRecoge la llave para desbloquear la Recompensa
+      Especial"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850506
+    m_Localized: "\xA1{0} ha terminado! \\n\xA1El nuevo Pase de Flechas comenzar\xE1
+      pronto!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850507
+    m_Localized: Superar Nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850508
+    m_Localized: Recoger llave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850509
+    m_Localized: Reclamar Recompensas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850510
+    m_Localized: Toca para continuar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850511
+    m_Localized: "Recoge m\xE1s llaves para desbloquear"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850512
+    m_Localized: "Recompensa premium no est\xE1 activa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850513
+    m_Localized: Esta recompensa ya ha sido reclamada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850514
+    m_Localized: Haz clic para reclamar esta recompensa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850515
+    m_Localized: "Aqu\xED est\xE1n tus recompensas no reclamadas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57193728230633472
+    m_Localized: "Activar el Pase de Flecha te dar\xE1 la oportunidad de obtener
+      recompensas especiales"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57225919274405888
+    m_Localized: "\xA1Camino bloqueado! Despeje la flecha que hay delante."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076018671616
+    m_Localized: Terminado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003264
+    m_Localized: Torre de Gatos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003265
+    m_Localized: "\xA1Nivel de racha de victorias para subir!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003266
+    m_Localized: "\xA1Has llegado a la cima!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003267
+    m_Localized: Tiempo restante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58697177665097728
+    m_Localized: Combina 3 flechas del mismo color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58993758662545408
+    m_Localized: "\xA1Solo queda 1 espacio! \xA1Usa un potenciador!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59400713805746176
+    m_Localized: "\xA1Solo queda 1 espacio! \xA1Usa caja adicional!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59718114195968000
+    m_Localized: Empareja el color de la flecha con la caja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59782361707167744
+    m_Localized: Niveles de racha ganadora y haz que el gato salte a la cima.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235722215424
+    m_Localized: Primero tira de la capa exterior para despejar el enredo de hilo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575552
+    m_Localized: Elimina la flecha bloqueadora para revelar el color de la Flecha
+      Oculta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575553
+    m_Localized: Tira de las Flechas con Llaves para liberar al Otro Bloqueado.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575554
+    m_Localized: Tira de cualquier flecha para romper la zona bloqueada.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575555
+    m_Localized: Tira de las flechas para romper la caja de hielo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575556
+    m_Localized: "\xA1Tira de las flechas para romper la caja de hilo una por una!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575557
+    m_Localized: Desliza cualquier flecha para romper la Flecha de Hielo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71376246412136448
+    m_Localized: Desliza cualquier flecha para desbloquear y revelar lo que hay debajo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725737918464
+    m_Localized: Salto en la Piscina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889984
+    m_Localized: "Iniciar el desaf\xEDo con {0} jugadores"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889985
+    m_Localized: Avanza a las siguientes etapas para obtener mayores premios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889986
+    m_Localized: "Si fallas un nivel, fallar\xE1s el desaf\xEDo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889987
+    m_Localized: Jugador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889988
+    m_Localized: "Supera {0} niveles para completar el desaf\xEDo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889989
+    m_Localized: "Has fallado el desaf\xEDo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889990
+    m_Localized: "\xA1Felicidades! Has completado el desaf\xEDo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889991
+    m_Localized: Etapa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889992
+    m_Localized: "Ser\xE1s eliminado en {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889993
+    m_Localized: Buscando jugadores de tu nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889994
+    m_Localized: Gran Premio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889995
+    m_Localized: "\xA1Has ganado el desaf\xEDo!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889996
+    m_Localized: Comparte las recompensas con {0} jugadores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889997
+    m_Localized: "\xA1Felicidades!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948454559744
+    m_Localized: Combina \n<color=#FF1616> 3 flechas del mismo color!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948475531264
+    m_Localized: Combina 3 flechas del mismo color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79257081229344768
+    m_Localized: Combina 3 flechas del mismo color para eliminarlas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81126741595205632
+    m_Localized: "\xA1Solo queda 1 espacio! Haz tu pr\xF3ximo movimiento con cuidado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81522732613840896
+    m_Localized: "\xA1Empareja todas las flechas para ganar!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81835551062306816
+    m_Localized: "\xA1Vac\xEDa 3 espacios para seguir jugando!"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

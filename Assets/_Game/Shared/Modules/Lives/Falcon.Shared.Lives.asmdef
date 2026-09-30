@@ -1,0 +1,24 @@
+{
+    "name": "Falcon.Shared.Lives",
+    "rootNamespace": "Falcon.Shared.Lives",
+    "references": [
+        "Falcon.Shared.Common",
+        "Falcon.Shared.Mediation",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

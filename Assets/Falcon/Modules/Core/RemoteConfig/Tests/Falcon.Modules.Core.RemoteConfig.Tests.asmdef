@@ -1,0 +1,24 @@
+{
+    "name": "Falcon.Modules.Core.RemoteConfig.Tests",
+    "rootNamespace": "Falcon.Modules.Core.RemoteConfig.Tests",
+    "references": [
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

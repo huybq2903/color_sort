@@ -1,0 +1,14 @@
+{
+    "name": "Falcon.Helpers.FPrefabUtilities.Runtime",
+    "rootNamespace": "Falcon.Helpers.FPrefabUtilities.Runtime",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

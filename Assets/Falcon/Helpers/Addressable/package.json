@@ -1,0 +1,12 @@
+{
+  "name": "falcon.helpers.addressable",
+  "displayName": "Falcon Helper - Addressable",
+  "version": "1.0.9",
+  "unity": "6000.0",
+  "description": "The system for load, preload addressable prefab, scriptable object",
+  "author": {
+    "name": "minhddv",
+    "email": "minhddv@falcongames.com"
+  },
+  "dependencies": {}
+}

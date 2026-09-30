@@ -1,0 +1,16 @@
+{
+  "name": "falcon.modules.ui.toast",
+  "displayName": "UI Toast",
+  "version": "1.0.18",
+  "unity": "6000.0",
+  "description": "Hiện nhanh nội dung ngắn trên màn hình",
+  "author": {
+    "name": "dongvv",
+    "email": "dongvv@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.helpers.configimporter.editor": "1.0.10",
+    "falcon.helpers.singleton": "1.0.3"
+  }
+}

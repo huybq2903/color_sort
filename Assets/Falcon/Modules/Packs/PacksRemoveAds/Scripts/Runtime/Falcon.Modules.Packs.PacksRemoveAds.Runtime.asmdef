@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Modules.Packs.PacksRemoveAds.Runtime",
+    "rootNamespace": "Falcon.Modules.Packs.PacksRemoveAds.Runtime",
+    "references": [
+        "Falcon.Modules.Packs.Core.Runtime",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Unity.Addressables",
+        "Unity.TextMeshPro",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

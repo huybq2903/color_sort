@@ -1,0 +1,17 @@
+{
+    "name": "Falcon.Modules.Account4EventBus.Runtime",
+    "rootNamespace": "Falcon.Modules.Account4EventBus.Runtime",
+    "references": [
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Helpers.EventBus"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

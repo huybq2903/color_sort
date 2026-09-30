@@ -1,0 +1,27 @@
+{
+    "name": "Falcon.Shared.Mediation",
+    "rootNamespace": "Falcon.Shared.Mediation",
+    "references": [
+        "Falcon.Shared.Common",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.Devkit.Runtime",
+        "Falcon.Modules.Core.ThirdParty.Mediation.Runtime",
+        "Falcon.Modules.Level.Core.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Modules.Core.InAppPurchase.Runtime",
+        "Falcon.Modules.Core.ThirdParty.Ump.Runtime",
+        "MaxSdk.Scripts",
+        "Unity.Purchasing",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

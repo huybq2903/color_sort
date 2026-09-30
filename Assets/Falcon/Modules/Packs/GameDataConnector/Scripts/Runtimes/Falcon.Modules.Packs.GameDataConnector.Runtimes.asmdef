@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Modules.Packs.GameDataConnector.Runtimes",
+    "rootNamespace": "Falcon.Modules.Packs.GameDataConnector.Runtimes",
+    "references": [
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Packs.Core.Runtime",
+        "Falcon.Modules.Core.InAppPurchase.Runtime",
+        "Unity.Purchasing"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

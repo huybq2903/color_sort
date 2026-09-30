@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Asset-Tables-Indonesian (id)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Asset-Tables-Indonesian (id)
+  m_GUID: 7762c210abae87e48b6cb8e86f870875
+  m_SerializeEntries:
+  - m_GUID: 9f13745af9510c149b9995b5eaa493e0
+    m_Address: ULocFont_id
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-id
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 00bf5458974d04f46a1d0e3abd6d7181, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 74ba72045380721489efafb69bcd127e, type: 2}
+    - {fileID: 11400000, guid: ce3cc47930d6ae0468ee360d9002c240, type: 2}

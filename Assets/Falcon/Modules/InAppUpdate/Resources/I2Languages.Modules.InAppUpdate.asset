@@ -1,0 +1,194 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0b0c553be8edd4682e9180fdd13e37, type: 3}
+  m_Name: I2Languages.Modules.InAppUpdate
+  m_EditorClassIdentifier: 
+  mSource:
+    UserAgreesToHaveItOnTheScene: 0
+    UserAgreesToHaveItInsideThePluginsFolder: 0
+    GoogleLiveSyncIsUptoDate: 1
+    mTerms:
+    - Term: InAppUpdate/in_app_update_description
+      TermType: 0
+      Description: 
+      Languages:
+      - A new version is available! Update now for a better experience!
+      - "Phi\xEAn b\u1EA3n m\u1EDBi \u0111\xE3 c\xF3! C\u1EADp nh\u1EADt ngay \u0111\u1EC3
+        c\xF3 tr\u1EA3i nghi\u1EC7m t\u1ED1t h\u01A1n!"
+      - "\u65B0\u7248\u672C\u5DF2\u53D1\u5E03\uFF01\u7ACB\u5373\u66F4\u65B0\uFF0C\u4F53\u9A8C\u66F4\u4F73\uFF01"
+      - "\u65B0\u7248\u672C\u5DF2\u767C\u5E03\uFF01\u7ACB\u5373\u66F4\u65B0\uFF0C\u9AD4\u9A57\u66F4\u4F73\uFF01"
+      - "\u65B0\u3057\u3044\u30D0\u30FC\u30B8\u30E7\u30F3\u304C\u5229\u7528\u53EF\u80FD\u3067\u3059\uFF01\u4ECA\u3059\u3050\u30A2\u30C3\u30D7\u30C7\u30FC\u30C8\u3057\u3066\u3001\u3088\u308A\u826F\u3044\u4F53\u9A13\u3092\u304A\u697D\u3057\u307F\u304F\u3060\u3055\u3044\uFF01"
+      - "\uC0C8 \uBC84\uC804\uC774 \uCD9C\uC2DC\uB418\uC5C8\uC2B5\uB2C8\uB2E4! \uB354
+        \uB098\uC740 \uC0AC\uC6A9 \uACBD\uD5D8\uC744 \uC704\uD574 \uC9C0\uAE08 \uC5C5\uB370\uC774\uD2B8\uD558\uC138\uC694!"
+      - "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u0430 \u043D\u043E\u0432\u0430\u044F
+        \u0432\u0435\u0440\u0441\u0438\u044F! \u041E\u0431\u043D\u043E\u0432\u0438\u0442\u0435
+        \u0441\u0435\u0439\u0447\u0430\u0441 \u0434\u043B\u044F \u043B\u0443\u0447\u0448\u0435\u0433\u043E
+        \u0432\u0437\u0430\u0438\u043C\u043E\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F
+        \u0441 \u0441\u0430\u0439\u0442\u043E\u043C!"
+      - "Une nouvelle version est disponible ! Mettez \xE0 jour d\xE8s maintenant
+        pour une meilleure exp\xE9rience !"
+      - "Eine neue Version ist verf\xFCgbar! Jetzt aktualisieren f\xFCr ein besseres
+        Nutzungserlebnis!"
+      - Versi baru sudah tersedia! Perbarui sekarang untuk pengalaman yang lebih
+        baik!
+      - "\xC8 disponibile una nuova versione! Aggiorna ora per un'esperienza migliore!"
+      - "Uma nova vers\xE3o est\xE1 dispon\xEDvel! Atualize agora para uma melhor
+        experi\xEAncia!"
+      - "\xA1Ya hay una nueva versi\xF3n disponible! \xA1Actual\xEDzala ahora para
+        disfrutar de una mejor experiencia!"
+      - "Yeni s\xFCr\xFCm mevcut! Daha iyi bir deneyim i\xE7in hemen g\xFCncelleyin!"
+      - "\u0E40\u0E27\u0E2D\u0E23\u0E4C\u0E0A\u0E31\u0E19\u0E43\u0E2B\u0E21\u0E48\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E41\u0E25\u0E49\u0E27!
+        \u0E2D\u0E31\u0E1B\u0E40\u0E14\u0E15\u0E40\u0E25\u0E22\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E1B\u0E23\u0E30\u0E2A\u0E1A\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E17\u0E35\u0E48\u0E14\u0E35\u0E01\u0E27\u0E48\u0E32!"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: InAppUpdate/update_available
+      TermType: 0
+      Description: 
+      Languages:
+      - Update Available!
+      - "\u0110\xE3 C\xF3 B\u1EA3n C\u1EADp Nh\u1EADt M\u1EDBi!"
+      - "\u6709\u65B0\u7248\u672C\u53EF\u7528\uFF01"
+      - "\u6709\u65B0\u7248\u672C\u53EF\u7528\uFF01"
+      - "\u65B0\u3057\u3044\u30A2\u30C3\u30D7\u30C7\u30FC\u30C8\u304C\u3042\u308A\u307E\u3059\uFF01"
+      - "\uC0C8 \uC5C5\uB370\uC774\uD2B8\uAC00 \uC788\uC5B4\uC694!"
+      - "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435!"
+      - "Mise \xE0 jour disponible !"
+      - "Update verf\xFCgbar!"
+      - Pembaruan tersedia!
+      - Aggiornamento disponibile!
+      - "Atualiza\xE7\xE3o dispon\xEDvel!"
+      - "\xA1Actualizaci\xF3n disponible!"
+      - "G\xFCncelleme mevcut!"
+      - "\u0E21\u0E35\u0E01\u0E32\u0E23\u0E2D\u0E31\u0E1B\u0E40\u0E14\u0E15\u0E43\u0E2B\u0E21\u0E48\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19!"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: InAppUpdate/update
+      TermType: 0
+      Description: 
+      Languages:
+      - Update
+      - "C\u1EADp Nh\u1EADt"
+      - "\u66F4\u65B0"
+      - "\u66F4\u65B0"
+      - "\u30A2\u30C3\u30D7\u30C7\u30FC\u30C8"
+      - "\uC5C5\uB370\uC774\uD2B8"
+      - "\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C"
+      - "Mettre \xE0 jour"
+      - Aktualisieren
+      - Perbarui
+      - Aggiorna
+      - Atualizar
+      - Actualizar
+      - "G\xFCncelle"
+      - "\u0E2D\u0E31\u0E1B\u0E40\u0E14\u0E15"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: InAppUpdate/in_app_update_force_description
+      TermType: 0
+      Description: 
+      Languages:
+      - We have fixed some bugs! Update now for a smoother experience!
+      - "Ch\xFAng t\xF4i \u0111\xE3 s\u1EEDa m\u1ED9t s\u1ED1 l\u1ED7i! C\u1EADp
+        nh\u1EADt ngay \u0111\u1EC3 tr\u1EA3i nghi\u1EC7m m\u01B0\u1EE3t m\xE0 h\u01A1n!"
+      - "\u6211\u4EEC\u4FEE\u590D\u4E86\u4E00\u4E9B\u95EE\u9898\uFF01\u7ACB\u5373\u66F4\u65B0\u4EE5\u83B7\u5F97\u66F4\u6D41\u7545\u7684\u4F53\u9A8C\uFF01"
+      - "\u6211\u5011\u4FEE\u5FA9\u4E86\u4E00\u4E9B\u554F\u984C\uFF01\u7ACB\u5373\u66F4\u65B0\u4EE5\u7372\u5F97\u66F4\u6D41\u66A2\u7684\u9AD4\u9A57\uFF01"
+      - "\u3044\u304F\u3064\u304B\u306E\u4E0D\u5177\u5408\u3092\u4FEE\u6B63\u3057\u307E\u3057\u305F\uFF01\u4ECA\u3059\u3050\u66F4\u65B0\u3057\u3066\u3001\u3088\u308A\u30B9\u30E0\u30FC\u30BA\u306A\u4F53\u9A13\u3092\uFF01"
+      - "\uBA87 \uAC00\uC9C0 \uBC84\uADF8\uB97C \uC218\uC815\uD588\uC5B4\uC694! \uC9C0\uAE08
+        \uC5C5\uB370\uC774\uD2B8\uD558\uACE0 \uB354 \uBD80\uB4DC\uB7EC\uC6B4 \uD50C\uB808\uC774\uB97C
+        \uC990\uAE30\uC138\uC694!"
+      - "\u041C\u044B \u0438\u0441\u043F\u0440\u0430\u0432\u0438\u043B\u0438 \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u044B\u0435
+        \u043E\u0448\u0438\u0431\u043A\u0438! \u041E\u0431\u043D\u043E\u0432\u0438\u0442\u0435
+        \u0441\u0435\u0439\u0447\u0430\u0441 \u0434\u043B\u044F \u0431\u043E\u043B\u0435\u0435
+        \u043F\u043B\u0430\u0432\u043D\u043E\u0433\u043E \u0438\u0433\u0440\u043E\u0432\u043E\u0433\u043E
+        \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0430!"
+      - "Nous avons corrig\xE9 quelques bugs ! Mettez \xE0 jour maintenant pour une
+        exp\xE9rience plus fluide !"
+      - "Wir haben einige Fehler behoben! Jetzt aktualisieren f\xFCr ein fl\xFCssigeres
+        Spielerlebnis!"
+      - Kami telah memperbaiki beberapa bug! Perbarui sekarang untuk pengalaman yang
+        lebih lancar!
+      - "Abbiamo risolto alcuni bug! Aggiorna ora per un\u2019esperienza pi\xF9 fluida!"
+      - "Corrigimos alguns erros! Atualize agora para uma experi\xEAncia mais suave!"
+      - "\xA1Hemos corregido algunos errores! \xA1Actualiza ahora para una experiencia
+        m\xE1s fluida!"
+      - "Baz\u0131 hatalar\u0131 d\xFCzelttik! Daha ak\u0131c\u0131 bir deneyim i\xE7in
+        \u015Fimdi g\xFCncelle!"
+      - "\u0E40\u0E23\u0E32\u0E44\u0E14\u0E49\u0E41\u0E01\u0E49\u0E44\u0E02\u0E1A\u0E31\u0E01\u0E1A\u0E32\u0E07\u0E2A\u0E48\u0E27\u0E19\u0E41\u0E25\u0E49\u0E27!
+        \u0E2D\u0E31\u0E1B\u0E40\u0E14\u0E15\u0E15\u0E2D\u0E19\u0E19\u0E35\u0E49\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E1B\u0E23\u0E30\u0E2A\u0E1A\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E17\u0E35\u0E48\u0E23\u0E32\u0E1A\u0E23\u0E37\u0E48\u0E19\u0E22\u0E34\u0E48\u0E07\u0E02\u0E36\u0E49\u0E19!"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    CaseInsensitiveTerms: 0
+    OnMissingTranslation: 1
+    mTerm_AppName: 
+    mLanguages:
+    - Name: English
+      Code: en
+      Flags: 0
+    - Name: Vietnamese
+      Code: vi
+      Flags: 0
+    - Name: Chinese (Simplified)
+      Code: zh-CN
+      Flags: 0
+    - Name: Chinese (Traditional)
+      Code: zh-TW
+      Flags: 0
+    - Name: Japanese
+      Code: ja
+      Flags: 0
+    - Name: Korean
+      Code: ko
+      Flags: 0
+    - Name: Russian
+      Code: ru
+      Flags: 0
+    - Name: French
+      Code: fr
+      Flags: 0
+    - Name: German
+      Code: de
+      Flags: 0
+    - Name: Indonesian
+      Code: id
+      Flags: 0
+    - Name: Italian
+      Code: it
+      Flags: 0
+    - Name: Portuguese (Portugal)
+      Code: pt-PT
+      Flags: 0
+    - Name: Spanish
+      Code: es
+      Flags: 0
+    - Name: Turkish
+      Code: tr
+      Flags: 0
+    - Name: Thai
+      Code: th
+      Flags: 0
+    IgnoreDeviceLanguage: 0
+    _AllowUnloadingLanguages: 0
+    Google_WebServiceURL: https://script.google.com/macros/s/AKfycbwdJxdT9sS8fdLqGPun5NDkQNoc_3gwCsTVEe9mLG-NWWZVO7vc3DRYYJ0KcsXhwlFK/exec
+    Google_SpreadsheetKey: 1hq7ZXOh8c2DrWQbFHmjow5PtW5t2hGL2WujFrqdO2Us
+    Google_SpreadsheetName: I2Loc Framework Puzzle
+    Google_LastUpdatedVersion: 1756264943127
+    Google_Password: 123456
+    GoogleUpdateFrequency: 1
+    GoogleInEditorCheckFrequency: 1
+    GoogleUpdateSynchronization: 0
+    GoogleUpdateDelay: 0
+    Assets: []
+    Spreadsheet_LocalFileName: C:/Users/NC/Downloads/Localization.csv
+    Spreadsheet_LocalCSVSeparator: ','
+    Spreadsheet_LocalCSVEncoding: utf-8
+    Spreadsheet_SpecializationAsRows: 1
+    Spreadsheet_SortRows: 1

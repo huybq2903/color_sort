@@ -1,0 +1,19 @@
+{
+  "name": "falcon.modules.shop",
+  "displayName": "Falcon Shop Module",
+  "version": "1.2.9",
+  "unity": "6000.0",
+  "description": "Hệ thống quản lý cửa hàng bao gồm Shop thường và MiniShop, hỗ trợ Addressables, cấu hình động qua SO, và hiển thị UI động.",
+  "author": {
+    "name": "HuyBQ",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "com.unity.addressables": "2.5.0",
+    "falcon.helpers.ui": "1.0.31",
+    "falcon.modules.core.saveload": "1.0.8",
+    "falcon.modules.core.network": "2.0.6",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.helpers.configimporter.editor": "1.0.12"
+  }
+}

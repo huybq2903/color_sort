@@ -1,0 +1,543 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ULocGame_id
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: id
+  m_SharedData: {fileID: 11400000, guid: 1e5eed70a79a01a408ed3388c0c382af, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 28579642907283456
+    m_Localized: Ketuk untuk mengambil barang keluar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449280
+    m_Localized: Seret item ke tempat dan lepaskan untuk meletakkannya!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449281
+    m_Localized: Luar Biasa! Sekali Lagi!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690210545664
+    m_Localized: Mainkan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677952
+    m_Localized: Segera Hadir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677953
+    m_Localized: Dapatkan Kotak tambahan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677954
+    m_Localized: Cocokkan 3 panah secara otomatis!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872256
+    m_Localized: Dapatkan Tiang Tambahan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872257
+    m_Localized: Pindahkan 3 panah keluar untuk mengosongkan slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872258
+    m_Localized: Pilih panah mana saja, bahkan yang terblokir!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872259
+    m_Localized: Di Luar Angkasa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872260
+    m_Localized: Gratis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872261
+    m_Localized: Lanjutkan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872262
+    m_Localized: Mulai Ulang
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872263
+    m_Localized: Awal baru!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872264
+    m_Localized: Kehilangan 1 Nyawa Dan Mulai Ulang
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872265
+    m_Localized: Apakah Anda yakin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872266
+    m_Localized: Anda akan kalah
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872267
+    m_Localized: Keluar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872268
+    m_Localized: Menyerah
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872269
+    m_Localized: Emas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41933045452845056
+    m_Localized: Nyawa penuh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956468019200
+    m_Localized: Tanpa Iklan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956472213504
+    m_Localized: Buka Level {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382986129408
+    m_Localized: Tidak dapat menambah slot tunggu lagi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382990323712
+    m_Localized: Tidak ada tiang di bilah tunggu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41969681318359040
+    m_Localized: Gunakan booster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43700320564490240
+    m_Localized: Mode Gelap/Terang
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44098253080309760
+    m_Localized: Tahan untuk melihat papan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068608
+    m_Localized: Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068609
+    m_Localized: Bagus sekali
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751697129472
+    m_Localized: Level Gagal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751701323776
+    m_Localized: Progres Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46361195147673600
+    m_Localized: Ketuk panah untuk melepaskan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46697132947914752
+    m_Localized: Ketuk untuk memusatkan kembali
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438249390080
+    m_Localized: Belum Dibuka
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361600
+    m_Localized: Nama tidak valid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361601
+    m_Localized: Tidak dapat menggunakan nama default
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361602
+    m_Localized: Harap tunggu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361603
+    m_Localized: Tidak dapat membuka kotak lagi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361604
+    m_Localized: Sapu diaktifkan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555904
+    m_Localized: Menunggu benang untuk menetap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555905
+    m_Localized: Magnet diaktifkan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555906
+    m_Localized: Kotak pertama penuh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991089221632
+    m_Localized: Profil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164672
+    m_Localized: Nama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164673
+    m_Localized: Masukkan nama Anda
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164674
+    m_Localized: Tulis sesuatu (140 karakter)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164675
+    m_Localized: Menyimpan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164676
+    m_Localized: Avatar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164677
+    m_Localized: Bingkai
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47112087031496704
+    m_Localized: Ganti Nama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49543409326866432
+    m_Localized: Silakan sambungkan ke jaringan atau Wifi untuk melanjutkan bermain
+      game.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49544770844082176
+    m_Localized: Tidak ada internet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678464
+    m_Localized: Selesaikan level untuk menambah Emas ke Celengan Anda
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678465
+    m_Localized: Nilai
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678466
+    m_Localized: 'Atur Ulang dalam:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50672779894439936
+    m_Localized: Mulai mengumpulkan!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51020162120364032
+    m_Localized: Tersedia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297854124032
+    m_Localized: Celengan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375917871104
+    m_Localized: Pesta Pinata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814144
+    m_Localized: Selesaikan level untuk mengumpulkan {0} permen\n untuk memecahkan
+      Pinata berikutnya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814145
+    m_Localized: Selamat!!! \nAnda dapat mengambil hadiah sekarang!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814146
+    m_Localized: Acara telah selesai! \nAnda masih bisa mengambil hadiah!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814147
+    m_Localized: Acara telah selesai!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814148
+    m_Localized: Selesai
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055311073280
+    m_Localized: Isi kotak dengan \n<color=#FF1616> 3 panah dengan warna yang sama!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850496
+    m_Localized: Klaim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850497
+    m_Localized: Diaktifkan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850498
+    m_Localized: Aktif
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850499
+    m_Localized: Bank Bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850500
+    m_Localized: Aktifkan {0} untuk membuka Bonus Bank di akhir tahap!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850501
+    m_Localized: Panah Lewat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850502
+    m_Localized: Mengaktifkan {0} akan memberi Anda kesempatan untuk mendapatkan
+      hadiah khusus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850503
+    m_Localized: '{0} nyawa daripada {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850504
+    m_Localized: Anda akan mendapatkan bonus eksklusif hingga acara berakhir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850505
+    m_Localized: '{0} telah dimulai!
+
+      Kumpulkan kunci untuk membuka Hadiah
+      Spesial'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850506
+    m_Localized: '{0} telah berakhir! \nArrow Pass baru akan segera dimulai!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850507
+    m_Localized: Selesaikan Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850508
+    m_Localized: Kumpulkan Kunci
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850509
+    m_Localized: Klaim Hadiah
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850510
+    m_Localized: Ketuk untuk melanjutkan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850511
+    m_Localized: Kumpulkan lebih banyak kunci untuk membuka kunci
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850512
+    m_Localized: Hadiah premium tidak aktif
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850513
+    m_Localized: Hadiah ini sudah diambil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850514
+    m_Localized: Klik untuk klaim hadiah ini
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850515
+    m_Localized: Berikut adalah hadiah yang belum Anda klaim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57193728230633472
+    m_Localized: Mengaktifkan Arrow Pass akan memberi Anda kesempatan untuk mendapatkan
+      hadiah khusus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57225919274405888
+    m_Localized: Jalan terhalang! Singkirkan tanda panah di depan.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076018671616
+    m_Localized: Selesai
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003264
+    m_Localized: Menara Kucing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003265
+    m_Localized: Tingkatkan level kemenangan untuk melompat!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003266
+    m_Localized: Anda mencapai puncak!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003267
+    m_Localized: Sisa waktu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58697177665097728
+    m_Localized: Cocokkan 3 panah dengan warna yang sama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58993758662545408
+    m_Localized: Hanya tersisa 1 slot! Gunakan booster!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59400713805746176
+    m_Localized: Hanya tersisa 1 slot! Gunakan kotak tambah!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59718114195968000
+    m_Localized: Cocokkan warna panah dengan kotak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59782361707167744
+    m_Localized: Tingkatkan kemenangan beruntun dan buat kucing melompat ke puncak!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235722215424
+    m_Localized: Tarik lapisan luar terlebih dahulu untuk menyelesaikan Gumpalan
+      Benang!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575552
+    m_Localized: Hapus panah penghalang untuk mengungkapkan warna Panah Tersembunyi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575553
+    m_Localized: Tarik Panah dengan Kunci untuk melepaskan yang Terkunci!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575554
+    m_Localized: Tarik panah mana pun untuk memecahkan Zona Terkunci!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575555
+    m_Localized: Tarik panah mana saja untuk memecahkan Kotak Es!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575556
+    m_Localized: "Tarik panah untuk memecahkan Th\xF9ng Kayu satu per satu!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575557
+    m_Localized: Tarik panah mana saja untuk memecahkan Panah Es!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71376246412136448
+    m_Localized: Tarik panah untuk membuka dan melihat apa yang ada di bawahnya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725737918464
+    m_Localized: Lompat Kolam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889984
+    m_Localized: Mulai tantangan dengan {0} pemain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889985
+    m_Localized: Lanjut ke tahap berikutnya untuk hadiah yang lebih besar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889986
+    m_Localized: Jika Anda gagal pada level ini, Anda akan gagal tantangan.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889987
+    m_Localized: Pemain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889988
+    m_Localized: Selesaikan {0} level untuk menyelesaikan tantangan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889989
+    m_Localized: Anda gagal tantangan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889990
+    m_Localized: Selamat! Anda menyelesaikan tantangan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889991
+    m_Localized: Tahap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889992
+    m_Localized: Anda akan dieliminasi dalam {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889993
+    m_Localized: Menemukan pemain di level Anda
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889994
+    m_Localized: Hadiah Utama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889995
+    m_Localized: Anda memenangkan tantangan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889996
+    m_Localized: Bagikan hadiah dengan {0} pemain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889997
+    m_Localized: Selamat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948454559744
+    m_Localized: Cocokkan \n<color=#FF1616> 3 panah dengan warna yang sama!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948475531264
+    m_Localized: Cocokkan 3 panah dengan warna yang sama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79257081229344768
+    m_Localized: Cocokkan 3 panah dengan warna yang sama untuk menghapusnya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81126741595205632
+    m_Localized: Hanya 1 slot tersisa! Buat langkah berikutnya dengan hati-hati.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81522732613840896
+    m_Localized: Cocokkan semua panah untuk menang!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81835551062306816
+    m_Localized: Kosongkan 3 slot untuk terus bermain!
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

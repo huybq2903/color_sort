@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Modules.Core.GameData.Editor",
+    "rootNamespace": "Falcon.Modules.Core.GameData.Editor",
+    "references": [
+        "GUID:67fc2661e52a18e45b98d45d8ef210e7"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

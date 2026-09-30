@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Shared.EasyPopup",
+    "rootNamespace": "Falcon.Shared.EasyPopup",
+    "references": [
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Helpers.EventBus",
+        "DOTween.Modules",
+        "Falcon.Helpers.Singleton",
+        "Falcon.Shared.Common",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

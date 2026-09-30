@@ -1,0 +1,29 @@
+{
+    "name": "Falcon.InGame.Classic",
+    "rootNamespace": "Falcon.InGame.Classic",
+    "references": [
+        "Falcon.Shared.BaseInGame",
+        "Falcon.Shared.Common",
+        "Falcon.Shared.Mediation",
+        "Falcon.Helpers.UI",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Helpers.Devkit.Runtime",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Modules.Level.Core.Runtime",
+        "Unity.TextMeshPro",
+        "DOTween.Modules",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

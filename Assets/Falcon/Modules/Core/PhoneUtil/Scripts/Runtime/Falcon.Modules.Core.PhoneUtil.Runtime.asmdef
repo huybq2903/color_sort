@@ -1,0 +1,4 @@
+{
+	"name": "Falcon.Modules.Core.PhoneUtil.Runtime",
+	"references":[ "GUID:0bb31301bca16194bab291db776d9b97", "GUID:e30249a0dedd44d55b188e8c635a600a", "GUID:128ad44e0c12dfc44b11fcc7a397d6d2" ]
+}

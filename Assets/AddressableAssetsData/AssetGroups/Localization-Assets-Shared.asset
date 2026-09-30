@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Assets-Shared
+  m_GUID: 47290f9432a0fec4cad7778f8c72975b
+  m_SerializeEntries:
+  - m_GUID: 117ac8489ca0f8a4492d28c157641726
+    m_Address: BalooDa2-ExtraBold SDF
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    - Locale-es
+    - Locale-fr
+    - Locale-id
+    - Locale-it
+    - Locale-pt
+    - Locale-tr
+    - Locale-vi
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e5eed70a79a01a408ed3388c0c382af
+    m_Address: Assets/FalconAssets/Modules/UnityLocalization/TableString/Game Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d071b1e831c4bc74d9b315061f7dbc50
+    m_Address: Assets/FalconAssets/Modules/UnityLocalization/TableFont/Game Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 00bf5458974d04f46a1d0e3abd6d7181, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 18f1f9ea2fca9444b84250990253f4a5, type: 2}
+    - {fileID: 11400000, guid: 1116cb70a31109346a7aab49196b50af, type: 2}

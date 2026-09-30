@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.Core.BigData.Runtime",
+    "rootNamespace": "Falcon.Modules.Core.BigData.Runtime",
+    "references": [
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:fccb0bdb2a347442894b14b279085764"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Modules.Packs.PacksFailOffer.Editor",
+    "rootNamespace": "Falcon.Modules.Packs.PacksFailOffer.Editor",
+    "references": [
+        "Falcon.Helpers.ConfigImporter.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

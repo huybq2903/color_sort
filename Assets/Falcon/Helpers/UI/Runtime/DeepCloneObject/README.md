@@ -1,0 +1,1 @@
+﻿Sao chép 1 object bất mà không ảnh hưởng đến object gốc

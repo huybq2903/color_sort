@@ -1,0 +1,20 @@
+{
+  "name": "falcon.modules.ui.menu",
+  "displayName": "UI Framework Menu",
+  "version": "2.3.9",
+  "unity": "6000.0",
+  "description": "Bộ khung cho UI",
+  "author": {
+    "name": "dongvv",
+    "email": "dongvv@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.singleton": "1.0.3",
+    "falcon.helpers.ui": "1.0.25",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.modules.core.accountdata": "1.2.0",
+    "falcon.modules.core.gamedata": "1.1.6",
+    "falcon.modules.core.ui": "1.2.10",
+    "falcon.helpers.configimporter.editor": "1.0.12"
+  }
+}

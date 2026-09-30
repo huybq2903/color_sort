@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcc67450673a7b4b999aeeab713d5bc, type: 3}
+  m_Name: SOMediationSetting
+  m_EditorClassIdentifier: Falcon.Modules.Core.ThirdParty.Mediation.Runtime::Falcon.Modules.Core.ThirdParty.Mediation.Runtime.SOMediationSetting
+  admobAppIdAndroid: ca-app-pub-3046520253844875~7085129194
+  admobAppIdIOS: 
+  collapsibleBannerIdGmaAndroid: 
+  collapsibleBannerIdGmaIOS: 
+  nativeIdGmaAndroid: 
+  nativeIdGmaIOS: 
+  appOpenIdGmaAndroid: 
+  appOpenIdGmaIOS: 
+  useIronSource: 0
+  ironSourceAppKeyAndroid: 
+  ironSourceAppKeyIOS: 
+  interstitialIdAndroid: 
+  interstitialIdIOS: 
+  interstitialIdMultiCallIrsAndroid: 
+  interstitialIdMultiCallIrsIOS: 
+  rewardedIdAndroid: 
+  rewardedIdIOS: 
+  rewardedIdMultiCallIrsAndroid: 
+  rewardedIdMultiCallIrsIOS: 
+  bannerIdAndroid: 
+  bannerIdIOS: 
+  mrecIdAndroid: 
+  mrecIdIOS: 
+  installAdapterIrs: 0
+  useMax: 1
+  appLovinSdkKey: M4GLwqezVT2WDo75OWFGOV873pVg6-3S3Kpz8Rxe_-9CnHI9oXPB2TI5LpnRnqvr8hpH8kw7i4KTMcc891KCad
+  interstitialIdMaxAndroid: acf3aa70652c8bd1
+  interstitialIdMaxIOS: 
+  interstitialIdMultiCallMaxAndroid: d_acf3aa70652c8bd1_10_0|h1_173435808c4fde8e_10,15,20,25,30_0,1|h2_c60687ff7ff93295_10,15,20,25,30_0,2|h3_62d200c87a40c7ab_10,15,20,25,30_0,3|h4_61156e67aa5344e7_10,15,20,25,30_0,4|h5_a3bc2576939cb3b7_10,15,20,25,30_0,5|d1_7e22e95bd65a2d8b_10_5|d2_de9b9e0859416d3d_10_10
+  interstitialIdMultiCallMaxIOS: 
+  rewardedIdMaxAndroid: 6c57e4f15a350791
+  rewardedIdMaxIOS: 
+  rewardedIdMultiCallMaxAndroid: d_6c57e4f15a350791_10_0|h1_49b23f788bca4cbe_10,15,20,25,30_0,1|h2_687ec990c6847a35_10,15,20,25,30_0,2|h3_bd5d51ddc1ff2bfc_10,15,20,25,30_0,3|h4_7d7661fde2d5d0d9_10,15,20,25,30_0,4|h5_696aa3ce637ce39d_10,15,20,25,30_0,5|d1_431a47af7b7756b2_10_5|d2_8ac75220b4166937_10_10
+  rewardedIdMultiCallMaxIOS: 
+  AppOpenIdMaxAndroid: 
+  AppOpenIdMaxIOS: 
+  cooldownTimeMax: 60
+  minLevelShowAoaMax: 0
+  bannerIdMaxAndroid: 5ec6a79fcf7a35df
+  bannerIdMaxIOS: 
+  useButtonCloseBanner: 0
+  appIdAmazonMaxAndroid: 
+  appIdAmazonMaxIOS: 
+  bannerIdAmazonMaxAndroid: 
+  bannerIdAmazonMaxIOS: 
+  mrecAdsIdMaxAndroid: 
+  mrecAdsIdMaxIOS: 
+  mrecAdsIdAmazonMaxAndroid: 
+  mrecAdsIdAmazonMaxIOS: 
+  installAdapterMax: 0
+  useGma: 0
+  interstitialIdGAAndroid: 
+  interstitialIdGAIOS: 
+  interstitialIdMultiCallGAAndroid: 
+  interstitialIdMultiCallGAIOS: 
+  rewardedIdGAAndroid: 
+  rewardedIdGAIOS: 
+  rewardedIdMultiCallGAAndroid: 
+  rewardedIdMultiCallGAIOS: 
+  appOpenIdGAAndroid: 
+  appOpenIdGAIOS: 
+  cooldownTimeGa: 60
+  bannerIdGAAndroid: 
+  bannerIdGAIOS: 
+  mrecAdsGAAndroid: 
+  mrecAdsGAIOS: 
+  installAdapterGma: 0
+  manualInit: 0

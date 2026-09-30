@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c1111433d252c4481f16e815eee510, type: 3}
+  m_Name: SO_UI_Menu_FeaturesConfig
+  m_EditorClassIdentifier: 
+  maxNumberTab: 5
+  defaultTab: 2
+  featuresTab_1:
+  - UIShop
+  featuresTab_2:
+  - UILeaderboard
+  featuresTab_3:
+  - UILevelLineController
+  - UIHome
+  - UIHomeCheat
+  featuresTab_4:
+  - UIClan_ComingSoon
+  featuresTab_5:
+  - UICollections
+  featureAddons:
+  - UIFadePopupPool
+  - UIToast
+  - UIRewardFlow
+  - UITooltip
+  - UICodeAndVersion
+  - UIBlocker

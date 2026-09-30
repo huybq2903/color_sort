@@ -1,0 +1,12 @@
+{
+  "name": "falcon.tools.s3unity",
+  "displayName": "Falcon Tools - S3 Unity",
+  "version": "1.0.0",
+  "unity": "6000.0",
+  "description": "S3 Unity API for interact with S3 Amazon",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {}
+}

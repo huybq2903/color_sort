@@ -1,0 +1,15 @@
+{
+  "name": "falcon.manager.shared.editor",
+  "displayName": "Falcon Manager - Shared Editor",
+  "version": "1.0.11",
+  "unity": "6000.0",
+  "description": "Shared",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.0.2",
+    "falcon.helpers.devkit": "1.2.6"
+  }
+}

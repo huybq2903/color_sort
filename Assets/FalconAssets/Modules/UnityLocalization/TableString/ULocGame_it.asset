@@ -1,0 +1,540 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ULocGame_it
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: it
+  m_SharedData: {fileID: 11400000, guid: 1e5eed70a79a01a408ed3388c0c382af, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 28579642907283456
+    m_Localized: Tocca per prendere i oggetti fuori
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449280
+    m_Localized: Trascina l'oggetto in un punto e rilascia per posizionarlo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28579642932449281
+    m_Localized: Fantastico! Un'altra volta!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690210545664
+    m_Localized: Gioca
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677952
+    m_Localized: Prossimamente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677953
+    m_Localized: Ottieni una scatola extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677954
+    m_Localized: Abbina automaticamente 3 frecce!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872256
+    m_Localized: Ottieni un palo extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872257
+    m_Localized: Sposta 3 frecce per liberare gli slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872258
+    m_Localized: Scegli una freccia qualsiasi, anche quelle bloccate!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872259
+    m_Localized: Fuori Spazio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872260
+    m_Localized: Gratis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872261
+    m_Localized: Continua
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872262
+    m_Localized: Ricomincia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872263
+    m_Localized: Un nuovo inizio!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872264
+    m_Localized: Perdi 1 Vita e Ricomincia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872265
+    m_Localized: Sei sicuro?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872266
+    m_Localized: Perderai
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872267
+    m_Localized: Esci
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872268
+    m_Localized: Rinuncia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872269
+    m_Localized: Oro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41933045452845056
+    m_Localized: Vite al massimo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956468019200
+    m_Localized: "Nessuna pubblicit\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956472213504
+    m_Localized: Sblocca Livello {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382986129408
+    m_Localized: Impossibile aggiungere un altro slot in attesa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382990323712
+    m_Localized: Nessun palo in attesa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41969681318359040
+    m_Localized: Usa booster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43700320564490240
+    m_Localized: "Modalit\xE0 Scura/Chiara"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44098253080309760
+    m_Localized: Tieni premuto per vedere la scacchiera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068608
+    m_Localized: Livello
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068609
+    m_Localized: Ben fatto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751697129472
+    m_Localized: Livello Fallito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751701323776
+    m_Localized: Progresso Livello
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46361195147673600
+    m_Localized: Tocca una freccia per districare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46697132947914752
+    m_Localized: Tocca per ricentrare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438249390080
+    m_Localized: Non ancora sbloccato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361600
+    m_Localized: "Il nome non \xE8 valido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361601
+    m_Localized: Impossibile utilizzare il nome predefinito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361602
+    m_Localized: Attendere prego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361603
+    m_Localized: "Impossibile aprire pi\xF9 scatole"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361604
+    m_Localized: "La scopa \xE8 attivata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555904
+    m_Localized: In attesa che il filo si stabilizzi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555905
+    m_Localized: "Il magnete \xE8 attivato"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555906
+    m_Localized: "La prima casella \xE8 piena"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991089221632
+    m_Localized: Profilo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164672
+    m_Localized: Nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164673
+    m_Localized: Inserisci il tuo nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164674
+    m_Localized: Scrivi qualcosa (140 caratteri)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164675
+    m_Localized: Salva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164676
+    m_Localized: Avatar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164677
+    m_Localized: Telaio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47112087031496704
+    m_Localized: Cambia nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49543409326866432
+    m_Localized: Connettiti alla rete o al Wi-Fi per continuare a giocare.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49544770844082176
+    m_Localized: Nessuna connessione internet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678464
+    m_Localized: Completa i livelli per aggiungere Oro al tuo Porcellino
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678465
+    m_Localized: Valore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678466
+    m_Localized: 'Reimposta in:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50672779894439936
+    m_Localized: Inizia ad accumulare!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51020162120364032
+    m_Localized: Disponibile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297854124032
+    m_Localized: Salvadanaio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375917871104
+    m_Localized: Festa della Pignatta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814144
+    m_Localized: Supera i livelli per raccogliere {0} caramelle\n per rompere la
+      prossima Pignatta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814145
+    m_Localized: Complimenti!!! \nPuoi prendere il regalo ora!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814146
+    m_Localized: Evento terminato! \nPuoi ancora prendere il regalo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814147
+    m_Localized: Evento terminato!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814148
+    m_Localized: Completamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055311073280
+    m_Localized: Riempi la casella con \n<color=#FF1616> 3 frecce dello stesso colore!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850496
+    m_Localized: Richiedi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850497
+    m_Localized: Attivato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850498
+    m_Localized: Attivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850499
+    m_Localized: Banca Bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850500
+    m_Localized: Attiva il {0} per sbloccare la Banca Bonus alla fine dei livelli!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850501
+    m_Localized: Passaggio Freccia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850502
+    m_Localized: "Attivare il {0} ti dar\xE0 la possibilit\xE0 di ottenere ricompense
+      speciali"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850503
+    m_Localized: '{0} vite invece di {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850504
+    m_Localized: Avrai un bonus esclusivo fino alla fine dell'evento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850505
+    m_Localized: "{0} \xE8 iniziato!\nRaccogli la chiave per sbloccare la ricompensa
+      speciale"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850506
+    m_Localized: "{0} \xE8 terminato! \\nUn nuovo Arrow Pass inizier\xE0 presto!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850507
+    m_Localized: Supera il livello
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850508
+    m_Localized: Raccogli Chiave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850509
+    m_Localized: Riscatta Ricompense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850510
+    m_Localized: Tocca per continuare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850511
+    m_Localized: "Raccogli pi\xF9 chiavi per sbloccare"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850512
+    m_Localized: Ricompensa premium non attiva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850513
+    m_Localized: "Ricompensa gi\xE0 riscattata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850514
+    m_Localized: Clicca per reclamare questa ricompensa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850515
+    m_Localized: Ecco le tue ricompense non riscosse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57193728230633472
+    m_Localized: "Attivare l'Arrow Pass ti dar\xE0 la possibilit\xE0 di ottenere
+      ricompense speciali"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57225919274405888
+    m_Localized: Percorso bloccato! Rimuovere la freccia davanti.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076018671616
+    m_Localized: Completato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003264
+    m_Localized: Torre del Gatto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003265
+    m_Localized: Salta al livello successivo con una serie di vittorie!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003266
+    m_Localized: Hai raggiunto la vetta!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003267
+    m_Localized: Tempo rimasto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58697177665097728
+    m_Localized: Abbina 3 frecce dello stesso colore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58993758662545408
+    m_Localized: Solo 1 slot rimasto! Usa un potenziamento!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59400713805746176
+    m_Localized: Solo 1 slot rimasto! Usa la scatola aggiuntiva!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59718114195968000
+    m_Localized: Abbina il colore della freccia alla casella
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59782361707167744
+    m_Localized: Completa i livelli consecutivi e fai saltare il gatto in cima!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235722215424
+    m_Localized: Tira prima lo strato esterno per risolvere il groviglio di fili!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575552
+    m_Localized: Rimuovi la freccia bloccante per rivelare il colore della Freccia
+      Nascosta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575553
+    m_Localized: Tira le Frecce con le Chiavi per liberare l'Altra Bloccata!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575554
+    m_Localized: Trascina le frecce per rompere la zona bloccata!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575555
+    m_Localized: Trascina le frecce per rompere il blocco di ghiaccio!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575556
+    m_Localized: "Trascina le frecce per rompere il th\xF9ng di lana uno per uno!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575557
+    m_Localized: Trascina qualsiasi freccia per rompere la freccia di ghiaccio!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71376246412136448
+    m_Localized: "Trascina le frecce per sbloccare e rivelare cosa c'\xE8 sotto"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725737918464
+    m_Localized: Salto in Piscina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889984
+    m_Localized: Inizia la sfida con {0} giocatori
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889985
+    m_Localized: "Avanza ai prossimi livelli per premi pi\xF9 grandi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889986
+    m_Localized: Se fallisci un livello, fallirai la sfida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889987
+    m_Localized: Giocatore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889988
+    m_Localized: Supera {0} livelli per completare la sfida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889989
+    m_Localized: Sfida non riuscita
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889990
+    m_Localized: Congratulazioni! Hai completato la sfida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889991
+    m_Localized: Livello
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889992
+    m_Localized: Verrai eliminato tra {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889993
+    m_Localized: Ricerca giocatori al tuo livello
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889994
+    m_Localized: Gran Premio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889995
+    m_Localized: Hai vinto la sfida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889996
+    m_Localized: Condividi le ricompense con {0} giocatori
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889997
+    m_Localized: Congratulazioni
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948454559744
+    m_Localized: Abbina \n<color=#FF1616> 3 frecce dello stesso colore!</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948475531264
+    m_Localized: Abbina 3 frecce dello stesso colore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79257081229344768
+    m_Localized: Abbina 3 frecce dello stesso colore per eliminarle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81126741595205632
+    m_Localized: Solo 1 slot rimasto! Fai la tua prossima mossa con attenzione.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81522732613840896
+    m_Localized: Abbina tutte le frecce per vincere!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81835551062306816
+    m_Localized: Svuota 3 slot per continuare a giocare!
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

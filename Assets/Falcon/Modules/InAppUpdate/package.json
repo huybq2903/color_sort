@@ -1,0 +1,18 @@
+{
+  "name": "falcon.modules.inappupdate",
+  "displayName": "Force Update",
+  "version": "1.0.4",
+  "unity": "6000.0",
+  "description": "Module kiểm tra và hiển thị popup cập nhật ứng dụng",
+  "author": {
+    "name": "minhddv",
+    "email": "minhddv@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.devkit": "1.2.4",
+    "falcon.helpers.addressable": "1.0.8",
+    "falcon.modules.localizationservice": "1.0.17",
+    "falcon.modules.core.remoteconfig": "1.1.1",
+    "falcon.helpers.configimporter.editor": "1.0.10"
+  }
+}

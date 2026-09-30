@@ -1,0 +1,24 @@
+{
+    "name": "Falcon.Modules.Packs.PacksFailOffer.Runtime",
+    "rootNamespace": "Falcon.Modules.Packs.PacksFailOffer.Runtime",
+    "references": [
+        "Falcon.Modules.Packs.Core.Runtime",
+        "Falcon.Modules.Core.Utils.Time.Runtime",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Modules.Core.Network.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

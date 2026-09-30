@@ -1,0 +1,15 @@
+{
+  "name": "falcon.manager.external.editor",
+  "displayName": "Falcon Manager - External Editor",
+  "version": "1.0.6",
+  "unity": "6000.0",
+  "description": "External Editor",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.devkit": "1.1.5",
+    "falcon.manager.shared.editor": "1.0.7"
+  }
+}

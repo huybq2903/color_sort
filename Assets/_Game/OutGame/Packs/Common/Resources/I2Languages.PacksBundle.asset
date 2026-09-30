@@ -1,0 +1,327 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0b0c553be8edd4682e9180fdd13e37, type: 3}
+  m_Name: I2Languages.PacksBundle
+  m_EditorClassIdentifier: 
+  mSource:
+    UserAgreesToHaveItOnTheScene: 0
+    UserAgreesToHaveItInsideThePluginsFolder: 0
+    GoogleLiveSyncIsUptoDate: 0
+    mTerms:
+    - Term: Font
+      TermType: 1
+      Description: 
+      Languages:
+      - MikadoBlack
+      - MikadoBlack
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSansThai-Bold
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: Font_TMP
+      TermType: 9
+      Description: 
+      Languages:
+      - MikadoBlack SDF
+      - MikadoBlack SDF
+      - NotoSans-Bold Chinese (Simplified) SDF
+      - NotoSans-Bold Chinese (Traditional) SDF
+      - NotoSans-Bold Japanese SDF
+      - NotoSans-Bold Korea SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSansThai-Bold SDF
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: big_bundle
+      TermType: 0
+      Description: 
+      Languages:
+      - Big Bundle
+      - "G\xF3i L\u1EDBn"
+      - "\u5927\u6346\u7ED1"
+      - "\u5927\u6346\u7D81"
+      - "\u5927\u304D\u306A\u675F"
+      - "\uD070 \uBB36\uC74C"
+      - "\u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u041F\u0430\u043A\u0435\u0442"
+      - Gros Paquet
+      - "Gro\xDFes B\xFCndel"
+      - Bundel Besar
+      - Grande Pacco
+      - Grande Pacote
+      - Gran Paquete
+      - "B\xFCy\xFCk Paket"
+      - "\u0E21\u0E31\u0E14\u0E43\u0E2B\u0E0D\u0E48"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: great_bundle
+      TermType: 0
+      Description: 
+      Languages:
+      - Great Bundle
+      - "G\xF3i Kh\u1EE7ng"
+      - "\u5927\u6346\u7ED1"
+      - "\u5927\u6346\u7D81"
+      - "\u7D20\u6674\u3089\u3057\u3044\u30D0\u30F3\u30C9\u30EB"
+      - "\uD6CC\uB96D\uD55C \uBC88\uB4E4"
+      - "\u041E\u0442\u043B\u0438\u0447\u043D\u044B\u0439 \u041A\u043E\u043C\u043F\u043B\u0435\u043A\u0442"
+      - Super Ensemble
+      - Tolles Paket
+      - Bundel Besar
+      - Grande Pacchetto
+      - "\xD3timo Pacote"
+      - Gran Paquete
+      - "B\xFCy\xFCk Paket"
+      - "\u0E21\u0E31\u0E14\u0E43\u0E2B\u0E0D\u0E48\u0E21\u0E32\u0E01"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ultra_bundle
+      TermType: 0
+      Description: 
+      Languages:
+      - Ultra Bundle
+      - "G\xF3i Si\xEAu C\u1EA5p"
+      - "\u8D85\u7EA7\u6346\u7ED1\u5305"
+      - "\u8D85\u6346\u7D81\u5305"
+      - "\u30A6\u30EB\u30C8\u30E9\u30D0\u30F3\u30C9\u30EB"
+      - "\uC6B8\uD2B8\uB77C \uBC88\uB4E4"
+      - "\u0423\u043B\u044C\u0442\u0440\u0430 \u041F\u0430\u043A\u0435\u0442"
+      - Forfait Ultra
+      - Ultra-Paket
+      - Bundel Ultra
+      - Pacchetto Ultra
+      - Pacote Ultra
+      - Paquete Ultra
+      - Ultra Paket
+      - "\u0E2D\u0E31\u0E25\u0E15\u0E23\u0E49\u0E32\u0E1A\u0E31\u0E19\u0E40\u0E14\u0E34\u0E25"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: legendary_bundle
+      TermType: 0
+      Description: 
+      Languages:
+      - Legendary Bundle
+      - "G\xF3i Huy\u1EC1n Tho\u1EA1i"
+      - "\u4F20\u5947\u6346\u7ED1\u5305"
+      - "\u50B3\u5947\u6346\u7D81\u5305"
+      - "\u4F1D\u8AAC\u306E\u30D0\u30F3\u30C9\u30EB"
+      - "\uC804\uC124\uC758 \uBC88\uB4E4"
+      - "\u041B\u0435\u0433\u0435\u043D\u0434\u0430\u0440\u043D\u044B\u0439 \u041A\u043E\u043C\u043F\u043B\u0435\u043A\u0442"
+      - "Pack L\xE9gendaire"
+      - "Legend\xE4res Paket"
+      - Bundel Legendaris
+      - Pacchetto Leggendario
+      - "Pacote Lend\xE1rio"
+      - Paquete Legendario
+      - Efsanevi Paket
+      - "\u0E21\u0E31\u0E14\u0E23\u0E27\u0E21\u0E15\u0E33\u0E19\u0E32\u0E19"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: small_bundle
+      TermType: 0
+      Description: 
+      Languages:
+      - Small Bundle
+      - "G\xF3i Nh\u1ECF"
+      - "\u5C0F\u6346"
+      - "\u5C0F\u6346"
+      - "\u5C0F\u3055\u306A\u675F"
+      - "\uC791\uC740 \uBB36\uC74C"
+      - "\u041D\u0435\u0431\u043E\u043B\u044C\u0448\u043E\u0439 \u0421\u0432\u0435\u0440\u0442\u043E\u043A"
+      - Petit Paquet
+      - "Kleines B\xFCndel"
+      - Bundel Kecil
+      - Piccolo Fagotto
+      - Pequeno Pacote
+      - "Peque\xF1o Paquete"
+      - "K\xFC\xE7\xFCk Paket"
+      - "\u0E21\u0E31\u0E14\u0E40\u0E25\u0E47\u0E01"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: most_popular
+      TermType: 0
+      Description: 
+      Languages:
+      - Popular
+      - "Ph\u1ED5 Bi\u1EBFn"
+      - "\u53D7\u6B22\u8FCE\u7684"
+      - "\u53D7\u6B61\u8FCE\u7684"
+      - "\u4EBA\u6C17\u306E\u3042\u308B"
+      - "\uC778\uAE30 \uC788\uB294"
+      - "\u041F\u043E\u043F\u0443\u043B\u044F\u0440\u043D\u044B\u0439"
+      - Populaire
+      - Beliebt
+      - Populer
+      - Popolare
+      - Popular
+      - Popular
+      - "Pop\xFCler"
+      - "\u0E40\u0E1B\u0E47\u0E19\u0E17\u0E35\u0E48\u0E19\u0E34\u0E22\u0E21"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: best_value
+      TermType: 0
+      Description: 
+      Languages:
+      - Best Value
+      - "Gi\xE1 Tr\u1ECB Nh\u1EA5t"
+      - "\u6700\u4F73\u4EF7\u503C"
+      - "\u6700\u4F73\u50F9\u503C"
+      - "\u6700\u9AD8\u306E\u4FA1\u5024"
+      - "\uCD5C\uACE0\uC758 \uAC00\uCE58"
+      - "\u041B\u0443\u0447\u0448\u0430\u044F \u0426\u0435\u043D\u043D\u043E\u0441\u0442\u044C"
+      - Meilleur Valeur
+      - Bestes Preis-Leistung
+      - Nilai Terbaik
+      - Miglior Valore
+      - Melhor Valor
+      - Mejor Valor
+      - "En Iyi De\u011Fer"
+      - "\u0E04\u0E38\u0E49\u0E21\u0E04\u0E48\u0E32\u0E17\u0E35\u0E48\u0E2A\u0E38\u0E14"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: special_offer
+      TermType: 0
+      Description: 
+      Languages:
+      - Special Offer
+      - "G\xF3i \u01AFu \u0110\xE3i \u0110\u1EB7c Bi\u1EC7t"
+      - "\u7279\u4EF7"
+      - "\u7279\u50F9"
+      - "\u7279\u5225\u30AA\u30D5\u30A1\u30FC"
+      - "\uD2B9\uBCC4 \uBA54\uB274"
+      - "\u0421\u043F\u0435\u0446\u0438\u0430\u043B\u044C\u043D\u043E\u0435 \u041F\u0440\u0435\u0434\u043B\u043E\u0436\u0435\u043D\u0438\u0435"
+      - "Offre Sp\xE9ciale"
+      - Sonderangebot
+      - Penawaran Khusus
+      - Offerta Speciale
+      - Oferta Especial
+      - Oferta Especial
+      - "\xD6zel Teklif"
+      - "\u0E02\u0E49\u0E2D\u0E40\u0E2A\u0E19\u0E2D\u0E1E\u0E34\u0E40\u0E28\u0E29"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: booster_offer
+      TermType: 0
+      Description: 
+      Languages:
+      - Booster Offer
+      - "G\xF3i \u01AFu \u0110\xE3i H\u1ED7 Tr\u1EE3"
+      - "\u589E\u503C\u4F18\u60E0"
+      - "\u589E\u503C\u512A\u60E0"
+      - "\u30D6\u30FC\u30B9\u30BF\u30FC\u30AA\u30D5\u30A1\u30FC"
+      - "\uBD80\uC2A4\uD130 \uC624\uD37C"
+      - "\u041F\u0440\u0435\u0434\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u041F\u043E
+        \u0423\u0441\u0438\u043B\u0435\u043D\u0438\u044E"
+      - Offre De Boost
+      - Booster-Angebot
+      - Penawaran Tambahan
+      - Offerta Booster
+      - "Oferta De Refor\xE7o"
+      - Oferta De Refuerzo
+      - Takviye Teklifi
+      - "\u0E02\u0E49\u0E2D\u0E40\u0E2A\u0E19\u0E2D\u0E1A\u0E39\u0E2A\u0E40\u0E15\u0E2D\u0E23\u0E4C"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    CaseInsensitiveTerms: 0
+    OnMissingTranslation: 1
+    mTerm_AppName: 
+    mLanguages:
+    - Name: English
+      Code: en
+      Flags: 0
+    - Name: Vietnamese
+      Code: vi
+      Flags: 0
+    - Name: Chinese (Simplified)
+      Code: zh-CN
+      Flags: 0
+    - Name: Chinese (Traditional)
+      Code: zh-TW
+      Flags: 0
+    - Name: Japanese
+      Code: ja
+      Flags: 0
+    - Name: Korean
+      Code: ko
+      Flags: 0
+    - Name: Russian
+      Code: ru
+      Flags: 0
+    - Name: French
+      Code: fr
+      Flags: 0
+    - Name: German
+      Code: de
+      Flags: 0
+    - Name: Indonesian
+      Code: id
+      Flags: 0
+    - Name: Italian
+      Code: it
+      Flags: 0
+    - Name: Portuguese (Portugal)
+      Code: pt-PT
+      Flags: 0
+    - Name: Spanish
+      Code: es
+      Flags: 0
+    - Name: Turkish
+      Code: tr
+      Flags: 0
+    - Name: Thai
+      Code: th
+      Flags: 0
+    IgnoreDeviceLanguage: 0
+    _AllowUnloadingLanguages: 0
+    Google_WebServiceURL: https://script.google.com/macros/s/AKfycbwdJxdT9sS8fdLqGPun5NDkQNoc_3gwCsTVEe9mLG-NWWZVO7vc3DRYYJ0KcsXhwlFK/exec
+    Google_SpreadsheetKey: 1hq7ZXOh8c2DrWQbFHmjow5PtW5t2hGL2WujFrqdO2Us
+    Google_SpreadsheetName: I2Loc Framework Puzzle
+    Google_LastUpdatedVersion: 1756264943127
+    Google_Password: change_this
+    GoogleUpdateFrequency: 3
+    GoogleInEditorCheckFrequency: 2
+    GoogleUpdateSynchronization: 1
+    GoogleUpdateDelay: 0
+    Assets:
+    - {fileID: 11400000, guid: d16b15b7a2769634eae3fdb4b9ca82b9, type: 2}
+    - {fileID: 11400000, guid: 58c5984a94e39e143bc55196b61c0f66, type: 2}
+    - {fileID: 11400000, guid: c554098bcf56002449a47f26ccc99698, type: 2}
+    - {fileID: 11400000, guid: b5c479b6c7b684e42b9fb8d0542935fb, type: 2}
+    - {fileID: 11400000, guid: a5ade99cdd585ab40a709c059536be5d, type: 2}
+    - {fileID: 11400000, guid: eaf529f275266b44f92a3dd71455748e, type: 2}
+    - {fileID: 12800000, guid: 155f81a3d4a6c6f499337d5ddcebb289, type: 3}
+    - {fileID: 12800000, guid: 9968bbcee520c664680029984d53bbd2, type: 3}
+    - {fileID: 12800000, guid: 33bfe5a4c6a7feb40be5e3f474264904, type: 3}
+    - {fileID: 11400000, guid: 71531bbde2329b146924569c23f2102b, type: 2}
+    Spreadsheet_LocalFileName: 
+    Spreadsheet_LocalCSVSeparator: ','
+    Spreadsheet_LocalCSVEncoding: utf-8
+    Spreadsheet_SpecializationAsRows: 1
+    Spreadsheet_SortRows: 1

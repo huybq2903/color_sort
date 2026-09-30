@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.ABTestingByServerLogic.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

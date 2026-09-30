@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Audio
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Audio
+  m_GUID: 03ccdc78677ee024da9e9157f1267652
+  m_SerializeEntries:
+  - m_GUID: 1c5cfae356443884b8486d2b37cc43b0
+    m_Address: Item_Pick
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d9b5dcd28935b2439f46e7c257443b3
+    m_Address: SFX_Object_Collect_Small_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2eabef640f9eb35459b52f7b77229964
+    m_Address: ClaimGold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a974e92cf39cc24eb270a2479e414f4
+    m_Address: buy_success
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c90f1c641e4f93418efe247ea99180b
+    m_Address: Click
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cc2c497af8fb72419628f69ed3d1b39
+    m_Address: HideBox
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 653860d5f11b8c84c9cd884163475cb1
+    m_Address: ShowPopupLose
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 700b543002df32c43b90df6746581405
+    m_Address: LogoEndgameFX
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93b2d801103ec784eb91e5062a98200d
+    m_Address: SFX_Object_Collect_Small_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 980d58502ea8410458e851e6e57ed8aa
+    m_Address: SFX_Object_Collect_Small_0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 999b67c38ec8ede4faaa0aac66527b0d
+    m_Address: ShowPopupWin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb23c6185d8fd314eb8bcb0a23ef0e1f
+    m_Address: UIClick
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3cfb03cb3028074988b2395e2585cbd
+    m_Address: BGM_Level
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e00959935ec86ec4fa9d83a8a72efe60
+    m_Address: BGM_Home
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 00bf5458974d04f46a1d0e3abd6d7181, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ede9f6830d3530d489f9b345f2c634a0, type: 2}
+    - {fileID: 11400000, guid: dc2d5023e28fec44b997e054126b248d, type: 2}

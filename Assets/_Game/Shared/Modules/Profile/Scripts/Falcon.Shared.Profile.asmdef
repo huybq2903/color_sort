@@ -1,0 +1,27 @@
+{
+    "name": "Falcon.Shared.Profile",
+    "rootNamespace": "Game.Shared.Profile",
+    "references": [
+        "Unity.TextMeshPro",
+        "SuperScrollView",
+        "ACTk.Runtime",
+        "Falcon.Shared.EasyPopup",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.UnityLocalization",
+        "Falcon.Shared.Tab",
+        "Falcon.Shared.Common",
+        "Falcon.Modules.Core.Network.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

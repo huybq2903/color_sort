@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Shared.Common.Editor",
+    "rootNamespace": "Falcon.Shared.Common.Editor",
+    "references": [
+        "Falcon.Shared.Common",
+        "DOTween.Modules"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

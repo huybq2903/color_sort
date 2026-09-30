@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+    <androidPackages>
+        <androidPackage spec="com.applovin.mediation:ironsource-adapter:{androidVersion}" />
+
+    </androidPackages>
+    <iosPods>
+        <iosPod name="AppLovinMediationIronSourceAdapter" version="{iOSVersion}" />
+    </iosPods>
+</dependencies>

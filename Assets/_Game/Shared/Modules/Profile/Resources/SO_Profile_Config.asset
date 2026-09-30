@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983f6c21b3f54089bc3428b2f496dba7, type: 3}
+  m_Name: SO_Profile_Config
+  m_EditorClassIdentifier:
+  nameAtlas: SA_Profile
+  avatarConfigs:
+  - id: 0
+    nameSprite: avatar_aligator
+    default: 1
+  - id: 1
+    nameSprite: avatar_bear
+    default: 1
+  - id: 2
+    nameSprite: avatar_beaver
+    default: 1
+  - id: 3
+    nameSprite: avatar_bird
+    default: 1
+  - id: 4
+    nameSprite: avatar_cat
+    default: 1
+  - id: 5
+    nameSprite: avatar_chicken
+    default: 1
+  - id: 6
+    nameSprite: avatar_cow
+    default: 1
+  - id: 7
+    nameSprite: avatar_dark_knight
+    default: 1
+  - id: 8
+    nameSprite: avatar_dolphin
+    default: 1
+  - id: 9
+    nameSprite: avatar_dragon
+    default: 1
+  - id: 10
+    nameSprite: avatar_duck
+    default: 1
+  - id: 11
+    nameSprite: avatar_frog
+    default: 1
+  frameConfigs:
+  - id: 0
+    nameSprite: frame-0
+    default: 1
+  - id: 1
+    nameSprite: frame-1
+    default: 1
+  - id: 2
+    nameSprite: frame-2
+    default: 1
+  - id: 3
+    nameSprite: frame-3
+    default: 1
+  - id: 4
+    nameSprite: frame-4
+    default: 1
+  - id: 6
+    nameSprite: frame-5
+    default: 1

@@ -1,0 +1,19 @@
+{
+  "name": "falcon.modules.core.thirdparty.mmp",
+  "displayName": "Core Mmp Module",
+  "version": "1.5.1",
+  "unity": "6000.0",
+  "description": "Core mmp module (Appsflyer, Adjust)",
+  "author": {
+    "name": "namnx",
+    "email": "namnx@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.bigdata": "1.2.5",
+    "falcon.modules.core.accountdata": "1.2.0",
+    "falcon.modules.core.saveload": "1.0.8",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.modules.core.thirdparty.ump": "1.2.14",
+    "falcon.helpers.devkit": "1.2.7"
+  }
+}

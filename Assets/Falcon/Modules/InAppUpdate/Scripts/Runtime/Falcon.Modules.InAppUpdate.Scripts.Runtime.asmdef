@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Modules.InAppUpdate.Scripts.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:99af7950f9f129f4b9884bcafc119045",
+        "GUID:87d2c7bf010ccc845b78ad4071a4f3b4",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

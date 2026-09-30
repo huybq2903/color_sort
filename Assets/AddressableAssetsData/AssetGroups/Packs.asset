@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Packs
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Packs
+  m_GUID: e976644b10bca674aa63d6b72744a591
+  m_SerializeEntries:
+  - m_GUID: 2c21e0c3504995a43a4122c277b45d21
+    m_Address: UIPack_Bundle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c104ae4c48f13d46a08aa94d5da6732
+    m_Address: UIPopup_RemoveAds
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f2f5195267afca47bc09827ed77f53f
+    m_Address: UIShop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c97c74fe4d118f4da4b2ff0f86ae43e
+    m_Address: UIPack_Remove_Ads
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82672c0f855067949aa6633f0870e3c2
+    m_Address: UIShortcut_RemoveAds
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6967d13c7814b1428781f54a357c4c6
+    m_Address: UIBanner_LosePromote
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a965414517ca33b469938bed0f7959e3
+    m_Address: UIPopupShop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b487301c14d619049bf3eead06a22435
+    m_Address: UIPack_Gold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb3afd64ae377fe43a8a45586bd4edd6
+    m_Address: UIPack_Remove_Ads_Bundle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dccd1161d10fd9b4c9eba987904a0e55
+    m_Address: UIGrid_PacksGold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbe814e14d2cc964eb70a75cee15d397
+    m_Address: UIPack_Gold_Grid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 00bf5458974d04f46a1d0e3abd6d7181, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b6d8b598db0249840af18e4672928136, type: 2}
+    - {fileID: 11400000, guid: 5b003c6ab09a2384a810b3efb88244ac, type: 2}

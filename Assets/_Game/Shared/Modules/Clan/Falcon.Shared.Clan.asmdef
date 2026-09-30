@@ -1,0 +1,29 @@
+{
+    "name": "Falcon.Shared.Clan",
+    "rootNamespace": "Game.Shared.Clan",
+    "references": [
+        "Falcon.Shared.Common",
+        "Falcon.Shared.Tab",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.Network.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Shared.Lives",
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.ChatRoom.Runtime",
+        "Falcon.Helpers.FReflection.Runtime",
+        "SuperScrollView",
+        "Unity.TextMeshPro",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,77 @@
+Untap.png
+size:2048,1260
+filter:Linear,Linear
+pma:true
+Knit/Welldone/Full_welldone
+bounds:2,1154,457,101
+offsets:0,26,459,144
+Knit/Welldone/Rip1
+bounds:857,279,372,334
+Knit/Welldone/Rip2
+bounds:1548,124,273,158
+Knit/Welldone/Rip3
+bounds:1057,208,124,102
+Knit/Welldone/Rip4
+bounds:1231,447,96,166
+Knit/Welldone/star1
+bounds:863,2,147,145
+Knit/Welldone/star_2
+bounds:1056,35,150,147
+Knit/trumpet
+bounds:288,87,413,211
+offsets:0,20,438,238
+rotate:180
+Untap/Char/Group 1
+bounds:1607,880,413,375
+offsets:0,0,414,375
+Untap/Char/Group 2
+bounds:1204,145,268,353
+rotate:90
+Untap/Char/Group 4
+bounds:1819,142,227,207
+Untap/Char/Layer 14
+bounds:703,130,272,352
+rotate:270
+Untap/Char/Layer 19
+bounds:2,89,284,209
+Untap/Char/Layer 22
+bounds:327,972,87,25
+Untap/Char/Layer 23
+bounds:1208,18,145,177
+rotate:90
+Untap/Char/Layer 24
+bounds:1794,64,216,76
+offsets:1,4,220,81
+Untap/Char/Layer 7
+bounds:1387,9,188,152
+Untap/Frenzy
+bounds:2,300,493,224
+Untap/Goi
+bounds:1349,288,697,517
+Untap/U
+bounds:497,293,231,267
+offsets:0,0,231,268
+rotate:90
+Untap/a
+bounds:1466,931,132,149
+Untap/e
+bounds:327,999,128,153
+Untap/gold
+bounds:2,947,323,205
+offsets:0,1,323,206
+Untap/light_effect 1
+bounds:2,526,874,371
+offsets:8,0,890,371
+Untap/n
+bounds:1466,1082,131,173
+offsets:0,0,131,174
+Untap/p
+bounds:477,13,150,224
+rotate:90
+Untap/ribbon
+bounds:461,899,1003,356
+Untap/t
+bounds:1840,600,155,278
+offsets:0,0,156,278
+Untap/untape
+bounds:878,615,727,282

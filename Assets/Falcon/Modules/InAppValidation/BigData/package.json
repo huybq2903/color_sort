@@ -1,0 +1,18 @@
+{
+  "name": "falcon.modules.inapplog.bigdata",
+  "displayName": "Falcon IAP Log - BigData",
+  "version": "1.0.5",
+  "unity": "6000.0",
+  "description": "Hỗ trợ log giao dịch với module Falcon BigData",
+  "author": {
+    "name": "HuyBQ",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.accountdata": "1.2.0",
+    "falcon.modules.level.core": "1.3.11",
+    "falcon.modules.core.bigdata": "1.3.2",
+    "falcon.modules.core.inapppurchase": "1.3.3",
+    "falcon.helpers.freflection": "1.0.6"
+  }
+}

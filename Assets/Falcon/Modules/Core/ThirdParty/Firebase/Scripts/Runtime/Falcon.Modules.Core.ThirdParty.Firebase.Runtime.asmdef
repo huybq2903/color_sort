@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Modules.Core.ThirdParty.Firebase.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:fccb0bdb2a347442894b14b279085764",
+        "GUID:2bb2b3cf143f9594298b06c8dfbc7e15",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2",
+        "GUID:325b69635cac24541ab8f770fa8374f7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

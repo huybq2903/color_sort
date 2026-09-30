@@ -1,0 +1,28 @@
+{
+    "name": "Falcon.Modules.InAppLog.Bigdata.Runtime",
+    "rootNamespace": "Falcon.Modules.InAppLog.Bigdata.Runtime",
+    "references": [
+        "UnityEngine.Purchasing",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.InAppPurchase.Runtime",
+        "Falcon.Modules.Core.BigData.Runtime",
+        "Falcon.Modules.Level.Core.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Unity.Purchasing"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.purchasing",
+            "expression": "5.0.0",
+            "define": "FALCON_IAP_5_OR_NEWER"
+        }
+    ],
+    "noEngineReferences": false
+}

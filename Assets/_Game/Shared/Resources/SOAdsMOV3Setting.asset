@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16efaee5f08575428dc25fa166b2951, type: 3}
+  m_Name: SOAdsMOV3Setting
+  m_EditorClassIdentifier: Falcon.Modules.Core.ThirdParty.MediationMO.Runtime::Falcon.Modules.Core.ThirdParty.MediationMO.Runtime.SOAdsMOSetting
+  list:
+  - group: RewardAdsBooster1_AddBuffer
+    configAds:
+    - placementId: RewardAdsBooster1_AddBuffer
+      adsConfigV3:
+        levelUnlock: 10
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: 1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards:
+    - fromViewCount: 1
+      toViewCount: 1
+      rewards:
+      - name: booster_add_buffer
+        amount: 1
+        data: booster_add_buffer
+    maxTotalAds: -1
+  - group: RewardWinGame
+    configAds:
+    - placementId: RewardWinGame
+      adsConfigV3:
+        levelUnlock: 6
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: -1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards: []
+    maxTotalAds: -1
+  - group: RewardLoseGame
+    configAds:
+    - placementId: RewardLoseGame
+      adsConfigV3:
+        levelUnlock: 5
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: 1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards: []
+    maxTotalAds: -1
+  - group: InterstitialRetry
+    configAds:
+    - placementId: InterstitialRetry
+      adsConfigV3:
+        levelUnlock: 20
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: -1
+        intervalTime: 120
+        intervalLevel: -1
+        intervalBetweenIv: -1
+    adsRewards: []
+    maxTotalAds: -1
+  - group: RewardAdsLives
+    configAds:
+    - placementId: RewardAdsLives
+      adsConfigV3:
+        levelUnlock: 5
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: -1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards: []
+    maxTotalAds: -1
+  - group: InterstitialWinGame
+    configAds:
+    - placementId: InterstitialWinGame
+      adsConfigV3:
+        levelUnlock: 10
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: -1
+        intervalTime: 120
+        intervalLevel: -1
+        intervalBetweenIv: -1
+    adsRewards: []
+    maxTotalAds: -1
+  - group: RewardAdsBooster2_CutTape
+    configAds:
+    - placementId: RewardAdsBooster2_CutTape
+      adsConfigV3:
+        levelUnlock: 10
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: 1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards:
+    - fromViewCount: 1
+      toViewCount: 1
+      rewards:
+      - name: booster_cut_tape
+        amount: 1
+        data: booster_cut_tape
+    maxTotalAds: -1
+  - group: InterstitialQuit
+    configAds:
+    - placementId: InterstitialQuit
+      adsConfigV3:
+        levelUnlock: 15
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: -1
+        intervalTime: 120
+        intervalLevel: -1
+        intervalBetweenIv: -1
+    adsRewards: []
+    maxTotalAds: -1
+  - group: RewardAdsBooster3_ClearBuffer
+    configAds:
+    - placementId: RewardAdsBooster3_ClearBuffer
+      adsConfigV3:
+        levelUnlock: 10
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: 1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards:
+    - fromViewCount: 1
+      toViewCount: 1
+      rewards:
+      - name: booster_clear_buffer
+        amount: 1
+        data: booster_clear_buffer
+    maxTotalAds: -1
+  - group: RewardAddBox
+    configAds:
+    - placementId: RewardAddBox
+      adsConfigV3:
+        levelUnlock: 1
+        isActive: 1
+        sessionLimit: -1
+        dayLimit: -1
+        levelLimit: -1
+        intervalTime: -1
+        intervalLevel: -1
+        intervalBetweenIv: 60
+    adsRewards: []
+    maxTotalAds: -1
+  configAds: 

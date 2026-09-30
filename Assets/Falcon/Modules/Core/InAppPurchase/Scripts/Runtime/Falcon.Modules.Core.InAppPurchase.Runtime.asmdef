@@ -1,0 +1,24 @@
+{
+    "name": "Falcon.Modules.Core.InAppPurchase.Runtime",
+    "rootNamespace": "Falcon.Modules.Core.InAppPurchase.Runtime",
+    "references": [
+        "Falcon.Helpers.EventBus",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores",
+        "Unity.Purchasing",
+        "Unity.Purchasing.Stores",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Unity.Services.Core",
+        "Unity.Services.Core.Environments"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

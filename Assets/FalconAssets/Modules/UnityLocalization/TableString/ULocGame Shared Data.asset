@@ -1,0 +1,528 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ULocGame Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: ULocGame
+  m_TableCollectionNameGuidString: 1e5eed70a79a01a408ed3388c0c382af
+  m_Entries:
+  - m_Id: 41905690210545664
+    m_Key: play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677952
+    m_Key: comming_soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677953
+    m_Key: get_one_extra_box
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690407677954
+    m_Key: attract_arrow_to_first_box
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872256
+    m_Key: add_a_waiting_pole
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872257
+    m_Key: clean_arrow_in_waiting_bar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872258
+    m_Key: select_any_arrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872259
+    m_Key: out_of_space
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872260
+    m_Key: free
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872261
+    m_Key: continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872262
+    m_Key: restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872263
+    m_Key: new_begining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872264
+    m_Key: lose_live_and_restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872265
+    m_Key: are_you_sure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872266
+    m_Key: you_will_lose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872267
+    m_Key: leave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872268
+    m_Key: give_up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41905690411872269
+    m_Key: gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41933045452845056
+    m_Key: lives_is_full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956468019200
+    m_Key: no_ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41959956472213504
+    m_Key: unlock_level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382986129408
+    m_Key: waiting_slot_already_used
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962382990323712
+    m_Key: no_pole_in_waiting_bar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41969681318359040
+    m_Key: use_booster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43700320564490240
+    m_Key: background_color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44098253080309760
+    m_Key: hold_to_see_board
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068608
+    m_Key: level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44099563536068609
+    m_Key: well_done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751697129472
+    m_Key: level_failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44180751701323776
+    m_Key: level_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46361195147673600
+    m_Key: tut_lvl_1_tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46697132947914752
+    m_Key: tap_recenter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438249390080
+    m_Key: not_unlock_yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361600
+    m_Key: toast_name_is_not_valid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361601
+    m_Key: not_use_default_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361602
+    m_Key: wait
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361603
+    m_Key: cannot_open_more_box
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438270361604
+    m_Key: broom_is_anim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555904
+    m_Key: wait_pole_to_be_at_rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555905
+    m_Key: magnet_is_anim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47091438274555906
+    m_Key: first_box_is_full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991089221632
+    m_Key: profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164672
+    m_Key: name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164673
+    m_Key: enter_your_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164674
+    m_Key: write_something
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164675
+    m_Key: save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164676
+    m_Key: avatar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47110991131164677
+    m_Key: frame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47112087031496704
+    m_Key: change_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49543409326866432
+    m_Key: not_network
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49544770844082176
+    m_Key: not_network_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297854124032
+    m_Key: piggy_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678464
+    m_Key: piggy_des
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678465
+    m_Key: value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50664297887678466
+    m_Key: reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50672779894439936
+    m_Key: piggy_start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51020162120364032
+    m_Key: available
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375917871104
+    m_Key: pinata_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814144
+    m_Key: pinata_description_play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814145
+    m_Key: pinata_description_claim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814146
+    m_Key: pinata_description_still_claim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814147
+    m_Key: pinata_description_finished
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55748375959814148
+    m_Key: pinata_finishing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055311073280
+    m_Key: tutorial_level_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58697177665097728
+    m_Key: tutorial_level_2_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57225919274405888
+    m_Key: tutorial_blocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58993758662545408
+    m_Key: tutorial_only_1_pole
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59400713805746176
+    m_Key: tutorial_box_booster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59718114195968000
+    m_Key: tutorial_wrong_color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850496
+    m_Key: claim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850497
+    m_Key: activated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850498
+    m_Key: active
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850499
+    m_Key: bonus_bank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850500
+    m_Key: des_bonus_bank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850501
+    m_Key: arrow_pass
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57193728230633472
+    m_Key: des_active_arrow_pass
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850502
+    m_Key: des_active_pass
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850503
+    m_Key: des_active_pass_live
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850504
+    m_Key: des_active_pass_bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850505
+    m_Key: pass_started
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850506
+    m_Key: pass_ended
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850507
+    m_Key: beat_level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850508
+    m_Key: collect_key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850509
+    m_Key: claim_rewards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850510
+    m_Key: tap_to_continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850511
+    m_Key: battle_pass_collect_more_point_to_unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850512
+    m_Key: battle_pass_premium_reward_not_active
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850513
+    m_Key: battle_pass_this_reward_already_claimed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850514
+    m_Key: battle_pass_click_to_claim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57187055327850515
+    m_Key: your_unclaimed_reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076018671616
+    m_Key: completed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003264
+    m_Key: cat_tower_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003265
+    m_Key: cat_tower_des_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003266
+    m_Key: cat_tower_des_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58574076069003267
+    m_Key: time_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59782361707167744
+    m_Key: cat_tower_tooltip_des
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235722215424
+    m_Key: yarn_tangle_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575552
+    m_Key: hidden_arrow_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575553
+    m_Key: lock_by_key_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575554
+    m_Key: block_lock_and_turn_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575555
+    m_Key: ice_box_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575556
+    m_Key: yarn_crate_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69552235751575557
+    m_Key: ice_arrow_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71376246412136448
+    m_Key: shutter_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725737918464
+    m_Key: pool_jump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889984
+    m_Key: start_challenge_with_player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889985
+    m_Key: advance_to_next_stages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889986
+    m_Key: fail_challenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889987
+    m_Key: player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889988
+    m_Key: beat_level_to_complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889989
+    m_Key: you_failed_the_challenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889990
+    m_Key: you_completed_the_challenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889991
+    m_Key: stage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889992
+    m_Key: you_will_be_eliminated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889993
+    m_Key: finding_player_on_your_level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889994
+    m_Key: grand_prize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889995
+    m_Key: you_win_the_challenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889996
+    m_Key: share_rewards_with_players
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73878725758889997
+    m_Key: congratulation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948454559744
+    m_Key: tutorial_level_1_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75954948475531264
+    m_Key: tutorial_level_1_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79257081229344768
+    m_Key: tutorial_level_1_match3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81126741595205632
+    m_Key: tut_warning_one_slot_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81835551062306816
+    m_Key: tut_keep_playing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81522732613840896
+    m_Key: tut_match_all_to_win
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 551867385485721600
+  references:
+    version: 2
+    RefIds:
+    - rid: 551867385485721600
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1758541120834

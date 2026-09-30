@@ -1,0 +1,17 @@
+{
+    "name": "Falcon.Modules.Core.SaveLoad.Runtime",
+    "rootNamespace": "Falcon.Modules.Core.SaveLoad.Runtime",
+    "references": [
+        "GUID:59c165c25903c4f448ed0cef0edc16aa",
+        "GUID:28e5c658c35bd51439aae96873bd1aec"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

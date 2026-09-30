@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Modules.Packs.Core.Editor",
+    "rootNamespace": "Falcon.Modules.Packs.Core.Editor",
+    "references": [
+        "Falcon.Modules.Packs.Core.Runtime",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Helpers.EventBus"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

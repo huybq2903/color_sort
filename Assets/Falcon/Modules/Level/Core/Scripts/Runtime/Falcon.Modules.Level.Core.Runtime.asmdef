@@ -1,0 +1,24 @@
+{
+    "name": "Falcon.Modules.Level.Core.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2",
+        "GUID:325b69635cac24541ab8f770fa8374f7",
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:fccb0bdb2a347442894b14b279085764",
+        "GUID:872dfc33841346a296a36c76a11b39ed",
+        "GUID:2e28b70f5ab534e1d875d96d9032047a",
+        "GUID:c029ee231168f4f728ae56386eb10d58"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

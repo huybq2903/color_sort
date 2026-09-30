@@ -1,0 +1,26 @@
+{
+    "name": "Falcon.Modules.UI.Menu.Runtime",
+    "rootNamespace": "Falcon.Modules.UI.Menu.Runtime",
+    "references": [
+        "Falcon.Modules.Core.UI.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.Modules.Core.AccountData.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Helpers.UI",
+        "Falcon.Helpers.Singleton",
+        "Unity.TextMeshPro",
+        "SimpleScrollSnap",
+        "Localize",
+        "DOTween.Modules",
+        "DOTweenPro.Scripts"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,19 @@
+{
+  "name": "falcon.modules.actionlog",
+  "displayName": "FActionLog",
+  "version": "1.0.8",
+  "unity": "6000.0",
+  "description": "Log các hành vi của người dùng trong game lên BigData",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.network": "2.0.5",
+    "falcon.helpers.devkit": "1.2.5",
+    "falcon.modules.core.remoteconfig": "1.1.2",
+    "falcon.helpers.singleton": "1.0.3",
+    "falcon.modules.core.bigdata": "1.1.9",
+    "falcon.modules.core.accountdata": "1.2.0"
+  }
+}

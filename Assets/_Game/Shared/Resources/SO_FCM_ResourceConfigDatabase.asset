@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4848e67aa7a96804a8baa5649bdc6412, type: 3}
+  m_Name: SO_FCM_ResourceConfigDatabase
+  m_EditorClassIdentifier: Falcon.Modules.Core.GameData.Runtime::Falcon.Modules.Core.GameData.Runtime.ResourceConfigDatabase
+  configs:
+  - id: live_amount
+    name: live_amount
+    iconSmall: {fileID: 21300000, guid: 0292a1d285fea63489a40176b6d5cf70, type: 3}
+    iconLarge: {fileID: 0}
+  - id: unlimited_live
+    name: unlimited_live
+    iconSmall: {fileID: 21300000, guid: 77b4c68e11e6446419be4ce4e7cc152f, type: 3}
+    iconLarge: {fileID: 0}
+  - id: live_newcf_max
+    name: live_newcf_max
+    iconSmall: {fileID: 0}
+    iconLarge: {fileID: 0}
+  - id: live_newcf_regen_amount
+    name: live_newcf_regen_amount
+    iconSmall: {fileID: 0}
+    iconLarge: {fileID: 0}
+  - id: live_newcf_regen_interval_seconds
+    name: live_newcf_regen_interval_seconds
+    iconSmall: {fileID: 0}
+    iconLarge: {fileID: 0}
+  - id: live_newcf_stamina_per_use
+    name: live_newcf_stamina_per_use
+    iconSmall: {fileID: 0}
+    iconLarge: {fileID: 0}
+  - id: booster_add_buffer
+    name: booster_add_buffer
+    iconSmall: {fileID: 21300000, guid: 61d8b403a5e789449964d2bd0579bbbd, type: 3}
+    iconLarge: {fileID: 0}
+  - id: booster_clear_buffer
+    name: booster_clear_buffer
+    iconSmall: {fileID: 21300000, guid: 349cf97a13398874b9318a3c49bdd4a4, type: 3}
+    iconLarge: {fileID: 0}
+  - id: booster_cut_tape
+    name: booster_cut_tape
+    iconSmall: {fileID: 21300000, guid: 051ddced0fe87644fad108cb693cdc19, type: 3}
+    iconLarge: {fileID: 0}
+  - id: gold
+    name: gold
+    iconSmall: {fileID: 21300000, guid: a9ae5a087be76ce46b08237527c6c780, type: 3}
+    iconLarge: {fileID: 0}

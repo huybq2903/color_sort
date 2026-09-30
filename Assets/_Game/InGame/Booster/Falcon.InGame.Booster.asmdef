@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.InGame.Booster",
+    "rootNamespace": "Falcon.InGame.Booster",
+    "references": [
+        "Falcon.Shared.BaseBooster",
+        "Falcon.Shared.Tutorial",
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.GameData.Runtime",
+        "Falcon.InGame.Tutorials"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

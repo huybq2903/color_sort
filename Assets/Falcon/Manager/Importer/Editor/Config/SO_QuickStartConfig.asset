@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d75f1b27a5ec4e14296ec7033c420043, type: 3}
+  m_Name: SO_QuickStartConfig
+  m_EditorClassIdentifier: 
+  groups:
+  - groupName: Core Modules
+    moduleNames:
+    - falcon.modules.core.accountdata
+    - falcon.modules.core.bigdata
+    - falcon.modules.core.gamedata
+    - falcon.modules.core.remoteconfig
+    - falcon.modules.core.network
+    - falcon.modules.core.saveload
+    - falcon.modules.core.logremote
+    - falcon.modules.core.systeminformation
+  - groupName: Level Modules
+    moduleNames:
+    - falcon.modules.level.core
+    - falcon.modules.level.level4profile
+  - groupName: In App + Packs
+    moduleNames:
+    - falcon.modules.core.inapppurchase
+    - falcon.modules.packs.core
+  - groupName: UI Home
+    moduleNames:
+    - falcon.modules.ui.settings
+    - falcon.modules.uimodular.uilives
+    - falcon.modules.uimodular.uiprofile
+    - falcon.modules.leaderboard
+    - falcon.modules.clan
+  - groupName: Tools
+    moduleNames:
+    - falcon.tools.i2
+    - falcon.tools.super.scrollview
+    - falcon.tools.uifx

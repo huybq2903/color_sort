@@ -1,0 +1,14 @@
+{
+  "name": "falcon.modules.core.saveload",
+  "displayName": "Falcon Core Utils SaveLoad",
+  "version": "1.0.8",
+  "unity": "6000.0",
+  "description": "Save and load utilities for Falcon framework.",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.security": "1.0.2"
+  }
+}

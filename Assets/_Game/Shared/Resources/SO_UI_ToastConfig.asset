@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb407314f7c5cc847b9003adda9bf4b4, type: 3}
+  m_Name: SO_UI_ToastConfig
+  m_EditorClassIdentifier: 
+  lifetime: 1.5
+  spacingItem: 100
+  maxItemInstance: 5
+  durationScale: 0.325
+  easeScaleIn: 27
+  easeScaleOut: 26
+  durationMoveUp: 0.25
+  easeMoveUp: 4

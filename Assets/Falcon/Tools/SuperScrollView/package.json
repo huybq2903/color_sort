@@ -1,0 +1,12 @@
+{
+  "name": "falcon.tools.super.scrollview",
+  "displayName": "Falcon Tools - Super ScrollView",
+  "version": "2.1.0",
+  "unity": "6000.0",
+  "description": "Supper ScrollView for handling infinity scroll",
+  "author": {
+    "name": "dongvv",
+    "email": "dongvv@falcongames.com"
+  },
+  "dependencies": {}
+}

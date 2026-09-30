@@ -1,0 +1,16 @@
+{
+  "name": "falcon.modules.level.level4profile",
+  "displayName": "Falcon Level For Profile",
+  "version": "1.0.4",
+  "unity": "6000.0",
+  "description": "This module add some information about leves for the profile module",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.eventbus": "1.0.5",
+    "falcon.modules.core.network": "1.0.6",
+    "falcon.modules.level.core": "1.0.12"
+  }
+}

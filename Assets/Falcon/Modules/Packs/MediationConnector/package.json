@@ -1,0 +1,17 @@
+{
+  "name": "falcon.modules.packs.mediationconnector",
+  "displayName": "Falcon Packs Mediation Connector",
+  "version": "1.0.2",
+  "unity": "6000.0",
+  "description": "Hỗ trợ lưu data khi mua pack với module Mediation",
+  "author": {
+    "name": "HuyBQ",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.thirdparty.ump": "1.2.9",
+    "falcon.modules.core.thirdparty.mediation": "1.3.15",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.modules.core.accountdata": "1.2.0"
+  }
+}

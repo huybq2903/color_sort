@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Modules.UnityLocalization",
+    "rootNamespace": "Falcon.Modules.UnityLocalization.Runtime",
+    "references": [
+        "Unity.Localization",
+        "Unity.TextMeshPro",
+        "Unity.ResourceManager",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Localize",
+        "Falcon.Helpers.EventBus"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

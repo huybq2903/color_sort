@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.core.phoneutil.runtime",
+  "displayName": "Falcon Phone Util Runtime",
+  "version": "1.0.3",
+  "unity": "6000.0",
+  "description": "Thư viện các hàm bổ trợ, ví dụ chụp ảnh màn hình, ...",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.network": "1.0.7",
+    "falcon.helpers.singleton": "1.0.1"
+  }
+}

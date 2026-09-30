@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2717ba249347e9c49bf58bf680384c45, type: 3}
+  m_Name: SO_FCM_InAppPurchase_Config
+  m_EditorClassIdentifier: Falcon.Modules.Core.InAppPurchase.Runtime::Falcon.Modules.Core.InAppPurchase.Runtime.SOInAppPurchaseConfig
+  UnityServicesEnvironment: 
+  purchaseTimeout: 8
+  isValidateLocalIfTimeout: 1
+  isLogPurchaseInEditor: 0
+  products:
+  - productID: com.fc.untape.sorting.color.jam.smallbundle
+    defaultPrice: 9.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.bigbundle
+    defaultPrice: 19.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.greatbundle
+    defaultPrice: 39.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.ultrabundle
+    defaultPrice: 79.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.legendarybundle
+    defaultPrice: 99.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.failoffer
+    defaultPrice: 2.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.coin6
+    defaultPrice: 99.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.coin3
+    defaultPrice: 14.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.coin2
+    defaultPrice: 7.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.coin5
+    defaultPrice: 54.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.coin4
+    defaultPrice: 29.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.coin1
+    defaultPrice: 1.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.removeads
+    defaultPrice: 7.99$
+    type: 0
+  - productID: com.fc.untape.sorting.color.jam.removeadspack
+    defaultPrice: 12.99$
+    type: 0
+  validations: []
+  loggers:
+  - enabled: 1
+    assemblyQualifiedTypeName: Falcon.Modules.Core.InAppPurchase.Runtime.InternalLogger,
+      Falcon.Modules.Core.InAppPurchase.Runtime, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    nameDisplay: InternalLogger
+  - enabled: 1
+    assemblyQualifiedTypeName: Falcon.Modules.InAppLog.Bigdata.Runtime.BigdataLogger,
+      Falcon.Modules.InAppLog.Bigdata.Runtime, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    nameDisplay: BigdataLogger

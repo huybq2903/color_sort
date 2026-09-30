@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Shared.BaseInGame",
+    "rootNamespace": "Falcon.Shared.BaseInGame",
+    "references": [
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Shared.Common",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

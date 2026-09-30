@@ -1,0 +1,12 @@
+{
+  "name": "falcon.modules.fanticheat",
+  "displayName": "Falcon AntiCheat",
+  "version": "1.0.0",
+  "unity": "6000.0",
+  "description": "Hỗ trợ Obscured type trong FGameData",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {}
+}

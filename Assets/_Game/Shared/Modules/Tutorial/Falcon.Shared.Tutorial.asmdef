@@ -1,0 +1,16 @@
+{
+    "name": "Falcon.Shared.Tutorial",
+    "rootNamespace": "Falcon.Shared.Tutorial",
+    "references": [
+        "Falcon.Helpers.FReflection.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

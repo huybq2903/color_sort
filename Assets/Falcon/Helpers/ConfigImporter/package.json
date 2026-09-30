@@ -1,0 +1,16 @@
+{
+  "name": "falcon.helpers.configimporter.editor",
+  "displayName": "Falcon Helper - Config Importer",
+  "version": "1.0.12",
+  "unity": "6000.0",
+  "description": "API for other module's configuration files importer",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.0.2",
+    "falcon.helpers.devkit": "1.2.5",
+    "falcon.helpers.addressable": "1.0.8"
+  }
+}

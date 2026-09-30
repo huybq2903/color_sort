@@ -1,0 +1,12 @@
+{
+  "name": "falcon.modules.localizationservice",
+  "displayName": "Localization Service",
+  "version": "1.0.17",
+  "unity": "6000.0",
+  "description": "Wrapper của các module localize",
+  "author": {
+    "name": "VietHQ",
+    "email": "viethq@falcongames.com"
+  },
+  "dependencies": {}
+}

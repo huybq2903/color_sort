@@ -1,0 +1,1 @@
+﻿Component tiện ích giúp load 1 path prefab từ Addressable

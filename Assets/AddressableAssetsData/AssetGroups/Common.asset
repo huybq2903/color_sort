@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Common
+  m_EditorClassIdentifier: 
+  m_GroupName: Common
+  m_GUID: 6c81568ffd827ed4399c1e7df19dc088
+  m_SerializeEntries:
+  - m_GUID: 19d3e8bbe0c47204688d0a76ca2c6ec8
+    m_Address: UIPopup_PurchaseWaiting
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e33562a0c7f72b4ca18c7e2a6386031
+    m_Address: UIClan_ComingSoon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e02877cb0117174fb68de93c2a2f291
+    m_Address: UIPopup_AdBreak
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5527c37dc8770a1429d78254b52d8dce
+    m_Address: UIFadePopupPool
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 577d982bdb8ba5242a3da24474983502
+    m_Address: UIRewardFlow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 697108421061bc742bf7afbdf1de482e
+    m_Address: UIBlocker
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7962a8a9cb6f9334b87bb301761d120c
+    m_Address: UICollections
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d99b981cd974f24795fcdd6f72a696f
+    m_Address: UILevelLineController
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8eb817b9e670daa4a9a694a0bd8d1614
+    m_Address: UIPopup_PurchaseFail
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a064d34354427484eb9aed6c2921bd64
+    m_Address: UIPopup_PurchaseSuccess
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3233b1d29f426d4d9be3a8887403180
+    m_Address: UIToast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b50dede0ee24c184781deddd48d2ed15
+    m_Address: PopupInAppUpdate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b51cde082e177414e86ed907eb1d814d
+    m_Address: UIHomeCheat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b95f8740b8df592439e6b5737b77fae7
+    m_Address: UILeaderboard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bafcf10efa811504782fccbe0e38198c
+    m_Address: UITooltip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c06afe95d84f19c4ca1edf0bdaa50f08
+    m_Address: UIHome
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1e94e40604f55c49803c97c280c7d2d
+    m_Address: UIHome_RsGold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc78e9274a2ca2940903d8c084115dfb
+    m_Address: UICodeAndVersion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f91d42a4d2fc5b847b240d30b840a035
+    m_Address: UIFade
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 00bf5458974d04f46a1d0e3abd6d7181, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ebd1b034075bf7c47b50f65b32da369d, type: 2}
+    - {fileID: 11400000, guid: 0b9e94d39ea842f4aa79bfced92e46a5, type: 2}

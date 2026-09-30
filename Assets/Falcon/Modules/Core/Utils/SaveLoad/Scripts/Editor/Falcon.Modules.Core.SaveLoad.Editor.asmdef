@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.Core.SaveLoad.Editor",
+    "rootNamespace": "Falcon.Modules.Core.SaveLoad.Editor",
+    "references": [
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:28e5c658c35bd51439aae96873bd1aec"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

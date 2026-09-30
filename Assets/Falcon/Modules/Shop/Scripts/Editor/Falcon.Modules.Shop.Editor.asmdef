@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Modules.Shop.Editor",
+    "rootNamespace": "Falcon.Modules.Shop.Editor",
+    "references": [
+        "Falcon.Helpers.ConfigImporter.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

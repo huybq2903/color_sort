@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.account4eventbus",
+  "displayName": "Account for Event Bus",
+  "version": "1.0.0",
+  "unity": "6000.0",
+  "description": "Module dùng để gửi event bus mỗi khi đăng nhập thành công từ module account",
+  "author": {
+    "name": "huybq",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.accountdata": "1.1.0",
+    "falcon.helpers.eventbus": "1.0.9"
+  }
+}

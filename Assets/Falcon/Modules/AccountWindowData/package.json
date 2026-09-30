@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.accountwindowdata",
+  "displayName": "Account Window Data",
+  "version": "1.0.1",
+  "unity": "6000.0",
+  "description": "Module dùng để xem data trong module Account",
+  "author": {
+    "name": "sangvh",
+    "email": "sangvh@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.accountdata": "1.2.0",
+    "falcon.modules.core.saveload": "1.0.8"
+  }
+}

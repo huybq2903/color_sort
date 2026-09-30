@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Modules.Level.Level4Profile.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:65832fe276d1e4b909fe6fcdd9d6953a",
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

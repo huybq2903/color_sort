@@ -1,0 +1,18 @@
+{
+    "name": "Falcon.Helpers.FPrefabUtilities.Editor",
+    "rootNamespace": "Falcon.Helpers.FPrefabUtilities.Editor",
+    "references": [
+        "GUID:3fba3b1b3ca353c458baa0a61372fc4e"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

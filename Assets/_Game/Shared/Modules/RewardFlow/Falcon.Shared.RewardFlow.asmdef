@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Shared.RewardFlow",
+    "rootNamespace": "Falcon.Shared.RewardFlow",
+    "references": [
+        "Unity.TextMeshPro",
+        "Falcon.Helpers.EventBus",
+        "DOTween.Modules",
+        "UniTask",
+        "UniTask.DOTween",
+        "Falcon.Shared.Common"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

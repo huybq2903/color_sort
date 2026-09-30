@@ -1,0 +1,15 @@
+{
+  "name": "falcon.manager.importer.editor",
+  "displayName": "Falcon Manager - Importer Editor",
+  "version": "1.1.4",
+  "unity": "6000.0",
+  "description": "Importer Editor",
+  "author": {
+    "name": "leehuyyhoangg",
+    "email": "hoanglh@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.helpers.devkit": "1.2.5",
+    "falcon.manager.shared.editor": "1.0.10"
+  }
+}

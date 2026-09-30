@@ -1,0 +1,18 @@
+{
+  "name": "falcon.modules.packs.packsbundle",
+  "displayName": "Falcon Modules Packs Bundle",
+  "version": "1.1.5",
+  "unity": "6000.0",
+  "description": "Hệ thống quản lý Pack Bundle cho shop trong game. Dùng để hiển thị và cấu hình các gói vật phẩm.",
+  "author": {
+    "name": "HuyBQ",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "com.unity.addressables": "2.5.0",
+    "falcon.helpers.freflection": "1.0.6",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.modules.packs.core": "1.2.5",
+    "falcon.helpers.configimporter.editor": "1.0.10"
+  }
+}

@@ -1,0 +1,1 @@
+Nơi chứa core outgame và các scripts core kế thừa từ falcon modules. Các module thường có thể viết ở bên ngoài nếu muốn

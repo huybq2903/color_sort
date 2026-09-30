@@ -1,0 +1,12 @@
+{
+  "name": "{{package-id}}",
+  "displayName": "{{package-name}}",
+  "version": "1.0.0",
+  "unity": "6000.0",
+  "description": "Please enter a description.",
+  "author": {
+    "name": "author",
+    "email": "author@falcongames.com"
+  },
+  "dependencies": {}
+}

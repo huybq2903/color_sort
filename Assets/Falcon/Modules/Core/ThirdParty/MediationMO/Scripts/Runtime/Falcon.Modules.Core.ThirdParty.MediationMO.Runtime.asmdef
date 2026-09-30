@@ -1,0 +1,25 @@
+{
+    "name": "Falcon.Modules.Core.ThirdParty.MediationMO.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e10f6ba46b4f492eaf7d3d145ed228a2",
+        "GUID:2bb2b3cf143f9594298b06c8dfbc7e15",
+        "GUID:ceaacd142bc327243a451dad65f00441",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:65832fe276d1e4b909fe6fcdd9d6953a",
+        "GUID:325b69635cac24541ab8f770fa8374f7",
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:799e75dd593e95f4da0f24fb5fdd3e16"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

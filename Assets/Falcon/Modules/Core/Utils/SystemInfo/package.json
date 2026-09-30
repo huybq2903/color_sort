@@ -1,0 +1,16 @@
+{
+  "name": "falcon.modules.core.systeminformation",
+  "displayName": "Falcon Core Utils SystemInfo",
+  "version": "1.0.8",
+  "unity": "6000.0",
+  "description": "System information utilities for Falcon framework.",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.saveload": "1.0.7",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.helpers.security": "1.0.2"
+  }
+}

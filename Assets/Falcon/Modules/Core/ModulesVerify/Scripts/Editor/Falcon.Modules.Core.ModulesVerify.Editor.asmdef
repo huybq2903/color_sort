@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.Core.ModulesVerify.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e30249a0dedd44d55b188e8c635a600a",
+        "GUID:fccb0bdb2a347442894b14b279085764"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

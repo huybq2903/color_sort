@@ -1,0 +1,25 @@
+{
+    "name": "Falcon.Modules.Core.BigData.Tests",
+    "rootNamespace": "Falcon.Modules.Core.BigData.Tests",
+    "references": [
+        "GUID:872dfc33841346a296a36c76a11b39ed",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,21 @@
+{
+  "name": "falcon.modules.packs.packsfailoffer",
+  "displayName": "Falcon Modules Packs Fail Offer",
+  "version": "1.1.5",
+  "unity": "6000.0",
+  "description": "Hệ thống quản lý Pack Fail Offer cho shop trong game và cơ chế promote pack khi thua.",
+  "author": {
+    "name": "HuyBQ",
+    "email": "huybq@falcongames.com"
+  },
+  "dependencies": {
+    "com.unity.addressables": "2.5.0",
+    "falcon.helpers.freflection": "1.0.6",
+    "falcon.helpers.eventbus": "1.0.9",
+    "falcon.modules.core.network": "2.0.5",
+    "falcon.modules.core.saveload": "1.0.8",
+    "falcon.modules.core.utils.time": "1.0.5",
+    "falcon.modules.packs.core": "1.2.6",
+    "falcon.helpers.configimporter.editor": "1.0.12"
+  }
+}

@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.Modules.Core.RemoteConfigCms.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:fccb0bdb2a347442894b14b279085764",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2",
+        "GUID:e30249a0dedd44d55b188e8c635a600a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Falcon.Modules.Core.ThirdParty.Mmp.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:2bb2b3cf143f9594298b06c8dfbc7e15",
+        "GUID:128ad44e0c12dfc44b11fcc7a397d6d2",
+        "GUID:fa7e878edeef5684d8322a018555a1fb",
+        "GUID:325b69635cac24541ab8f770fa8374f7",
+        "GUID:872dfc33841346a296a36c76a11b39ed",
+        "GUID:2a37df438292d4903b4e5159c5de3bf9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

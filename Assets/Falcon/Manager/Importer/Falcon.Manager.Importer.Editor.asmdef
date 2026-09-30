@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Manager.Importer.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:362f3fec27365a74ebcf5c0a0ae6ab8e",
+        "GUID:e40859931b53463c8d7a15dbc1cac26f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

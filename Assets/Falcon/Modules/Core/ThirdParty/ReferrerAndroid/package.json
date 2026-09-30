@@ -1,0 +1,15 @@
+{
+  "name": "falcon.modules.core.thirdparty.androidreferrer",
+  "displayName": "Android Referrer",
+  "version": "1.0.1",
+  "unity": "6000.0",
+  "description": "Core android referrer module",
+  "author": {
+    "name": "namnx",
+    "email": "namnx@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.accountdata": "1.1.6",
+    "falcon.modules.core.thirdparty.ump": "1.2.8"
+  }
+}

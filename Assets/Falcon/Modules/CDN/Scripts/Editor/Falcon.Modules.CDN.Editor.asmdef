@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.CDN.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e40859931b53463c8d7a15dbc1cac26f",
+        "GUID:b3d6dc75f03e43f09d742e5ac88749e6"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

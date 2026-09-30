@@ -1,0 +1,23 @@
+{
+    "name": "Falcon.Shared.BaseEvents.Editor",
+    "rootNamespace": "Falcon.Shared.BaseEvents",
+    "references": [
+        "Falcon.Shared.BaseEvents",
+        "Falcon.Shared.Common",
+        "Falcon.Helpers.EventBus",
+        "Falcon.Modules.Core.SaveLoad.Runtime",
+        "ACTk.Runtime",
+        "Falcon.Helpers.FReflection.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

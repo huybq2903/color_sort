@@ -1,0 +1,12 @@
+{
+  "name": "falcon.tools.i2",
+  "displayName": "Falcon Tools - I2 Localization",
+  "version": "2.0.5",
+  "unity": "6000.0",
+  "description": "I2 Localization Plugin",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {}
+}

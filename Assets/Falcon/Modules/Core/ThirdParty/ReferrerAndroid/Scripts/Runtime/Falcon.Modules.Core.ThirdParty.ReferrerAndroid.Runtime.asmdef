@@ -1,0 +1,4 @@
+{
+	"name": "Falcon.Modules.Core.ThirdParty.ReferrerAndroid.Runtime",
+	"references":[ "GUID:2bb2b3cf143f9594298b06c8dfbc7e15", "GUID:325b69635cac24541ab8f770fa8374f7" ]
+}

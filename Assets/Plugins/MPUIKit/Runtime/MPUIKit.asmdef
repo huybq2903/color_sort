@@ -1,0 +1,16 @@
+{
+    "name": "MPUIKit",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0afc0d81f4a1c4d4bb91e2f917022ffd"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

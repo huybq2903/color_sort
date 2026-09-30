@@ -1,0 +1,1 @@
+I2 Localization Plugin for localization.

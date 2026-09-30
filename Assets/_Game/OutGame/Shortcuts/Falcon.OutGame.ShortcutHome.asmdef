@@ -1,0 +1,20 @@
+{
+    "name": "Falcon.OutGame.ShortcutHome",
+    "rootNamespace": "Falcon.OutGame.ShortcutHome",
+    "references": [
+        "Falcon.Modules.UI.Menu.Runtime",
+        "Falcon.Helpers.EventBus",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "DOTween.Modules"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

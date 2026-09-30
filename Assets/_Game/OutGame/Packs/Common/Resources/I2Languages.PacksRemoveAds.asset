@@ -1,0 +1,247 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0b0c553be8edd4682e9180fdd13e37, type: 3}
+  m_Name: I2Languages.PacksRemoveAds
+  m_EditorClassIdentifier: 
+  mSource:
+    UserAgreesToHaveItOnTheScene: 0
+    UserAgreesToHaveItInsideThePluginsFolder: 0
+    GoogleLiveSyncIsUptoDate: 1
+    mTerms:
+    - Term: Font
+      TermType: 1
+      Description: 
+      Languages:
+      - MikadoBlack
+      - MikadoBlack
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSans-Bold
+      - NotoSansThai-Bold
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: Font_TMP
+      TermType: 9
+      Description: 
+      Languages:
+      - MikadoBlack SDF
+      - MikadoBlack SDF
+      - NotoSans-Bold Chinese (Simplified) SDF
+      - NotoSans-Bold Chinese (Traditional) SDF
+      - NotoSans-Bold Japanese SDF
+      - NotoSans-Bold Korea SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSans-Bold SDF
+      - NotoSansThai-Bold SDF
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ads.remove_ads
+      TermType: 0
+      Description: 
+      Languages:
+      - Remove Ads
+      - "B\u1ECF Qu\u1EA3ng C\xE1o"
+      - "\u53BB\u5E7F\u544A"
+      - "\u53BB\u5EE3\u544A"
+      - "\u5E83\u544A\u524A\u9664"
+      - "\uAD11\uACE0 \uC5C6\uC74C"
+      - "\u0411\u0435\u0437 \u0420\u0435\u043A\u043B\u0430\u043C\u044B"
+      - Sans Pub
+      - Ohne Werbung
+      - Tanpa Iklan
+      - Niente Annunci
+      - "Sem An\xFAncios"
+      - Sin Anuncios
+      - "Reklams\u0131z"
+      - "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E42\u0E06\u0E29\u0E13\u0E32"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ads.remove_ads_bundle
+      TermType: 0
+      Description: 
+      Languages:
+      - Remove Ads Bundle
+      - "G\xF3i B\u1ECF Qu\u1EA3ng C\xE1o"
+      - "\u53BB\u5E7F\u544A\u5305"
+      - "\u53BB\u5EE3\u544A\u5305"
+      - "\u5E83\u544A\u30D1\u30C3\u30AF\u524A\u9664"
+      - "\uAD11\uACE0 \uBC88\uB4E4 \uC5C6\uC74C"
+      - "\u0411\u0435\u0437 \u0420\u0435\u043A\u043B\u0430\u043C \u041F\u0430\u043A\u0435\u0442"
+      - Pack Sans Pub
+      - Werbungspaket Weg
+      - Paket Tanpa Iklan
+      - Niente Annunci Pack
+      - "Pacote Sem An\xFAncios"
+      - Pack Sin Anuncios
+      - "Reklams\u0131z Paket"
+      - "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E42\u0E06\u0E29\u0E13\u0E32\u0E41\u0E1E\u0E47\u0E01"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ads.remove_interstitial
+      TermType: 0
+      Description: 
+      Languages:
+      - Remove all interstitial ads
+      - "X\xF3a m\u1ECDi qu\u1EA3ng c\xE1o xen k\u1EBD"
+      - "\u79FB\u9664\u6240\u6709\u63D2\u9875\u5E7F\u544A"
+      - "\u79FB\u9664\u6240\u6709\u63D2\u9801\u5EE3\u544A"
+      - "\u30A4\u30F3\u30BF\u30FC\u30B9\u30C6\u30A3\u30B7\u30E3\u30EB\u5E83\u544A\u3092\u3059\u3079\u3066\u524A\u9664\u3059\u308B"
+      - "\uBAA8\uB4E0 \uC804\uBA74 \uAD11\uACE0\uB97C \uC81C\uAC70\uD569\uB2C8\uB2E4"
+      - "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0441\u0435 \u043C\u0435\u0436\u0441\u0442\u0440\u0430\u043D\u0438\u0447\u043D\u044B\u0435
+        \u043E\u0431\u044A\u044F\u0432\u043B\u0435\u043D\u0438\u044F"
+      - Supprimer toutes les annonces interstitielles
+      - Alle Interstitial-Werbungen entfernen
+      - Hapus semua iklan interstisial
+      - Rimuovere tutti gli annunci interstiziali
+      - "Remover todos os an\xFAncios intersticiais"
+      - Eliminar todos los anuncios intersticiales
+      - "T\xFCm ge\xE7i\u015F reklamlar\u0131n\u0131 kald\u0131r"
+      - "\u0E25\u0E1A\u0E42\u0E06\u0E29\u0E13\u0E32\u0E41\u0E17\u0E23\u0E01\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14\u0E2D\u0E2D\u0E01"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ads.remove_banner
+      TermType: 0
+      Description: 
+      Languages:
+      - Remove bottom banner ads
+      - "X\xF3a qu\u1EA3ng c\xE1o bi\u1EC3u ng\u1EEF d\u01B0\u1EDBi c\xF9ng"
+      - "\u79FB\u9664\u5E95\u90E8\u6A2A\u5E45\u5E7F\u544A"
+      - "\u79FB\u9664\u5E95\u90E8\u6A6B\u5E45\u5EE3\u544A"
+      - "\u4E0B\u90E8\u30D0\u30CA\u30FC\u5E83\u544A\u3092\u524A\u9664\u3059\u308B"
+      - "\uD558\uB2E8 \uBC30\uB108 \uAD11\uACE0\uB97C \uC81C\uAC70\uD569\uB2C8\uB2E4"
+      - "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u043D\u0438\u0436\u043D\u0438\u0435
+        \u0431\u0430\u043D\u043D\u0435\u0440\u043D\u044B\u0435 \u043E\u0431\u044A\u044F\u0432\u043B\u0435\u043D\u0438\u044F"
+      - "Supprimer les publicit\xE9s banni\xE8re en bas"
+      - Untere Banneranzeigen entfernen
+      - Hapus iklan banner bawah
+      - Rimuovere i banner pubblicitari in basso
+      - "Remover os an\xFAncios em banner inferior"
+      - Eliminar los anuncios de banner inferior
+      - "Alt banner reklamlar\u0131n\u0131 kald\u0131r"
+      - "\u0E25\u0E1A\u0E42\u0E06\u0E29\u0E13\u0E32\u0E41\u0E1A\u0E19\u0E40\u0E19\u0E2D\u0E23\u0E4C\u0E14\u0E49\u0E32\u0E19\u0E25\u0E48\u0E32\u0E07"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    - Term: ads.keep_optional_ads
+      TermType: 0
+      Description: 
+      Languages:
+      - Keep optional ads for rewards
+      - "Gi\u1EEF qu\u1EA3ng c\xE1o t\xF9y ch\u1ECDn \u0111\u1EC3 nh\u1EADn th\u01B0\u1EDFng."
+      - "\u4FDD\u7559\u53EF\u9009\u5E7F\u544A\u4EE5\u63D0\u4F9B\u5956\u52B1\u3002"
+      - "\u4FDD\u7559\u53EF\u9078\u5EE3\u544A\u4EE5\u63D0\u4F9B\u734E\u52F5\u3002"
+      - "\u5831\u916C\u306E\u305F\u3081\u306B\u30AA\u30D7\u30B7\u30E7\u30F3\u306E\u5E83\u544A\u3092\u7DAD\u6301\u3059\u308B"
+      - "\uBCF4\uC0C1\uC744 \uC704\uD574 \uC120\uD0DD\uC801 \uAD11\uACE0\uB97C \uC720\uC9C0\uD558\uC138\uC694."
+      - "\u041E\u0441\u0442\u0430\u0432\u043B\u044F\u0439\u0442\u0435 \u0440\u0435\u043A\u043B\u0430\u043C\u0443
+        \u043F\u043E \u0436\u0435\u043B\u0430\u043D\u0438\u044E \u0434\u043B\u044F
+        \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u044F \u0432\u043E\u0437\u043D\u0430\u0433\u0440\u0430\u0436\u0434\u0435\u043D\u0438\u044F."
+      - "Conservez les publicit\xE9s facultatives pour les r\xE9compenses"
+      - Optionale Werbung als Belohnung beibehalten
+      - Pertahankan iklan opsional untuk mendapatkan hadiah.
+      - Mantieni gli annunci facoltativi per i premi
+      - "Mantenha os an\xFAncios opcionais em troca de recompensas."
+      - Mantenga los anuncios opcionales para obtener recompensas
+      - "\xD6d\xFCller i\xE7in iste\u011Fe ba\u011Fl\u0131 reklamlar\u0131 a\xE7\u0131k
+        tutun."
+      - "\u0E40\u0E01\u0E47\u0E1A\u0E42\u0E06\u0E29\u0E13\u0E32\u0E40\u0E2A\u0E23\u0E34\u0E21\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E23\u0E31\u0E1A\u0E23\u0E32\u0E07\u0E27\u0E31\u0E25\u0E44\u0E27\u0E49\u0E14\u0E49\u0E27\u0E22"
+      Flags: 000000000000000000000000000000
+      Languages_Touch: []
+    CaseInsensitiveTerms: 0
+    OnMissingTranslation: 1
+    mTerm_AppName: 
+    mLanguages:
+    - Name: English
+      Code: en
+      Flags: 0
+    - Name: Vietnamese
+      Code: vi
+      Flags: 0
+    - Name: Chinese (Simplified)
+      Code: zh-CN
+      Flags: 0
+    - Name: Chinese (Traditional)
+      Code: zh-TW
+      Flags: 0
+    - Name: Japanese
+      Code: ja
+      Flags: 0
+    - Name: Korean
+      Code: ko
+      Flags: 0
+    - Name: Russian
+      Code: ru
+      Flags: 0
+    - Name: French
+      Code: fr
+      Flags: 0
+    - Name: German
+      Code: de
+      Flags: 0
+    - Name: Indonesian
+      Code: id
+      Flags: 0
+    - Name: Italian
+      Code: it
+      Flags: 0
+    - Name: Portuguese (Portugal)
+      Code: pt-PT
+      Flags: 0
+    - Name: Spanish
+      Code: es
+      Flags: 0
+    - Name: Turkish
+      Code: tr
+      Flags: 0
+    - Name: Thai
+      Code: th
+      Flags: 0
+    IgnoreDeviceLanguage: 0
+    _AllowUnloadingLanguages: 0
+    Google_WebServiceURL: https://script.google.com/macros/s/AKfycbwdJxdT9sS8fdLqGPun5NDkQNoc_3gwCsTVEe9mLG-NWWZVO7vc3DRYYJ0KcsXhwlFK/exec
+    Google_SpreadsheetKey: 1hq7ZXOh8c2DrWQbFHmjow5PtW5t2hGL2WujFrqdO2Us
+    Google_SpreadsheetName: I2Loc Framework Puzzle
+    Google_LastUpdatedVersion: 1756264943127
+    Google_Password: 123456
+    GoogleUpdateFrequency: 3
+    GoogleInEditorCheckFrequency: 2
+    GoogleUpdateSynchronization: 1
+    GoogleUpdateDelay: 0
+    Assets:
+    - {fileID: 11400000, guid: d16b15b7a2769634eae3fdb4b9ca82b9, type: 2}
+    - {fileID: 11400000, guid: 58c5984a94e39e143bc55196b61c0f66, type: 2}
+    - {fileID: 11400000, guid: c554098bcf56002449a47f26ccc99698, type: 2}
+    - {fileID: 11400000, guid: b5c479b6c7b684e42b9fb8d0542935fb, type: 2}
+    - {fileID: 11400000, guid: a5ade99cdd585ab40a709c059536be5d, type: 2}
+    - {fileID: 11400000, guid: eaf529f275266b44f92a3dd71455748e, type: 2}
+    - {fileID: 12800000, guid: 155f81a3d4a6c6f499337d5ddcebb289, type: 3}
+    - {fileID: 12800000, guid: 9968bbcee520c664680029984d53bbd2, type: 3}
+    - {fileID: 12800000, guid: 33bfe5a4c6a7feb40be5e3f474264904, type: 3}
+    - {fileID: 11400000, guid: 71531bbde2329b146924569c23f2102b, type: 2}
+    Spreadsheet_LocalFileName: C:/Users/NC/Downloads/Localization.csv
+    Spreadsheet_LocalCSVSeparator: ','
+    Spreadsheet_LocalCSVEncoding: utf-8
+    Spreadsheet_SpecializationAsRows: 1
+    Spreadsheet_SortRows: 1

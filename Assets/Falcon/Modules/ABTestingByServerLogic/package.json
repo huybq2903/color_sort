@@ -1,0 +1,17 @@
+{
+  "name": "falcon.modules.abtestingbyserverlogic",
+  "displayName": "AB Testing By Server Logic",
+  "version": "1.0.4",
+  "unity": "6000.0",
+  "description": "ABTesting By Server Logic",
+  "author": {
+    "name": "quanph",
+    "email": "quanph@falcongames.com"
+  },
+  "dependencies": {
+    "falcon.modules.core.remoteconfig": "1.1.0",
+    "falcon.helpers.devkit": "1.2.3",
+    "falcon.modules.core.saveload": "1.0.7",
+    "falcon.modules.core.network": "1.1.1"
+  }
+}

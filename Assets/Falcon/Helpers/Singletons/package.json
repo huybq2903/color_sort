@@ -1,0 +1,12 @@
+{
+  "name": "falcon.helpers.singleton",
+  "displayName": "Falcon Helper - Singleton",
+  "version": "1.0.3",
+  "unity": "6000.0",
+  "description": "Singleton Helper Classes",
+  "author": {
+    "name": "ngocdx",
+    "email": "ngocdx@falcongames.com"
+  },
+  "dependencies": {}
+}

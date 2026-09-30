@@ -1,0 +1,19 @@
+{
+    "name": "Falcon.Modules.Core.InAppPurchase.Editor",
+    "rootNamespace": "Falcon.Modules.Core.InAppPurchase.Editor",
+    "references": [
+        "Falcon.Modules.Core.InAppPurchase.Runtime",
+        "Falcon.Helpers.FReflection.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
