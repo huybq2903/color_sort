@@ -1,7 +1,7 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
-#if UNITY_EDITOR
  
 namespace DhafinFawwaz.AnimationUILib.EditorLib
 {

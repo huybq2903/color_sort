@@ -1,9 +1,9 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System;
 using UnityEditor;
-#if UNITY_EDITOR
 
 namespace DhafinFawwaz.AnimationUILib.EditorLib
 {

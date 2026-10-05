@@ -1,10 +1,10 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using UnityEditorInternal;
 using TMPro;
 
-#if UNITY_EDITOR
 namespace DhafinFawwaz.AnimationUILib.EditorLib
 {
     [CustomEditor(typeof(AnimationUI))]

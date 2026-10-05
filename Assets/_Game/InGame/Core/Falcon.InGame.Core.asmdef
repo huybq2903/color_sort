@@ -2,7 +2,10 @@
     "name": "Falcon.InGame.Core",
     "rootNamespace": "Falcon.InGame.Core",
     "references": [
-        "Falcon.Shared.BaseInGame"
+        "Falcon.Shared.BaseInGame",
+        "Falcon.Helpers.FReflection.Runtime",
+        "ShapesRuntime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

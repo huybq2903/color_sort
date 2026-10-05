@@ -1,0 +1,88 @@
+using System.Collections.Generic;
+using Falcon.Shared.BaseInGame;
+
+namespace Falcon.InGame.Core
+{
+    /// <summary>Tranh mosaic: các mảnh đa giác, mỗi mảnh 1 colorId.</summary>
+    [PropertyDataType("picture")]
+    public class PictureProperty : PropertyData
+    {
+        public int width, height;
+        public int unit = 1; // toạ độ điểm = số nguyên theo 1/unit của lưới width×height
+        public List<RegionData> regions = new();
+        public List<int[]> lines = new(); // nét đen trang trí (polyline mở, cùng toạ độ points), không phải mảnh
+        public List<int> lineWidths = new(); // độ dày mỗi nét trang trí (đơn vị như points); 0 = dày bằng viền
+        public GenSettings gen = new();
+
+        // Kẹp mọi điểm vào khung chữ nhật của tranh, mảnh không bao giờ tràn ra ngoài
+        public void ClampToFrame()
+        {
+            int w = width * unit, h = height * unit;
+            void Clamp(int[] a)
+            {
+                if (a == null) return;
+                for (var k = 0; k + 1 < a.Length; k += 2)
+                {
+                    a[k] = System.Math.Clamp(a[k], 0, w);
+                    a[k + 1] = System.Math.Clamp(a[k + 1], 0, h);
+                }
+            }
+            foreach (var r in regions)
+            {
+                Clamp(r.points);
+                r.holes?.ForEach(Clamp);
+            }
+            lines?.ForEach(Clamp);
+        }
+
+        public PictureProperty Clone() => new()
+        {
+            width = width,
+            height = height,
+            unit = unit,
+            gen = gen.Clone(),
+            lines = lines?.ConvertAll(l => (int[])l.Clone()),
+            lineWidths = lineWidths != null ? new List<int>(lineWidths) : null,
+            regions = regions.ConvertAll(r => new RegionData { points = (int[])r.points?.Clone(), colorId = r.colorId, value = r.value, holes = r.holes?.ConvertAll(h => (int[])h.Clone()), widths = (int[])r.widths?.Clone(), holeWidths = r.holeWidths?.ConvertAll(h => (int[])h.Clone()) }),
+        };
+    }
+
+    /// <summary>1 mảnh: polygon đơn CCW trên lưới góc pixel.</summary>
+    public class RegionData
+    {
+        public int[] points;
+        public int colorId;
+        public int value; // giá trị cát của mảnh (50..300, bậc 50), tính từ diện tích
+        public List<int[]> holes; // lỗ trong mảnh (polygon đơn mỗi lỗ, cùng toạ độ với points); null = không lỗ
+        public int[] widths; // độ dày nét viền tại mỗi đỉnh (đơn vị như points); null hoặc lệch số đỉnh = dày mặc định, 0 = không đo được
+        public List<int[]> holeWidths; // như widths cho từng lỗ
+    }
+
+    /// <summary>Tham số lần generate cuối, lưu kèm level để chỉnh tiếp.</summary>
+    public class GenSettings
+    {
+        public int workSize = 640;
+        public int maxColors = ColorPalette.Count;
+        public int minArea = 200;
+        public int maxArea = 2000;
+        public int smooth = 5;
+        public int darkThreshold = 60;
+        public bool autoDark = true; // tự chọn ngưỡng nét đen cho từng ảnh (chỉ chế độ biên); darkThreshold lưu giá trị đã chọn
+        public int mode = 1; // 0 = tách theo màu (cũ), 1 = theo biên SLIC
+        public int targetPieces = 45;
+        public int paletteSize = 12;
+        public bool bgRays = true;
+        public int splitMode = 1;
+        public int smoothScale = 3;
+        public bool snapEdges = true; // nắn đường cắt về cạnh thật của ảnh gốc
+        public bool tidy = true; // vector hoá đường viền: biên chung, spline, toạ độ mịn gấp 4
+        public float fitTolerance = 4f; // dung sai khớp Bézier (đơn vị lưới); lớn = đường cong dài hơn, 0 = tắt
+        public float curveSmooth = 8f; // 0 = tắt làm mượt viền; 1..4 mượt dần
+        public int frameW = 100, frameH = 100; // khung tranh (tỉ lệ W:H), đầu ra luôn phủ kín khung
+        public bool fitCover = true; // false = ảnh nằm gọn trong khung, phần dư là nền; true = phủ kín khung, cắt phần thừa
+        public int bgColorId = -1; // màu nền phần dư/trong suốt; -1 = tự chọn
+        public string sourceName;
+
+        public GenSettings Clone() => (GenSettings)MemberwiseClone();
+    }
+}

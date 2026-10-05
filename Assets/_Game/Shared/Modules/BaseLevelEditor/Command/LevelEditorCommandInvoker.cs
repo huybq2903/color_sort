@@ -70,5 +70,23 @@ namespace Falcon.Shared.BaseLevelEditor
             _undoStack.Clear();
             _redoStack.Clear();
         }
+
+        // Bỏ mọi lệnh thoả điều kiện khỏi cả hai ngăn xếp, giữ nguyên thứ tự các lệnh còn lại
+        public void RemoveWhere(System.Predicate<ICommand> match)
+        {
+            Filter(_undoStack, match);
+            Filter(_redoStack, match);
+        }
+
+        private static void Filter(Stack<ICommand> stack, System.Predicate<ICommand> match)
+        {
+            var keep = new List<ICommand>(); // thứ tự lấy ra: đỉnh ngăn xếp trước
+            while (stack.Count > 0)
+            {
+                var c = stack.Pop();
+                if (!match(c)) keep.Add(c);
+            }
+            for (var i = keep.Count - 1; i >= 0; i--) stack.Push(keep[i]);
+        }
     }
 }

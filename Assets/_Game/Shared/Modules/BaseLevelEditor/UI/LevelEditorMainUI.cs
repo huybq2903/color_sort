@@ -35,6 +35,25 @@ namespace Falcon.Shared.BaseLevelEditor
         /// <summary>Ghi 1 dòng log vào panel dưới cùng (đè dòng cũ).</summary>
         public static void Log(string msg) => _log = msg;
 
+        // Toast cảnh báo nhanh nổi dưới hàng tên file, tự tắt sau ToastSeconds; bổ sung cho thanh log
+        private static string _toast;
+        private static float _toastStart;
+        private const float ToastSeconds = 3f, ToastFade = 0.4f;
+
+        /// <summary>Hiện toast (chỉ toast, không ghi log).</summary>
+        public static void Toast(string msg)
+        {
+            _toast = msg;
+            _toastStart = Time.unscaledTime;
+        }
+
+        /// <summary>Cảnh báo cần người dùng chú ý ngay: ghi log và hiện toast.</summary>
+        public static void Warn(string msg)
+        {
+            Log(msg);
+            Toast(msg);
+        }
+
         /// <summary>Độ rộng Property panel — override nếu muốn.</summary>
         protected virtual float RightW => 300f;
 
@@ -96,6 +115,35 @@ namespace Falcon.Shared.BaseLevelEditor
             DrawNameFile();
             DrawRightPanel();
             DrawLogBar();
+            DrawToast();
+        }
+
+        // Hộp cảnh báo đỏ giữa trên cùng, mờ dần ở cuối thời gian hiện
+        protected virtual void DrawToast()
+        {
+            if (string.IsNullOrEmpty(_toast)) return;
+            var age = Time.unscaledTime - _toastStart;
+            if (age > ToastSeconds)
+            {
+                _toast = null;
+                return;
+            }
+            var alpha = Mathf.Clamp01((ToastSeconds - age) / ToastFade);
+            var rowH = Gui.GetRowHeight();
+            var screen = Gui.Canvas.ScreenSize;
+            var menuBarH = Gui.Style.Layout.InnerSpacing * 2f + rowH;
+            var settings = new ImTextSettings(Gui.Style.Layout.TextSize, 0.5f, 0.5f, true);
+            var maxW = Mathf.Min(560f, screen.x - 40f);
+            var size = Gui.MeasureTextSize(_toast, in settings, new Vector2(maxW - 32f, 0f));
+            var w = Mathf.Min(maxW, size.x + 32f);
+            var h = size.y + 16f;
+            var rect = new ImRect((screen.x - w) / 2f, screen.y - menuBarH - rowH - 8f - h, w, h);
+
+            Gui.Canvas.PushOrder(ImWindow.WINDOW_ORDER_OFFSET * 8); // nổi trên mọi panel
+            Gui.Canvas.Rect(rect, new Color32(127, 29, 29, (byte)(235 * alpha)));
+            Gui.Canvas.RectOutline(rect, new Color32(252, 165, 165, (byte)(255 * alpha)), 1.5f);
+            Gui.Canvas.Text(_toast, new Color32(255, 255, 255, (byte)(255 * alpha)), rect, in settings);
+            Gui.Canvas.PopOrder();
         }
 
         // Panel 1 dòng sát đáy màn hình, hiển thị _log (Ellipsis tự "…" khi tràn).
@@ -161,7 +209,7 @@ namespace Falcon.Shared.BaseLevelEditor
             Gui.Canvas.RectOutline(textRect, new Color32(255, 255, 255, 40), 1f);    // viền
 
             var dirty = _saveLoad && _saveLoad.HasUnsavedChanges;
-            var label = $"Current File: {_saveLoad.LevelName}{(dirty ? " *" : "")}";          // * nếu chưa lưu
+            var label = $"{_saveLoad.LevelName}{(dirty ? " *" : "")}";          // * nếu chưa lưu
 
             var labelRect = new ImRect(textRect.X + 8f, textRect.Y, textRect.W - 16f, textRect.H);
             var textSettings = new ImTextSettings(Gui.Style.Layout.TextSize, 0f, 0.5f, false, ImTextOverflow.Ellipsis);

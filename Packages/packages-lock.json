@@ -12,7 +12,7 @@
       "hash": "ab6e92bfe78ff911def2fd3c4e9c79bb5a186946"
     },
     "com.besty.unity-skills": {
-      "version": "https://github.com/Besty0728/Unity-Skills.git?path=/SkillsForUnity#v2.8.4",
+      "version": "https://github.com/Besty0728/Unity-Skills.git?path=/SkillsForUnity#v2.9.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -21,7 +21,7 @@
         "com.unity.timeline": "1.7.7",
         "com.unity.ugui": "1.0.0"
       },
-      "hash": "c479dd0c5b4acd73b6f4247108d60dad7dd51db8"
+      "hash": "58d3339d90e265cb138d9377630fbee286bc9ec9"
     },
     "com.coffee.softmask-for-ugui": {
       "version": "https://github.com/mob-sakai/SoftMaskForUGUI.git?path=Packages/src",

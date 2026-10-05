@@ -62,7 +62,9 @@ namespace Falcon.Shared.BaseLevelEditor
         private IDisposable subBtnPress;
         private bool _lastLeftPressed;
         private bool _lastRightPressed;
+        private bool _lastMiddlePressed;
         private bool _isPointerOverUI;
+        private bool _pointerCaptured;
 
         private Vector2 _currentScreen;
         private Vector3 _currentWorld;
@@ -77,6 +79,9 @@ namespace Falcon.Shared.BaseLevelEditor
             return _hotkeyDown.Where(h => h.Key == key && h.Modifiers == modifiers);
         }
         public Observable<float> ScrollWheel => _scrollWheel;
+
+        // true: đang kéo, rê qua panel UI không làm đứt thao tác
+        public void SetPointerCaptured(bool captured) => _pointerCaptured = captured;
 
         public LevelEditorPointerEvent CurrentPointer => new(_currentScreen, _currentWorld, _lastModifiers, -1);
 
@@ -127,6 +132,7 @@ namespace Falcon.Shared.BaseLevelEditor
             _lastScreen = _currentScreen;
             _lastLeftPressed = mouse.leftButton.isPressed;
             _lastRightPressed = mouse.rightButton.isPressed;
+            _lastMiddlePressed = mouse.middleButton.isPressed;
         }
 
         private void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
@@ -191,6 +197,21 @@ namespace Falcon.Shared.BaseLevelEditor
 
                 _lastRightPressed = rightPressed;
             }
+
+            if (mouse.middleButton.ReadValueFromEvent(eventPtr, out var middleValue))
+            {
+                var middlePressed = middleValue >= InputSystem.settings.defaultButtonPressPoint;
+                if (middlePressed && !_lastMiddlePressed)
+                {
+                    _pointerDown.OnNext(CreatePointerEvent(2));
+                }
+                else if (!middlePressed && _lastMiddlePressed)
+                {
+                    _pointerUp.OnNext(CreatePointerEvent(2));
+                }
+
+                _lastMiddlePressed = middlePressed;
+            }
         }
 
         private void HandleMouseScroll(Mouse mouse, InputEventPtr eventPtr)
@@ -254,7 +275,7 @@ namespace Falcon.Shared.BaseLevelEditor
 
         private bool IsTargetedToGameView()
         {
-            if (_isPointerOverUI)
+            if (_isPointerOverUI && !_pointerCaptured)
             {
                 return false;
             }
