@@ -5,6 +5,7 @@
         "Falcon.InGame.LevelEditor",
         "Falcon.InGame.Core",
         "Falcon.Shared.BaseLevelEditor",
+        "Falcon.Shared.BaseInGame",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

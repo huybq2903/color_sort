@@ -41,6 +41,7 @@ namespace Falcon.InGame.LevelEditor
         private static PictureProperty BuildPicture(RegionMap map, GenSettings s)
         {
             var p = new PictureProperty { width = map.w, height = map.h, unit = TidyUnit, gen = s.Clone() };
+            p.gen.inkGaps = map.gaps;
             var polys = BoundaryGraph.Build(map, Sigma(s), TidyUnit, TidyStep, s.fitTolerance, out var holes);
             for (var id = 1; id < polys.Length; id++)
                 if (polys[id] != null) p.regions.Add(new RegionData { points = polys[id], colorId = map.colors[id], holes = holes[id] });

@@ -11,19 +11,26 @@ namespace Falcon.InGame.Core
         public static int FromAreaFraction(float fraction) =>
             Mathf.Clamp(Mathf.RoundToInt(fraction * PerFraction / Step) * Step, Min, Max);
 
-        // Tính lại giá trị mọi mảnh (đa giác trừ lỗ, theo toạ độ lưu)
+        // Làm tròn về bậc 50 và kẹp trong 50..300
+        public static int Clamp(int value) => Mathf.Clamp(Mathf.RoundToInt(value / (float)Step) * Step, Min, Max);
+
+        // Giá trị gợi ý theo diện tích (đa giác trừ lỗ, theo toạ độ lưu)
+        public static int Suggest(PictureProperty p, RegionData r)
+        {
+            var unit = Mathf.Max(1, p.unit);
+            var total = (double)p.width * unit * p.height * unit;
+            if (total <= 0) return r.value;
+            var a = Area(r.points);
+            if (r.holes != null) foreach (var h in r.holes) a -= Area(h);
+            return FromAreaFraction((float)(a / total));
+        }
+
+        // Tính lại giá trị các mảnh chưa đặt tay
         public static void Assign(PictureProperty p)
         {
             if (p == null) return;
-            var unit = Mathf.Max(1, p.unit);
-            var total = (double)p.width * unit * p.height * unit;
-            if (total <= 0) return;
             foreach (var r in p.regions)
-            {
-                var a = Area(r.points);
-                if (r.holes != null) foreach (var h in r.holes) a -= Area(h);
-                r.value = FromAreaFraction((float)(a / total));
-            }
+                if (!r.valueManual) r.value = Suggest(p, r);
         }
 
         private static double Area(int[] pts)

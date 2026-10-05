@@ -12,6 +12,7 @@ namespace Falcon.InGame.LevelEditor
         public int w, h;
         public int[] reg;
         public bool inked; // tách theo ô giữa các nét: đường cắt đã ở tâm nét
+        public bool gaps; // pixel nét giữ nhãn 0: các mảnh cách nhau bằng khe đúng độ dày nét
         public List<int> colors = new() { -1 };
         public int Count => colors.Count - 1;
 

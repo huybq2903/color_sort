@@ -12,6 +12,7 @@ namespace Falcon.InGame.Core
         public List<RegionData> regions = new();
         public List<int[]> lines = new(); // nét đen trang trí (polyline mở, cùng toạ độ points), không phải mảnh
         public List<int> lineWidths = new(); // độ dày mỗi nét trang trí (đơn vị như points); 0 = dày bằng viền
+        public List<int> lineThickness = new(); // độ dày mỗi nét theo % độ dày viền; 0 = mặc định (chấm dùng lineWidths)
         public GenSettings gen = new();
 
         // Kẹp mọi điểm vào khung chữ nhật của tranh, mảnh không bao giờ tràn ra ngoài
@@ -43,7 +44,8 @@ namespace Falcon.InGame.Core
             gen = gen.Clone(),
             lines = lines?.ConvertAll(l => (int[])l.Clone()),
             lineWidths = lineWidths != null ? new List<int>(lineWidths) : null,
-            regions = regions.ConvertAll(r => new RegionData { points = (int[])r.points?.Clone(), colorId = r.colorId, value = r.value, holes = r.holes?.ConvertAll(h => (int[])h.Clone()), widths = (int[])r.widths?.Clone(), holeWidths = r.holeWidths?.ConvertAll(h => (int[])h.Clone()) }),
+            lineThickness = lineThickness != null ? new List<int>(lineThickness) : null,
+            regions = regions.ConvertAll(r => new RegionData { points = (int[])r.points?.Clone(), colorId = r.colorId, value = r.value, valueManual = r.valueManual, holes = r.holes?.ConvertAll(h => (int[])h.Clone()), widths = (int[])r.widths?.Clone(), holeWidths = r.holeWidths?.ConvertAll(h => (int[])h.Clone()) }),
         };
     }
 
@@ -53,6 +55,7 @@ namespace Falcon.InGame.Core
         public int[] points;
         public int colorId;
         public int value; // giá trị cát của mảnh (50..300, bậc 50), tính từ diện tích
+        public bool valueManual; // true = người dùng đặt tay: không bị tính lại theo diện tích
         public List<int[]> holes; // lỗ trong mảnh (polygon đơn mỗi lỗ, cùng toạ độ với points); null = không lỗ
         public int[] widths; // độ dày nét viền tại mỗi đỉnh (đơn vị như points); null hoặc lệch số đỉnh = dày mặc định, 0 = không đo được
         public List<int[]> holeWidths; // như widths cho từng lỗ
@@ -81,6 +84,7 @@ namespace Falcon.InGame.Core
         public int frameW = 100, frameH = 100; // khung tranh (tỉ lệ W:H), đầu ra luôn phủ kín khung
         public bool fitCover = true; // false = ảnh nằm gọn trong khung, phần dư là nền; true = phủ kín khung, cắt phần thừa
         public int bgColorId = -1; // màu nền phần dư/trong suốt; -1 = tự chọn
+        public bool inkGaps; // các mảnh cách nhau bằng khe là nét chì: view vẽ nền chì phía sau và viền mảnh
         public string sourceName;
 
         public GenSettings Clone() => (GenSettings)MemberwiseClone();

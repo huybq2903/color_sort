@@ -36,14 +36,14 @@ namespace Falcon.InGame.LevelEditor
             _subMove = _input.PointerMove.Subscribe(OnPointerMove);
         }
 
-        // leftInset: phần bề ngang màn hình (0..1) bị panel bên trái che; tranh được canh vào vùng còn lại
-        public void FitTo(Bounds b, float leftInset = 0f)
+        // leftInset, rightInset: phần bề ngang màn hình (0..1) bị panel hai bên che; tranh được canh vào vùng còn lại
+        public void FitTo(Bounds b, float leftInset = 0f, float rightInset = 0f)
         {
             if (!cam || b.size.y <= 0f) return;
-            var free = Mathf.Clamp(1f - leftInset, 0.2f, 1f);
+            var free = Mathf.Clamp(1f - leftInset - rightInset, 0.2f, 1f);
             var size = Mathf.Clamp(Mathf.Max(b.extents.y, b.extents.x / (cam.aspect * free)) * fitMargin, minOrthographicSize, maxOrthographicSize);
             cam.orthographicSize = size;
-            cam.transform.position = new Vector3(b.center.x - leftInset * size * cam.aspect, b.center.y, cam.transform.position.z);
+            cam.transform.position = new Vector3(b.center.x - (leftInset - rightInset) * size * cam.aspect, b.center.y, cam.transform.position.z);
         }
 
         private void OnScroll(float dy)

@@ -47,7 +47,7 @@ namespace Falcon.InGame.LevelEditor
                 }
             }
 
-            return new RegionMap { w = W, h = H, reg = outReg, colors = new List<int>(m.colors) };
+            return new RegionMap { w = W, h = H, reg = outReg, colors = new List<int>(m.colors), inked = m.inked, gaps = m.gaps };
         }
 
         private static float[] Gaussian(float sigma)

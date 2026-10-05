@@ -18,9 +18,14 @@ namespace Falcon.InGame.Core
         [SerializeField] private Color cutColor = new(1f, 0.25f, 0.25f, 1f);
         [SerializeField] private Color frameColor = new(1f, 0.6f, 0.1f, 1f);
         [SerializeField, Tooltip("Cỡ 1 chu kỳ vân kính theo tỉ lệ chiều cao tranh; cỡ cố định, mảnh to thì vân lặp lại.")] private float glassPeriod = 0.11f;
+        [SerializeField, Tooltip("Độ dày viền mảnh trong tranh có khe nét (nhân với Outline Width): khe đã là nét chì nên viền chỉ cần mỏng."), Min(0f)] private float gapOutlineScale = 0.3f;
+        [SerializeField, Tooltip("Độ dày nét vẽ tay (nhân với Outline Width)."), Min(0f)] private float decorLineScale = 1f;
         [SerializeField, Tooltip("Âm để UI Imui (order 0) vẽ đè lên.")] private int sortingOrder = -10;
 
         private const float MinLead = 0.7f, MaxLead = 4f, FlatLeadScale = 0.75f;
+        private float _lead = 1f; // hệ số độ dày viền mảnh: tranh có khe nét thật thì viền mỏng, khe đã là nét chì
+        private GameObject _leadBacking;
+        private Mesh _leadMesh;
         private static readonly Color FlatLeadColor = new(0.07f, 0.05f, 0.04f, 1f);
         private readonly List<GameObject> _regionObjects = new();
         private readonly List<Mesh> _meshes = new();
@@ -45,10 +50,11 @@ namespace Falcon.InGame.Core
         private Vector2 _frameSize;
         private Polyline _cut;
         private readonly List<ShapeRenderer> _decor = new(); // theo chỉ số PictureProperty.lines; null = nét bị bỏ qua
+        private readonly List<int> _decorPct = new(); // độ dày từng nét theo % viền, cùng chỉ số với _decor; 0 = mặc định
         private Disc _snap;
         private readonly List<TextMeshPro> _values = new();
         private bool _showValues = true;
-        private const float ValueMaxHeight = 0.035f; // chiều cao số tối đa theo chiều cao tranh
+        private const float ValueMaxHeight = 0.055f; // chiều cao số tối đa theo chiều cao tranh
         private readonly List<Disc> _anchors = new();
         private readonly List<Polyline> _handleLines = new();
         private readonly List<Disc> _handleDots = new();
@@ -65,14 +71,28 @@ namespace Falcon.InGame.Core
 
         public Bounds WorldBounds => new(transform.position, new Vector3(_offset.x * 2f * _scale, _offset.y * 2f * _scale, 0.1f));
 
+#if UNITY_EDITOR
+        private PictureProperty _built;
+
+        private void OnValidate()
+        {
+            if (_built != null) UnityEditor.EditorApplication.delayCall += () => { if (this && _built != null) Build(_built); }; // sửa độ dày trên Inspector: dựng lại ngay để thấy
+        }
+#endif
+
         public void Build(PictureProperty p)
         {
+#if UNITY_EDITOR
+            _built = p;
+#endif
             Clear();
             if (p == null || p.regions.Count == 0) return;
             EnsureMaterial();
 
             _scale = viewHeight / p.height;
             _offset = new Vector2(p.width, p.height) * 0.5f;
+            _lead = p.gen != null && p.gen.inkGaps ? gapOutlineScale : 1f;
+            if (p.gen != null && p.gen.inkGaps) BuildLeadBacking(p);
             var tile = viewHeight * glassPeriod;
             var unit = Mathf.Max(1, p.unit);
             for (var i = 0; i < p.regions.Count; i++)
@@ -126,6 +146,7 @@ namespace Falcon.InGame.Core
                 smr.sortingOrder = sortingOrder - 1;
                 _shadowMeshes.Add(shadowMesh);
 
+                var lead = outlineWidth * _lead;
                 var rings = new Polyline[1 + holeLists.Count];
                 List<PolylinePoint> outerRing = null;
                 for (var k = 0; k < rings.Length; k++)
@@ -146,7 +167,7 @@ namespace Falcon.InGame.Core
                     glow.transform.localPosition = new Vector3(0f, 0f, 0.004f);
                     glow.Closed = true;
                     glow.Joins = PolylineJoins.Round;
-                    glow.Thickness = outlineWidth * 1.6f;
+                    glow.Thickness = lead * 1.6f;
                     glow.Color = new Color(0f, 0f, 0f, 0.035f);
                     glow.SortingOrder = sortingOrder;
                     glow.SetPoints(ringPts);
@@ -156,27 +177,27 @@ namespace Falcon.InGame.Core
                     copper.transform.localPosition = new Vector3(0f, 0f, -0.002f);
                     copper.Closed = true;
                     copper.Joins = PolylineJoins.Round;
-                    copper.Thickness = outlineWidth * 0.52f;
+                    copper.Thickness = lead * 0.52f;
                     copper.Color = copperColor;
                     copper.SortingOrder = sortingOrder + 1;
                     copper.SetPoints(ringPts);
 
                     var shine = new GameObject("Shine").AddComponent<Polyline>();
                     shine.transform.SetParent(outline.transform, false);
-                    shine.transform.localPosition = new Vector3(-outlineWidth * 0.13f, outlineWidth * 0.13f, -0.004f);
+                    shine.transform.localPosition = new Vector3(-lead * 0.13f, lead * 0.13f, -0.004f);
                     shine.Closed = true;
                     shine.Joins = PolylineJoins.Round;
-                    shine.Thickness = outlineWidth * 0.12f;
+                    shine.Thickness = lead * 0.12f;
                     shine.Color = shineColor;
                     shine.SortingOrder = sortingOrder + 2;
                     shine.SetPoints(ringPts);
 
                     var shade = new GameObject("Shade").AddComponent<Polyline>(); // mép tối phía đối diện sáng: thanh chì có khối
                     shade.transform.SetParent(outline.transform, false);
-                    shade.transform.localPosition = new Vector3(outlineWidth * 0.15f, -outlineWidth * 0.15f, -0.003f);
+                    shade.transform.localPosition = new Vector3(lead * 0.15f, -lead * 0.15f, -0.003f);
                     shade.Closed = true;
                     shade.Joins = PolylineJoins.Round;
-                    shade.Thickness = outlineWidth * 0.14f;
+                    shade.Thickness = lead * 0.14f;
                     shade.Color = new Color(0.22f, 0.10f, 0.04f, 0.9f);
                     shade.SortingOrder = sortingOrder + 2;
                     shade.SetPoints(ringPts);
@@ -194,6 +215,23 @@ namespace Falcon.InGame.Core
             BuildLines(p, unit);
         }
 
+        // Tấm nền chì phủ cả khung tranh, nằm sau mọi mảnh: chỗ khe giữa các mảnh lộ ra thành nét chì
+        private void BuildLeadBacking(PictureProperty p)
+        {
+            var half = _offset * _scale;
+            _leadMesh = new Mesh { name = "LeadBacking" };
+            _leadMesh.SetVertices(new[] { new Vector3(-half.x, -half.y), new Vector3(-half.x, half.y), new Vector3(half.x, half.y), new Vector3(half.x, -half.y) });
+            _leadMesh.SetColors(new[] { FlatLeadColor, FlatLeadColor, FlatLeadColor, FlatLeadColor });
+            _leadMesh.SetTriangles(new[] { 0, 1, 2, 0, 2, 3 }, 0);
+            _leadBacking = new GameObject("LeadBacking");
+            _leadBacking.transform.SetParent(transform, false);
+            _leadBacking.transform.localPosition = new Vector3(0f, 0f, 0.03f);
+            _leadBacking.AddComponent<MeshFilter>().sharedMesh = _leadMesh;
+            var mr = _leadBacking.AddComponent<MeshRenderer>();
+            mr.sharedMaterial = _shadowMaterial;
+            mr.sortingOrder = sortingOrder - 2;
+        }
+
         // Số giá trị cát ở tâm đường tròn nội tiếp lớn nhất của mảnh; cỡ chữ tự co cho vừa
         private void AddValueLabel(GameObject go, List<Vector2> pts, List<IReadOnlyList<Vector2>> holes, int value)
         {
@@ -208,7 +246,7 @@ namespace Falcon.InGame.Core
             t.rectTransform.sizeDelta = new Vector2(100f, 100f);
             t.text = value.ToString();
             t.ForceMeshUpdate();
-            var box = new Vector2(radius * 1.7f, radius * 1.1f); // hình chữ nhật nội tiếp trong đường tròn nội tiếp của mảnh
+            var box = new Vector2(radius * 1.85f, radius * 1.2f); // hình chữ nhật nội tiếp trong đường tròn nội tiếp của mảnh
             var k = Mathf.Min(box.x / Mathf.Max(0.0001f, t.preferredWidth), box.y / Mathf.Max(0.0001f, t.preferredHeight), viewHeight * ValueMaxHeight / Mathf.Max(0.0001f, t.preferredHeight)); // mảnh to không có số quá lớn
             t.fontSize = 10f * k;
             t.rectTransform.sizeDelta = box;
@@ -229,6 +267,7 @@ namespace Falcon.InGame.Core
             for (var li = 0; li < p.lines.Count; li++)
             {
                 var l = p.lines[li];
+                _decorPct.Add(p.lineThickness != null && li < p.lineThickness.Count ? p.lineThickness[li] : 0);
                 if (l == null || l.Length < 4) { _decor.Add(null); continue; }
                 var pts = new List<Vector2>(l.Length / 2);
                 for (var k = 0; k < l.Length; k += 2) pts.Add((new Vector2(l[k], l[k + 1]) / unit - _offset) * _scale);
@@ -248,16 +287,23 @@ namespace Falcon.InGame.Core
                 line.transform.localPosition = new Vector3(0f, 0f, -0.012f);
                 line.Closed = false;
                 line.Joins = PolylineJoins.Round;
-                Style(line, false);
+                StyleDecorLine(li, line, false);
                 line.SetPoints(pts);
                 _decor.Add(line);
             }
         }
 
+        // Nét vẽ tay: dày theo % riêng của nét nếu có, không thì theo Decor Line Scale
+        private void StyleDecorLine(int i, Polyline l, bool hot)
+        {
+            Style(l, hot, true);
+            if (!hot && i < _decorPct.Count && _decorPct[i] > 0) l.Thickness = outlineWidth * _decorPct[i] / 100f * (_glassOn ? 1f : FlatLeadScale);
+        }
+
         private void StyleDecor(int i, bool hot)
         {
             if (i < 0 || i >= _decor.Count || !_decor[i]) return;
-            if (_decor[i] is Polyline pl) Style(pl, hot);
+            if (_decor[i] is Polyline pl) StyleDecorLine(i, pl, hot);
             else _decor[i].Color = hot ? highlightColor : _glassOn ? outlineColor : FlatLeadColor;
         }
 
@@ -533,9 +579,12 @@ namespace Falcon.InGame.Core
         public void Clear()
         {
             foreach (var go in _regionObjects) Destroy(go);
+            if (_leadBacking) Destroy(_leadBacking);
+            if (_leadMesh) Destroy(_leadMesh);
             _values.Clear();
             foreach (var d in _decor) if (d) Destroy(d.gameObject);
             _decor.Clear();
+            _decorPct.Clear();
             _decorHot = -1;
             foreach (var m in _meshes) Destroy(m);
             foreach (var m in _shadowMeshes) Destroy(m);
@@ -576,10 +625,10 @@ namespace Falcon.InGame.Core
             return res;
         }
 
-        private void Style(Polyline l, bool hot)
+        private void Style(Polyline l, bool hot, bool decor = false)
         {
             l.Color = hot ? highlightColor : _glassOn ? outlineColor : FlatLeadColor;
-            l.Thickness = hot ? outlineWidth * 1.5f : _glassOn ? outlineWidth : outlineWidth * FlatLeadScale;
+            l.Thickness = hot ? outlineWidth * 1.5f : (_glassOn ? outlineWidth : outlineWidth * FlatLeadScale) * (decor ? decorLineScale : _lead);
             l.SortingOrder = sortingOrder + (hot ? 2 : 1);
         }
 

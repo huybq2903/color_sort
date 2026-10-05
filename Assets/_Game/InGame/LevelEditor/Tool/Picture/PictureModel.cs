@@ -32,7 +32,7 @@ namespace Falcon.InGame.LevelEditor
         private const float DotFraction = 0.016f; // đường kính chấm mặc định theo chiều cao tranh
 
         // Thêm (hoặc thay nét số replace) nét trang trí từ đường vẽ (toạ độ lưới tranh); chỉ 1 điểm thì thành chấm
-        public bool AddLine(IReadOnlyList<Vector2> pic, int replace = -1)
+        public bool AddLine(IReadOnlyList<Vector2> pic, int replace = -1, int thickness = 0)
         {
             if (pic == null || pic.Count == 0) return false;
             var unit = Picture.unit;
@@ -46,8 +46,17 @@ namespace Falcon.InGame.LevelEditor
             }
             SyncLineWidths();
             var width = pic.Count == 1 ? Mathf.RoundToInt(DotFraction * Picture.height * unit) : 0;
-            if (replace >= 0 && replace < Picture.lines.Count) { Picture.lines[replace] = o; Picture.lineWidths[replace] = width; }
-            else { Picture.lines.Add(o); Picture.lineWidths.Add(width); }
+            if (replace >= 0 && replace < Picture.lines.Count) { Picture.lines[replace] = o; Picture.lineWidths[replace] = width; } // sửa nét: giữ độ dày cũ
+            else { Picture.lines.Add(o); Picture.lineWidths.Add(width); Picture.lineThickness.Add(Mathf.Max(0, thickness)); }
+            return true;
+        }
+
+        // Đặt độ dày nét theo % độ dày viền (0 = mặc định); false nếu chỉ số sai
+        public bool SetLineThickness(int index, int percent)
+        {
+            SyncLineWidths();
+            if (index < 0 || index >= Picture.lines.Count) return false;
+            Picture.lineThickness[index] = Mathf.Max(0, percent);
             return true;
         }
 
@@ -78,6 +87,7 @@ namespace Falcon.InGame.LevelEditor
             if (best < 0) return false;
             Picture.lines.RemoveAt(best);
             Picture.lineWidths.RemoveAt(best);
+            Picture.lineThickness.RemoveAt(best);
             return true;
         }
 
@@ -114,6 +124,7 @@ namespace Falcon.InGame.LevelEditor
             if (index < 0 || index >= Picture.lines.Count) return false;
             Picture.lines.RemoveAt(index);
             Picture.lineWidths.RemoveAt(index);
+            Picture.lineThickness.RemoveAt(index);
             return true;
         }
 
@@ -122,6 +133,8 @@ namespace Falcon.InGame.LevelEditor
             Picture.lines ??= new List<int[]>();
             Picture.lineWidths ??= new List<int>();
             while (Picture.lineWidths.Count < Picture.lines.Count) Picture.lineWidths.Add(0);
+            Picture.lineThickness ??= new List<int>();
+            while (Picture.lineThickness.Count < Picture.lines.Count) Picture.lineThickness.Add(0);
         }
 
         private static float SegDistance(Vector2 p, Vector2 a, Vector2 b)
@@ -176,17 +189,28 @@ namespace Falcon.InGame.LevelEditor
             if (target < 0 || other < 0 || target == other) { error = "Chọn 2 mảnh khác nhau"; return -1; }
             int tid = target + 1, oid = other + 1;
             var otherPx = Pixels(oid);
-            if (!Touches(otherPx, tid)) { error = "Hai mảnh không kề nhau"; return -1; }
+            var gap = new List<int>(); // tranh có khe nét: 2 mảnh cách nhau bằng khe hẹp vẫn gộp được, khe được lấp
+            if (!Touches(otherPx, tid))
+            {
+                if (Picture.gen.inkGaps) PieceSize.ForEachGap(Map, (a, b, s, len, stride) =>
+                {
+                    if ((a == tid && b == oid) || (a == oid && b == tid)) for (var t = 0; t < len; t++) gap.Add(s + t * stride);
+                });
+                if (gap.Count == 0) { error = "Hai mảnh không kề nhau"; return -1; }
+            }
 
             foreach (var p in otherPx) Map.reg[p] = tid;
+            foreach (var p in gap) Map.reg[p] = tid;
             if (!SupportsHoles && PixelRegions.HasHole(Map, Pixels(tid)))
             {
                 foreach (var p in otherPx) Map.reg[p] = oid;
+                foreach (var p in gap) Map.reg[p] = 0;
                 error = "Gộp sẽ tạo mảnh có lỗ (vây kín mảnh khác)";
                 return -1;
             }
 
             Picture.regions[target].points = Trace(tid, Map.Bounds());
+            Picture.regions[target].valueManual = false; // mảnh gộp có diện tích khác hẳn: tính lại số cát
             RemoveRegion(other);
             var merged = other < target ? target - 1 : target;
             RebuildBoundaries(new[] { merged + 1 });
@@ -273,7 +297,8 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Cắt theo đường cong tự do: đường đi (toạ độ lưới) là rào, mỗi cụm liền còn lại là 1 mảnh; hai đầu được kéo dài để chắc chắn ra tới biên mảnh
-        public int SplitPath(int index, IReadOnlyList<Vector2> path, out string error)
+        // gap > 0 (tranh có khe nét): dải rộng gap ô lưới quanh đường cắt thành khe trống giữa hai mảnh
+        public int SplitPath(int index, IReadOnlyList<Vector2> path, out string error, int gap = 0)
         {
             error = null;
             var id = index + 1;
@@ -302,6 +327,22 @@ namespace Falcon.InGame.LevelEditor
                 }
             }
             if (barrier.Count == 0) { error = "Đường cắt không đi qua mảnh"; return 0; }
+            HashSet<int> gapPix = null;
+            if (gap > 0)
+            {
+                gapPix = new HashSet<int>();
+                var rad = gap * 0.5f;
+                var ri = Mathf.CeilToInt(rad);
+                foreach (var b in barrier)
+                    for (var dy = -ri; dy <= ri; dy++)
+                    for (var dx = -ri; dx <= ri; dx++)
+                    {
+                        int x = b % Map.w + dx, y = b / Map.w + dy;
+                        if (dx * dx + dy * dy > rad * rad || x < 0 || y < 0 || x >= Map.w || y >= Map.h) continue;
+                        if (inRegion.Contains(y * Map.w + x)) gapPix.Add(y * Map.w + x);
+                    }
+                barrier.UnionWith(gapPix);
+            }
 
             var comp = new Dictionary<int, int>();
             var comps = new List<List<int>>();
@@ -334,7 +375,7 @@ namespace Falcon.InGame.LevelEditor
 
             // pixel trên đường cắt thuộc cụm kề nó
             var queue = new Queue<int>(comp.Keys);
-            var pending = new HashSet<int>(barrier);
+            var pending = gapPix != null ? new HashSet<int>() : new HashSet<int>(barrier); // có khe: pixel dải cắt để trống, không chia cho mảnh nào
             while (queue.Count > 0 && pending.Count > 0)
             {
                 var p = queue.Dequeue();
@@ -352,6 +393,7 @@ namespace Falcon.InGame.LevelEditor
                 if (y < Map.h - 1) Spread(p + Map.w);
             }
             if (comps.Any(c => c.Count < MinPiecePixels)) { error = "Mảnh cắt ra quá nhỏ"; return 0; }
+            if (gapPix != null) foreach (var p in gapPix) Map.reg[p] = 0;
             return Commit(index, id, comps);
         }
 
@@ -359,6 +401,7 @@ namespace Falcon.InGame.LevelEditor
         public bool RedrawBoundary(IReadOnlyList<Vector2> path, out string error)
         {
             error = null;
+            if (Picture.gen.inkGaps) { error = "Tranh có khe nét không có biên chung: dùng Chọn mảnh rồi click biên để sửa"; return false; }
             if (path == null || path.Count < 2) { error = "Nét vẽ quá ngắn"; return false; }
             path = path.Select(Clamp).ToList(); // nét vẽ ngoài khung bị kẹp lại, mảnh không tràn ra ngoài
             var unit = Mathf.Max(1, Picture.unit);
@@ -470,7 +513,8 @@ namespace Falcon.InGame.LevelEditor
         internal bool ReplaceRun(EdgeRun run, IReadOnlyList<Vector2Int> chain, out string error)
         {
             error = null;
-            if (run.b < 0) { error = "Biên ngoài tranh không sửa được"; return false; }
+            var gapMode = Picture.gen.inkGaps; // mảnh cách nhau bằng khe: mỗi mảnh sửa biên của riêng nó
+            if (run.b < 0 && !gapMode) { error = "Biên ngoài tranh không sửa được"; return false; }
             if (chain.Count < 2 || chain[0] != run.pts[0] || chain[chain.Count - 1] != run.pts[run.pts.Count - 1])
             {
                 error = "Hai đầu đoạn biên phải giữ nguyên";
@@ -478,18 +522,24 @@ namespace Falcon.InGame.LevelEditor
             }
             if (run.pts[0] == run.pts[run.pts.Count - 1]) { error = "Đường biên khép kín: dùng Gộp/Tách"; return false; }
             var whole = new List<Vector2Int>(chain);
-            if (CrossesOthers(whole, run.pts, run.a, run.b)) { error = "Biên mới cắt qua đường biên khác hoặc tự cắt, kéo lại"; return false; }
-            if (!SwapRun(run.a, run.b, run.pts, whole, run.lo, run.hi)) { error = "Biên không khớp mảnh kề"; return false; }
+            if (CrossesOthers(whole, run.pts, run.a, gapMode ? -1 : run.b)) { error = "Biên mới cắt qua đường biên khác hoặc tự cắt, kéo lại"; return false; }
+            if (gapMode)
+            {
+                var A = Picture.regions[run.a].points;
+                if (run.lo < 0 || run.hi < 0 || run.lo >= A.Length / 2 || run.hi >= A.Length / 2) { error = "Biên không khớp mảnh"; return false; }
+                Picture.regions[run.a].points = Replace(A, run.lo, run.hi, whole);
+            }
+            else if (!SwapRun(run.a, run.b, run.pts, whole, run.lo, run.hi)) { error = "Biên không khớp mảnh kề"; return false; }
             Picture.regions[run.a].widths = null;
-            Picture.regions[run.b].widths = null;
+            if (!gapMode) Picture.regions[run.b].widths = null;
             var map = RegionRaster.Rasterize(Picture);
             int pa = 0, pb = 0;
             foreach (var id in map.reg)
             {
                 if (id == run.a + 1) pa++;
-                else if (id == run.b + 1) pb++;
+                else if (!gapMode && id == run.b + 1) pb++;
             }
-            if (pa < MinPiecePixels || pb < MinPiecePixels) { error = "Mảnh bị ép quá nhỏ"; return false; }
+            if (pa < MinPiecePixels || (!gapMode && pb < MinPiecePixels)) { error = "Mảnh bị ép quá nhỏ"; return false; }
             return true;
         }
 
@@ -684,6 +734,7 @@ namespace Falcon.InGame.LevelEditor
         private int Commit(int index, int id, List<List<int>> pieces, List<int> touched = null)
         {
             var color = Picture.regions[index].colorId;
+            Picture.regions[index].valueManual = false; // mảnh bị cắt hoặc chia: tính lại số cát
             var baseCount = Picture.regions.Count;
             var ids = new int[pieces.Count];
             for (var k = 0; k < pieces.Count; k++)

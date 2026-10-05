@@ -81,9 +81,15 @@ namespace Falcon.InGame.LevelEditor
         public bool ShowValues { get; private set; } = true;
         public float SourceAlpha { get; private set; }
         public float ViewInset { get; set; } = 0.2f; // UI cập nhật mỗi frame: phần bề ngang bị panel trái che
+        public float ViewInsetRight { get; set; } // như trên, cho panel Inspector bên phải
         public PictureMode Mode { get; private set; } = PictureMode.Select;
         public DrawKind Draw { get; private set; } = DrawKind.Split;
         public int SelectedLine => _selectedLine;
+        public int InspectedLine => _selectedLine >= 0 ? _selectedLine : _editLine; // nét đang chọn, hoặc nét đang nạp vào bút để sửa
+        public int NewLineThickness { get; set; } // độ dày nét sắp vẽ theo % viền; 0 = mặc định
+        public bool IsLineTool => Tool == PictureTool.AddLine;
+        public bool IsCutTool => Tool is PictureTool.Split or PictureTool.Redraw;
+        public int CutThickness { get; set; } = 6; // tranh có khe nét: bề rộng khe của đường cắt (ô lưới)
         public PictureTool Tool => Mode switch
         {
             PictureMode.Paint => PictureTool.Paint,
@@ -91,6 +97,7 @@ namespace Falcon.InGame.LevelEditor
             _ => PictureTool.Select,
         };
         public int SelectedCount => _selected.Count;
+        public bool IsSelected(int index) => _selected.Contains(index);
         public int SplitCount { get; set; } = 2; // số mảnh sau khi chia mảnh đang chọn (mặc định = gợi ý theo diện tích)
         public int SelectedIndex => _selected.Count == 1 ? _selected[0] : -1;
         public int CurrentColorId { get; set; } = 1;
@@ -113,6 +120,8 @@ namespace Falcon.InGame.LevelEditor
             _subs.Add(_input.HotKeyDown(Key.Tab).Subscribe(_ => { if (Mode == PictureMode.Draw) SetDrawKind((DrawKind)(((int)Draw + 1) % 2)); })); // Nét tạm ẩn: chỉ xoay giữa Tách và Vẽ biên
             _subs.Add(_input.HotKeyDown(Key.Digit1).Subscribe(_ => { if (Mode == PictureMode.Draw) SetDrawKind(DrawKind.Split); }));
             _subs.Add(_input.HotKeyDown(Key.Digit2).Subscribe(_ => { if (Mode == PictureMode.Draw) SetDrawKind(DrawKind.Redraw); }));
+            _subs.Add(_input.HotKeyDown(Key.LeftBracket).Subscribe(_ => StepSelectedValue(-1)));
+            _subs.Add(_input.HotKeyDown(Key.RightBracket).Subscribe(_ => StepSelectedValue(1)));
             _subs.Add(_input.HotKeyDown(Key.M).Subscribe(_ => MergeSelected()));
             _subs.Add(_input.HotKeyDown(Key.K).Subscribe(_ => SubdivideSelected()));
             _subs.Add(_input.HotKeyDown(Key.Enter).Subscribe(_ => FinishPen()));
@@ -297,8 +306,8 @@ namespace Falcon.InGame.LevelEditor
 
         public void FitView()
         {
-            if (_propertyData != null) _camera?.FitTo(view.WorldBounds, ViewInset);
-            else if (_source) _camera?.FitTo(view.FrameBounds, ViewInset);
+            if (_propertyData != null) _camera?.FitTo(view.WorldBounds, ViewInset, ViewInsetRight);
+            else if (_source) _camera?.FitTo(view.FrameBounds, ViewInset, ViewInsetRight);
         }
 
         public Dictionary<int, int> ColorCounts() =>
@@ -547,7 +556,7 @@ namespace Falcon.InGame.LevelEditor
         {
             var unit = Mathf.Max(1, _propertyData.unit);
             var radius = EditPickPixels / Mathf.Max(0.01f, PixelsPerCell(pic)); // bán kính chọn tính theo pixel màn hình, không lấn mất việc chọn mảnh
-            var run = EdgeSkeleton.Nearest(EdgeSkeleton.RunsOf(_propertyData, SelectedIndex), pic, unit, radius);
+            var run = EdgeSkeleton.Nearest(EdgeSkeleton.RunsOf(_propertyData, SelectedIndex), pic, unit, radius, _propertyData.gen.inkGaps);
             if (run == null) return false;
             var cubics = EdgeSkeleton.Fit(run, unit);
             if (cubics.Count == 0) return false;
@@ -587,6 +596,7 @@ namespace Falcon.InGame.LevelEditor
             var last = run.pts[run.pts.Count - 1];
             view.HideOutlineRun(run.a, run.lo, run.hi);
             _hiddenOutlines.Add(run.a);
+            if (_propertyData.gen.inkGaps) return; // tranh có khe: chỉ sửa biên của chính mảnh này
             var b = _propertyData.regions[run.b].points;
             view.HideOutlineRun(run.b, Find(b, last), Find(b, first)); // vòng của mảnh kề chạy ngược chiều
             _hiddenOutlines.Add(run.b);
@@ -830,7 +840,22 @@ namespace Falcon.InGame.LevelEditor
         {
             var pts = world.Select(w => view.WorldToPicture(w)).ToList();
             var work = new PictureModel(_propertyData.Clone());
-            if (work.AddLine(pts, replace)) Execute(work.Picture);
+            if (work.AddLine(pts, replace, NewLineThickness)) Execute(work.Picture);
+        }
+
+        // Độ dày (% viền) của nét đang chọn; 0 = mặc định hoặc không có nét chọn
+        public int SelectedLineThickness => _propertyData?.lineThickness != null && InspectedLine >= 0 && InspectedLine < _propertyData.lineThickness.Count ? _propertyData.lineThickness[InspectedLine] : 0;
+
+        public void SetSelectedLineThickness(int percent)
+        {
+            if (_propertyData == null || InspectedLine < 0) return;
+            var li = InspectedLine;
+            var editing = _selectedLine < 0;
+            var work = new PictureModel(_propertyData.Clone());
+            if (!work.SetLineThickness(li, percent)) return;
+            Execute(work.Picture);
+            if (!editing) SelectLine(li); // dựng lại view làm mất chọn
+            else { view.SetLineVisible(li, false); RefreshPen(null); } // đang sửa nét: bản cũ vẫn ẩn, đường xem trước giữ nguyên
         }
 
         // Chốt đường biên đã sửa: hai đầu ghim lại đúng điểm nối rồi thay vào cả hai mảnh
@@ -857,7 +882,7 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Xoá nét trang trí đang chọn (Delete)
-        private void DeleteSelectedLine()
+        public void DeleteSelectedLine()
         {
             if (_propertyData == null || _selectedLine < 0) return;
             var work = new PictureModel(_propertyData.Clone());
@@ -907,7 +932,7 @@ namespace Falcon.InGame.LevelEditor
         {
             var path = world.Select(w => view.WorldToPicture(w)).ToList();
             var work = new PictureModel(_propertyData.Clone());
-            var n = work.SplitPath(index, path, out var err);
+            var n = work.SplitPath(index, path, out var err, _propertyData.gen.inkGaps ? CutThickness : 0);
             if (n == 0)
             {
                 LevelEditorMainUI.Warn(err);
@@ -1024,6 +1049,52 @@ namespace Falcon.InGame.LevelEditor
                 n++;
             }
             if (n > 0) Execute(after);
+            _selected.Clear();
+            foreach (var i in keep) if (IsValid(i)) _selected.Add(i);
+            view.SetSelection(_selected);
+        }
+
+        // Số cát chung của các mảnh đang chọn; false nếu khác nhau hoặc chưa chọn gì
+        public bool TryGetSelectedValue(out int value)
+        {
+            value = 0;
+            if (_propertyData == null || _selected.Count == 0) return false;
+            value = _propertyData.regions[_selected[0]].value;
+            foreach (var i in _selected) if (_propertyData.regions[i].value != value) return false;
+            return true;
+        }
+
+        // Số cát gợi ý theo diện tích của mảnh i
+        public int SuggestedValue(int i) => IsValid(i) ? PieceValue.Suggest(_propertyData, _propertyData.regions[i]) : 0;
+
+        // Đặt tay số cát cho cả vùng chọn (một bước undo)
+        public void SetSelectedValue(int value)
+        {
+            value = PieceValue.Clamp(value);
+            ChangeSelectedValues(r => { if (r.value == value && r.valueManual) return false; r.value = value; r.valueManual = true; return true; });
+        }
+
+        // Đổi số cát từng mảnh đang chọn theo bậc 50 (phím [ ]), mảnh nào đổi thì thành đặt tay
+        public void StepSelectedValue(int steps) =>
+            ChangeSelectedValues(r =>
+            {
+                var v = PieceValue.Clamp(r.value + steps * PieceValue.Step);
+                if (v == r.value) return false;
+                r.value = v;
+                r.valueManual = true;
+                return true;
+            });
+
+        // Áp thay đổi lên các mảnh đang chọn trong một bước undo, giữ nguyên lựa chọn; change trả true nếu mảnh có đổi
+        private void ChangeSelectedValues(Func<RegionData, bool> change)
+        {
+            if (_propertyData == null || _selected.Count == 0 || IsBusy) return;
+            var after = _propertyData.Clone();
+            var n = 0;
+            foreach (var i in _selected) if (change(after.regions[i])) n++;
+            if (n == 0) return;
+            var keep = new List<int>(_selected);
+            Execute(after);
             _selected.Clear();
             foreach (var i in keep) if (IsValid(i)) _selected.Add(i);
             view.SetSelection(_selected);

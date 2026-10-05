@@ -59,6 +59,7 @@ namespace Falcon.InGame.LevelEditor
                     changed = true;
                 }
                 if (!changed) return;
+                BridgeMerged(m, Find);
                 for (var i = 0; i < m.reg.Length; i++)
                     if (m.reg[i] > 0) m.reg[i] = Find(m.reg[i]);
                 PixelRegions.Relabel(m);
@@ -90,6 +91,7 @@ namespace Falcon.InGame.LevelEditor
                     changed = true;
                 }
                 if (!changed) return;
+                BridgeMerged(m, Find);
                 for (var i = 0; i < m.reg.Length; i++) if (m.reg[i] > 0) m.reg[i] = Find(m.reg[i]);
                 PixelRegions.Relabel(m);
             }
@@ -131,6 +133,7 @@ namespace Falcon.InGame.LevelEditor
                     merged++;
                 }
                 if (merged == 0) return;
+                BridgeMerged(m, Find);
                 for (var i = 0; i < m.reg.Length; i++) if (m.reg[i] > 0) m.reg[i] = Find(m.reg[i]);
                 PixelRegions.Relabel(m);
             }
@@ -228,7 +231,40 @@ namespace Falcon.InGame.LevelEditor
                 if (x + 1 < w) Pair(m.reg[i], m.reg[i + 1]);
                 if (y + 1 < h) Pair(m.reg[i], m.reg[i + w]);
             }
+            ForEachGap(m, (a, b, _, _, _) => Pair(a, b));
             return res;
         }
+
+        internal static int MaxGap(RegionMap m) => Mathf.Max(1, m.w / 48); // khe (nét) rộng tới chừng này vẫn coi 2 mảnh hai bên là kề nhau
+
+        // Mỗi đoạn pixel nhãn 0 rộng 1..MaxGap kẹp giữa 2 mảnh khác nhau theo hàng/cột: f(a, b, chỉ số đầu, độ dài, bước)
+        internal static void ForEachGap(RegionMap m, System.Action<int, int, int, int, int> f)
+        {
+            int w = m.w, h = m.h, g = MaxGap(m);
+            void Scan(int start, int stride, int n)
+            {
+                int prev = 0, run = 0;
+                for (var k = 0; k < n; k++)
+                {
+                    var i = start + k * stride;
+                    var r = m.reg[i];
+                    if (r <= 0) { run++; continue; }
+                    if (prev > 0 && prev != r && run > 0 && run <= g) f(prev, r, i - run * stride, run, stride);
+                    prev = r;
+                    run = 0;
+                }
+            }
+            for (var y = 0; y < h; y++) Scan(y * w, 1, w);
+            for (var x = 0; x < w; x++) Scan(x, w, h);
+        }
+
+        // Hai mảnh sắp gộp mà cách nhau bằng khe thì lấp khe, để mảnh gộp liền 1 khối
+        private static void BridgeMerged(RegionMap m, System.Func<int, int> find) =>
+            ForEachGap(m, (a, b, s, len, stride) =>
+            {
+                var fa = find(a);
+                if (fa != find(b)) return;
+                for (var t = 0; t < len; t++) m.reg[s + t * stride] = fa;
+            });
     }
 }

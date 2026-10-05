@@ -63,6 +63,7 @@ namespace Falcon.Shared.BaseLevelEditor
         private bool _lastLeftPressed;
         private bool _lastRightPressed;
         private bool _lastMiddlePressed;
+        private bool _leftDownOnCanvas, _rightDownOnCanvas, _middleDownOnCanvas; // lần nhấn đang giữ đã phát sự kiện nhấn chưa
         private bool _isPointerOverUI;
         private bool _pointerCaptured;
 
@@ -138,11 +139,10 @@ namespace Falcon.Shared.BaseLevelEditor
         private void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
         {
             if (device is not Mouse mouse) return;
-            if (!IsTargetedToGameView())
-                return;
-            UpdatePointerCache(mouse, eventPtr);
-            HandleMouseButtons(mouse, eventPtr);
-            HandleMouseScroll(mouse, eventPtr);
+            var targeted = IsTargetedToGameView();
+            if (targeted) UpdatePointerCache(mouse, eventPtr);
+            HandleMouseButtons(mouse, eventPtr, targeted); // chuột trên UI vẫn theo dõi trạng thái nút, chỉ không phát sự kiện nhấn
+            if (targeted) HandleMouseScroll(mouse, eventPtr);
         }
 
         private void UpdatePointerCache(Mouse mouse, InputEventPtr eventPtr)
@@ -166,52 +166,30 @@ namespace Falcon.Shared.BaseLevelEditor
             return new LevelEditorPointerEvent(_currentScreen, _currentWorld, _lastModifiers, button);
         }
 
-        private void HandleMouseButtons(Mouse mouse, InputEventPtr eventPtr)
+        private void HandleMouseButtons(Mouse mouse, InputEventPtr eventPtr, bool targeted)
         {
-            if (mouse.leftButton.ReadValueFromEvent(eventPtr, out var leftValue))
-            {
-                var leftPressed = leftValue >= InputSystem.settings.defaultButtonPressPoint;
-                if (leftPressed && !_lastLeftPressed)
-                {
-                    _pointerDown.OnNext(CreatePointerEvent(0));
-                }
-                else if (!leftPressed && _lastLeftPressed)
-                {
-                    _pointerUp.OnNext(CreatePointerEvent(0));
-                }
+            HandleButton(mouse.leftButton, eventPtr, 0, targeted, ref _lastLeftPressed, ref _leftDownOnCanvas);
+            HandleButton(mouse.rightButton, eventPtr, 1, targeted, ref _lastRightPressed, ref _rightDownOnCanvas);
+            HandleButton(mouse.middleButton, eventPtr, 2, targeted, ref _lastMiddlePressed, ref _middleDownOnCanvas);
+        }
 
-                _lastLeftPressed = leftPressed;
+        // Nhấn chỉ phát khi chuột đang trên canvas; nhả chỉ phát nếu lần nhấn đó đã phát. Nhấn trên UI rồi kéo ra canvas thì không bị coi là nhấn mới
+        private void HandleButton(ButtonControl button, InputEventPtr eventPtr, int id, bool targeted, ref bool last, ref bool downOnCanvas)
+        {
+            if (!button.ReadValueFromEvent(eventPtr, out var value)) return;
+            var pressed = value >= InputSystem.settings.defaultButtonPressPoint;
+            if (pressed && !last && targeted)
+            {
+                downOnCanvas = true;
+                _pointerDown.OnNext(CreatePointerEvent(id));
+            }
+            else if (!pressed && last && downOnCanvas)
+            {
+                downOnCanvas = false;
+                _pointerUp.OnNext(CreatePointerEvent(id));
             }
 
-            if (mouse.rightButton.ReadValueFromEvent(eventPtr, out var rightValue))
-            {
-                var rightPressed = rightValue >= InputSystem.settings.defaultButtonPressPoint;
-                if (rightPressed && !_lastRightPressed)
-                {
-                    _pointerDown.OnNext(CreatePointerEvent(1));
-                }
-                else if (!rightPressed && _lastRightPressed)
-                {
-                    _pointerUp.OnNext(CreatePointerEvent(1));
-                }
-
-                _lastRightPressed = rightPressed;
-            }
-
-            if (mouse.middleButton.ReadValueFromEvent(eventPtr, out var middleValue))
-            {
-                var middlePressed = middleValue >= InputSystem.settings.defaultButtonPressPoint;
-                if (middlePressed && !_lastMiddlePressed)
-                {
-                    _pointerDown.OnNext(CreatePointerEvent(2));
-                }
-                else if (!middlePressed && _lastMiddlePressed)
-                {
-                    _pointerUp.OnNext(CreatePointerEvent(2));
-                }
-
-                _lastMiddlePressed = middlePressed;
-            }
+            last = pressed;
         }
 
         private void HandleMouseScroll(Mouse mouse, InputEventPtr eventPtr)
