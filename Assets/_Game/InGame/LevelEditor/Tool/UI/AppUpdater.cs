@@ -68,6 +68,8 @@ namespace Falcon.InGame.LevelEditor
                 "param($p,$zip,$dir,$exe)\n" +
                 "Wait-Process -Id $p -ErrorAction SilentlyContinue\n" +
                 "Expand-Archive -Force -LiteralPath $zip -DestinationPath $dir\n" +
+                "$new = Join-Path $dir 'MosaicEditor.exe'\n" + // bản mới đổi tên exe, mở đúng file mới thay vì exe cũ
+                "if (Test-Path $new) { $exe = $new }\n" +
                 "Start-Process $exe\n");
             var self = Process.GetCurrentProcess();
             var dir = Path.GetDirectoryName(Application.dataPath);

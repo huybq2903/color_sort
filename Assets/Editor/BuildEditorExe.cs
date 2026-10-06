@@ -8,7 +8,7 @@ using UnityEngine;
 /// <summary>Build bản exe Level Editor (EditorScene làm scene đầu), chạy bằng -executeMethod BuildEditorExe.Build.</summary>
 public static class BuildEditorExe
 {
-    private const string OutDir = "Builds/ColorSortEditor";
+    private const string OutDir = "Builds/MosaicEditor";
 
     [MenuItem("Tools/Build Editor Exe")]
     public static void Build()
@@ -26,7 +26,7 @@ public static class BuildEditorExe
         var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
         {
             scenes = scenes.ToArray(),
-            locationPathName = $"{OutDir}/ColorSortEditor.exe",
+            locationPathName = $"{OutDir}/MosaicEditor.exe",
             target = BuildTarget.StandaloneWindows64,
             options = BuildOptions.None,
         });
