@@ -23,6 +23,8 @@ namespace Falcon.Shared.BaseLevelEditor
         protected LevelEditorSaveLoad _saveLoad;
         protected LevelEditorPopup _popupManager;
         protected PopupStart _popupStart;
+        protected PopupRecent _popupRecent;
+        protected RecentGrid _recent;
         protected PopupConfirm _popupConfirm;
         protected PopupNotif _popupNotif;
 
@@ -94,7 +96,9 @@ namespace Falcon.Shared.BaseLevelEditor
         {
             _saveLoad = LevelEditorManager.Get<LevelEditorSaveLoad>();
             _popupManager = LevelEditorManager.Get<LevelEditorPopup>();
-            _popupStart = new PopupStart(OnNewLevel, OnOpenLevel);
+            _recent = new RecentGrid(_popupManager, OpenRecentPath, () => _saveLoad.CurrentPath);
+            _popupStart = new PopupStart(OnNewLevel, OnOpenLevel, _recent);
+            _popupRecent = new PopupRecent(_recent);
             _popupConfirm = new PopupConfirm("Có thay đổi chưa lưu. Tiếp tục?");
             _popupNotif = new PopupNotif();
             Gui.SetTheme(ImThemeBuiltin.Dark());
@@ -167,6 +171,7 @@ namespace Falcon.Shared.BaseLevelEditor
 
             if (ImMenuBar.Button(Gui, "New")) ConfirmDiscardChanges(OnNewLevel);
             if (ImMenuBar.Button(Gui, "Open")) ConfirmDiscardChanges(() => OnOpenLevel());
+            if (ImMenuBar.Button(Gui, "Open Recent")) _popupManager.Open(_popupRecent);
             if (ImMenuBar.Button(Gui, "Save")) OnSave();
             if (ImMenuBar.Button(Gui, "Save As")) OnSaveAs();
 
@@ -257,6 +262,23 @@ namespace Falcon.Shared.BaseLevelEditor
         }
 
         protected virtual void OnNewLevel() => _saveLoad.NewFile();
+
+        // Mở level từ Recent: hỏi bỏ thay đổi chưa lưu trước, mở xong thì gọi opened để popup tự đóng
+        private void OpenRecentPath(string path, Action opened)
+        {
+            ConfirmDiscardChanges(() =>
+            {
+                try
+                {
+                    _saveLoad.OpenFile(path);
+                    opened();
+                }
+                catch (Exception e)
+                {
+                    Warn($"Không mở được level: {e.Message}");
+                }
+            });
+        }
 
         protected virtual bool OnOpenLevel()
         {

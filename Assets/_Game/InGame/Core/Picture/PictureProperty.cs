@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Falcon.Shared.BaseInGame;
+using Newtonsoft.Json;
 
 namespace Falcon.InGame.Core
 {
@@ -10,6 +11,7 @@ namespace Falcon.InGame.Core
         public int width, height;
         public int unit = 1; // toạ độ điểm = số nguyên theo 1/unit của lưới width×height
         public List<RegionData> regions = new();
+        [JsonProperty(ItemConverterType = typeof(DeltaIntArrayConverter))]
         public List<int[]> lines = new(); // nét đen trang trí (polyline mở, cùng toạ độ points), không phải mảnh
         public List<int> lineWidths = new(); // độ dày mỗi nét trang trí (đơn vị như points); 0 = dày bằng viền
         public List<int> lineThickness = new(); // độ dày mỗi nét theo % độ dày viền; 0 = mặc định (chấm dùng lineWidths)
@@ -52,12 +54,16 @@ namespace Falcon.InGame.Core
     /// <summary>1 mảnh: polygon đơn CCW trên lưới góc pixel.</summary>
     public class RegionData
     {
+        [JsonConverter(typeof(DeltaIntArrayConverter))]
         public int[] points;
         public int colorId;
         public int value; // giá trị cát của mảnh (50..300, bậc 50), tính từ diện tích
         public bool valueManual; // true = người dùng đặt tay: không bị tính lại theo diện tích
+        [JsonProperty(ItemConverterType = typeof(DeltaIntArrayConverter))]
         public List<int[]> holes; // lỗ trong mảnh (polygon đơn mỗi lỗ, cùng toạ độ với points); null = không lỗ
+        [JsonConverter(typeof(DeltaIntArrayConverter), 1)]
         public int[] widths; // độ dày nét viền tại mỗi đỉnh (đơn vị như points); null hoặc lệch số đỉnh = dày mặc định, 0 = không đo được
+        [JsonProperty(ItemConverterType = typeof(DeltaIntArrayConverter), ItemConverterParameters = new object[] { 1 })]
         public List<int[]> holeWidths; // như widths cho từng lỗ
     }
 
@@ -79,7 +85,7 @@ namespace Falcon.InGame.Core
         public int smoothScale = 3;
         public bool snapEdges = true; // nắn đường cắt về cạnh thật của ảnh gốc
         public bool tidy = true; // vector hoá đường viền: biên chung, spline, toạ độ mịn gấp 4
-        public float fitTolerance = 4f; // dung sai khớp Bézier (đơn vị lưới); lớn = đường cong dài hơn, 0 = tắt
+        public float fitTolerance = 1f; // dung sai khớp Bézier (đơn vị lưới); lớn = đường cong dài hơn, 0 = tắt
         public float curveSmooth = 3f; // 0 = tắt làm mượt viền; 1..4 mượt dần
         public int frameW = 100, frameH = 100; // khung tranh (tỉ lệ W:H), đầu ra luôn phủ kín khung
         public bool fitCover = true; // false = ảnh nằm gọn trong khung, phần dư là nền; true = phủ kín khung, cắt phần thừa

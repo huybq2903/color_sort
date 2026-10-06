@@ -36,28 +36,28 @@ namespace Falcon.Modules.Core.InAppPurchase.Runtime
         }
 
         protected Action<Product> _onValidationFinished;
-        
+
         /// <summary>
         /// Product đang được xử lý.
         /// </summary>
         public Product PurchasedProduct { get; private set; }
-        
+
         /// <summary>
         /// Token để huỷ các thao tác bất đồng bộ.
         /// </summary>
         protected CancellationTokenSource Cts { get; private set; }
-        
+
         /// <summary>
         /// Vị trí gọi giao dịch trong UI/game (ví dụ: "Shop_Popup", "Level_Reward").
         /// </summary>
         public string Where { get; protected set; }
-        
+
         /// <summary>
         /// Nhãn tuỳ chọn để phân biệt các giao dịch có cùng productId.
         /// Dùng làm hậu tố sau productId khi gửi log lên
         /// </summary>
         public string Why { get; protected set; }
-        
+
         /// <summary>
         /// Bắt đầu quá trình mua hàng với sản phẩm chỉ định.
         /// Gửi yêu cầu xác thực.
@@ -80,7 +80,7 @@ namespace Falcon.Modules.Core.InAppPurchase.Runtime
                 purchaseValidation.SendValidate(this);
             }
         }
-        
+
         private async void OnReceiveValidationAsync(State state)
         {
             try
@@ -94,16 +94,16 @@ namespace Falcon.Modules.Core.InAppPurchase.Runtime
             }
         }
 
-        private void Log()
+        protected virtual void Log()
         {
             if (!IAPManager.IsLogPurchaseInEditor && Application.isEditor) return;
-            
+
             foreach (var logger in IAPManager.listPurchaseLogger)
             {
                 logger.Log(this);
             }
         }
-        
+
         /// <summary>
         /// Xử lý kết quả xác thực (thành công, thất bại hoặc gian lận) từ các validator bên ngoài.
         /// Gọi callback tương ứng và kết thúc quy trình giao dịch.
@@ -144,17 +144,17 @@ namespace Falcon.Modules.Core.InAppPurchase.Runtime
             if (PurchasedProduct == null) return false;
             return PurchasedProduct.transactionID == id;
         }
-        
+
         /// <summary>
         /// Được gọi khi xác thực thành công.
         /// </summary>
         protected abstract void OnValidationSucceeded();
-        
+
         /// <summary>
         /// Được gọi khi phát hiện bất thường.
         /// </summary>
         protected abstract void OnHackDetected();
-        
+
         /// <summary>
         /// Được gọi khi giao dịch thất bại.
         /// </summary>

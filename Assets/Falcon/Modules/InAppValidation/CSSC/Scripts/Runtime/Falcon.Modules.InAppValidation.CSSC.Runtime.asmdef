@@ -1,0 +1,21 @@
+{
+    "name": "Falcon.Modules.InAppValidation.CSSC.Runtime",
+    "rootNamespace": "Falcon.Modules.InAppValidation.CSSC.Runtime",
+    "references": [
+        "Falcon.Helpers.FReflection.Runtime",
+        "Falcon.Modules.Core.InAppPurchase.Runtime",
+        "Falcon.Modules.Core.Network.Runtime",
+        "UnityEngine.Purchasing",
+        "Unity.Purchasing",
+        "Falcon.Modules.Core.AccountData.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -23,21 +23,23 @@ namespace Falcon.InGame.LevelEditor
         /// <summary>Tag bản mới đã phát hiện, null nếu chưa có.</summary>
         public string Tag { get; private set; }
 
-        /// <summary>Hỏi GitHub bản mới nhất; có bản mới hơn thì gọi onFound(tag). Lỗi mạng/chưa có release thì im lặng.</summary>
-        public IEnumerator Check(Action<string> onFound)
+        /// <summary>Hỏi GitHub bản mới nhất và cập nhật Tag/link tải; lỗi mạng thì giữ nguyên kết quả cũ.</summary>
+        public IEnumerator Check()
         {
+            if (_busy) yield break; // đang tải thì đừng đổi link giữa chừng
             using var req = UnityWebRequest.Get(Api);
             req.SetRequestHeader("User-Agent", "ColorSortEditor"); // GitHub API bắt buộc có User-Agent
             yield return req.SendWebRequest();
             if (req.result != UnityWebRequest.Result.Success) yield break;
 
             var rel = JsonUtility.FromJson<Release>(req.downloadHandler.text);
-            if (rel?.assets == null || !IsNewer(rel.tag_name)) yield break;
-            foreach (var a in rel.assets)
-                if (a.name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) _zipUrl = a.browser_download_url;
-            if (_zipUrl == null) yield break;
-            Tag = rel.tag_name;
-            onFound(Tag);
+            string zipUrl = null;
+            if (rel?.assets != null && IsNewer(rel.tag_name))
+                foreach (var a in rel.assets)
+                    if (a.name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) zipUrl = a.browser_download_url;
+
+            _zipUrl = zipUrl;
+            Tag = zipUrl != null ? rel.tag_name : null; // luôn theo bản mới nhất, hết bản mới (vd gỡ release) thì ẩn mục menu
         }
 
         /// <summary>Tải zip, chạy script PowerShell đợi exe thoát rồi giải nén đè và mở lại, sau đó thoát app.</summary>

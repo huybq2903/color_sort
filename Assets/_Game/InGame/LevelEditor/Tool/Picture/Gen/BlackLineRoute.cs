@@ -9,7 +9,8 @@ namespace Falcon.InGame.LevelEditor
     {
         private const int DarkMax = 35, MinArea = 185, MinPieces = 15, EdgeInk = 6;
         private const int VeinWindow = 7, VeinContrast = 60, VeinMax = 120;
-        private const int MinInkArea = 60, MaxRing = 16;
+        private const int MinInkArea = 60, MaxRing = 16, GapReach = 8;
+        private const float MaxLineHalfWidth = 3.2f;
         private const float RingFraction = 0.6f, MaxRingDepth = 0.05f, LineProbe = 8f;
         private const float MinCoverage = 0.55f;
 
@@ -22,6 +23,7 @@ namespace Falcon.InGame.LevelEditor
             var closed = ImageOps.Close(peak, w, h, VeinWindow); // gân mảnh bị pha màu kính nên không đủ đen: nét tối hơn hẳn vùng quanh cũng là nét
             var band = Bands(peak, w, h);
             for (var i = 0; i < n; i++) free[i] = peak[i] >= DarkMax && !(closed[i] - peak[i] > VeinContrast && peak[i] < VeinMax) && !band.Contains(i % w, i / w); // dải sát mép là nét: không có khung đen kín thì ô nền không nối nhau qua mép
+            CloseSmallGaps(free, w, h); // kẽ hở nhỏ giữa đầu một nét và nét khác làm hai mảnh dính nhau: nối lại
             var faces = ImageOps.Components(free, w, h, false, out var count);
             var area = new int[count + 1];
             foreach (var l in faces) if (l > 0) area[l]++;
@@ -37,6 +39,24 @@ namespace Falcon.InGame.LevelEditor
             var map = new RegionMap { w = w, h = h, reg = faces, inked = true, gaps = true };
             for (var id = 1; id <= ids; id++) map.colors.Add(cols[id]);
             return map;
+        }
+
+        // Đầu nét (xương nét) cách nét khác không quá GapReach pixel theo hướng nét thì nối lại bằng đoạn nét mỏng (2px), free = false trên đoạn nối
+        private static void CloseSmallGaps(bool[] free, int w, int h)
+        {
+            var n = w * h;
+            var ink = new bool[n];
+            for (var i = 0; i < n; i++) ink[i] = !free[i];
+            var sk = Skeleton.Thin(ink, w, h);
+            var before = (bool[])sk.Clone();
+            var width = ImageOps.Edt(ink, w, h);
+            var thick = new bool[n]; // đầu xương nằm trong khối đặc (đồng tử, mũi): không phải đầu nét, không nối
+            for (var i = 0; i < n; i++) thick[i] = width[i] > MaxLineHalfWidth;
+            Skeleton.CloseGaps(sk, w, h, GapReach, null, thick);
+            var bridge = new bool[n];
+            for (var i = 0; i < n; i++) bridge[i] = sk[i] && !before[i];
+            bridge = ImageOps.Dilate3(bridge, w, h);
+            for (var i = 0; i < n; i++) if (bridge[i]) free[i] = false;
         }
 
         // Lan nhãn mảnh sang pixel chưa có nhãn nhưng không phải nét thật (ô vụn bị bỏ, dải EdgeInk sát mép tranh)

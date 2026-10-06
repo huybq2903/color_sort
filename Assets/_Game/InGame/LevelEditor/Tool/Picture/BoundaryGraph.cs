@@ -163,7 +163,7 @@ namespace Falcon.InGame.LevelEditor
                     var big = loops.OrderByDescending(l => Math.Abs(l.area)).First();
                     var sign = big.area >= 0 ? 1 : -1;
                     var poly = Dedup(sign > 0 ? big.pts : big.pts.Reverse().ToArray());
-                    foreach (var (pts, area) in loops.Where(l => !ReferenceEquals(l.pts, big.pts) && l.area * sign > 0).OrderByDescending(l => Math.Abs(l.area)))
+                    foreach (var (pts, area) in loops.Where(l => !ReferenceEquals(l.pts, big.pts) && l.area * sign > 0 && Math.Abs(l.area) >= MinHoleArea * unit * unit).OrderByDescending(l => Math.Abs(l.area))) // cụm cùng chiều quá nhỏ (vụn tam giác nối vào mảnh ở góc): bỏ, không nối vào polygon
                         MergeLoop(poly, Dedup(sign > 0 ? pts : pts.Reverse().ToArray()));
                     var holeLoops = loops.Where(l => l.area * sign < 0).Select(l => sign > 0 ? l.pts : l.pts.Reverse().ToArray()).ToList();
                     if (poly.Count < 3 || Math.Abs(SignedArea(poly)) < 2f) poly = RawLoop(list, unit) ?? poly; // suy biến: dùng vòng lưới thô, không bỏ mảnh
@@ -175,7 +175,7 @@ namespace Falcon.InGame.LevelEditor
                     {
                         var hp = Dedup(pts);
                         TrimLoops(hp);
-                        if (hp.Count < 3 || -SignedArea(hp) < 2f * unit * unit || !MostlyInside(poly, hp)) continue;
+                        if (hp.Count < 3 || -SignedArea(hp) < MinHoleArea * unit * unit || !MostlyInside(poly, hp)) continue; // lỗ li ti (vụn khe nằm trong mảnh): bỏ, mảnh phủ kín chỗ đó
                         (holeSets[id] ??= new List<int[]>()).Add(Flatten(hp));
                     }
                 }
@@ -248,6 +248,7 @@ namespace Falcon.InGame.LevelEditor
             ring.AddRange(copy);
         }
 
+        private const float MinHoleArea = 100f; // diện tích lỗ nhỏ nhất được giữ (ô lưới 1920, ~11px² ở lưới 640)
         private const float MaxArcDeviation = 15f; // hộp bao của đường đã làm mượt không được lệch biên thô quá ngần này (ô lưới)
 
         private static bool NearRaw(List<Vector2> sm, Vector2Int[] raw)

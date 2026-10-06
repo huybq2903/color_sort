@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Falcon.InGame.Core;
 using Falcon.Shared.BaseLevelEditor;
@@ -23,6 +24,7 @@ namespace Falcon.InGame.LevelEditor
 
         private LevelEditorPicture _picture;
         private PopupLoading _loading;
+        private const float UpdateCheckSeconds = 1800f; // 30 phút hỏi GitHub một lần
         private readonly AppUpdater _updater = new();
 
         public override void Initialized()
@@ -30,16 +32,21 @@ namespace Falcon.InGame.LevelEditor
             base.Initialized();
             _picture = LevelEditorManager.Get<LevelEditorPicture>();
             _loading = new PopupLoading(() => _picture.BusyText);
+            _saveLoad.ThumbnailCapture = () => PictureThumbnail.Render(_picture.Picture);
 #if !UNITY_EDITOR
-            StartCoroutine(_updater.Check(OnUpdateFound));
+            StartCoroutine(CheckUpdatesRepeatedly());
 #endif
         }
 
-        private void OnUpdateFound(string tag)
+        // Có bản mới chỉ hiện thành mục "Update vX" trên menu bar, không bật popup
+        private IEnumerator CheckUpdatesRepeatedly()
         {
-            var popup = new PopupConfirm($"Có bản mới {tag} (đang dùng {Application.version}). Cập nhật ngay? App sẽ tự khởi động lại.", "Để sau", "Cập nhật");
-            popup.SetAction(null, StartUpdate);
-            _popupManager.Open(popup);
+            var wait = new WaitForSecondsRealtime(UpdateCheckSeconds);
+            while (true)
+            {
+                yield return _updater.Check();
+                yield return wait;
+            }
         }
 
         private void StartUpdate() => ConfirmDiscardChanges(() => StartCoroutine(_updater.Apply()));

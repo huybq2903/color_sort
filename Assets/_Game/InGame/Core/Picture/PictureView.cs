@@ -37,10 +37,13 @@ namespace Falcon.InGame.Core
         private Material _material, _shadowMaterial;
         private bool _glassShader;
         private Texture2D _glass, _facets;
+        private bool _ownsTextures; // chỉ huỷ texture do mình tự tạo, không huỷ asset nạp từ Resources
         private bool _glassOn = true;
         private float _scale;
         private Vector2 _offset;
         private int _highlight = -1;
+        private float _zs = 1f; // hệ số thu nhỏ công cụ vẽ (điểm neo, tay cầm, đường xem trước, viền focus) theo mức zoom: zoom gần thì nhỏ lại để dễ vẽ chính xác
+        private const float MinToolScale = 0.12f;
         private readonly HashSet<int> _selection = new();
         private SpriteRenderer _source;
         private RectInt _sourceRect;
@@ -66,6 +69,35 @@ namespace Falcon.InGame.Core
         private int _decorHot = -1;
 
         public int RegionCount => _meshes.Count;
+
+        private void LateUpdate()
+        {
+            var cam = Camera.main;
+            if (!cam || !cam.orthographic || viewHeight <= 0f) return;
+            var z = Mathf.Clamp(cam.orthographicSize / (viewHeight * 0.55f), MinToolScale, 1f); // 1 khi vừa khung hoặc zoom ra; nhỏ dần khi zoom vào
+            if (Mathf.Abs(z - _zs) < 0.01f) return;
+            _zs = z;
+            RestyleTools();
+        }
+
+        // Áp lại cỡ cho các công cụ đã dựng khi mức zoom đổi
+        private void RestyleTools()
+        {
+            for (var i = 0; i < _anchors.Count; i++) { _anchors[i].Radius = outlineWidth * 1.1f * _zs; _anchors[i].Thickness = outlineWidth * 0.5f * _zs; }
+            for (var i = 0; i < _handleLines.Count; i++)
+            {
+                _handleLines[i].Thickness = outlineWidth * 0.3f * _zs;
+                _handleCases[i].Thickness = outlineWidth * 0.9f * _zs;
+                _handleDots[i].Radius = outlineWidth * 0.8f * _zs;
+                _handleDotCases[i].Radius = outlineWidth * 1.15f * _zs;
+            }
+            if (_snap) _snap.Radius = outlineWidth * 0.9f * _zs;
+            if (_cut) _cut.Thickness = outlineWidth * 1.5f * _zs;
+            if (_cutCase) _cutCase.Thickness = outlineWidth * 2.6f * _zs;
+            if (_highlight >= 0 && _highlight < _outlines.Count) foreach (var o in _outlines[_highlight]) Style(o, true);
+            foreach (var i in _selection) if (i < _outlines.Count) foreach (var o in _outlines[i]) Style(o, true);
+            if (_decorHot >= 0) StyleDecor(_decorHot, true);
+        }
 
         public Bounds FrameBounds => _source && _source.gameObject.activeSelf ? new Bounds(transform.position, new Vector3(_frameSize.x, _frameSize.y, 0.1f)) : default;
 
@@ -341,8 +373,8 @@ namespace Falcon.InGame.Core
                 _anchors[i].gameObject.SetActive(i < n);
                 if (i >= n) continue;
                 _anchors[i].Type = i == selected ? DiscType.Disc : DiscType.Ring;
-                _anchors[i].Radius = outlineWidth * 1.1f;
-                _anchors[i].Thickness = outlineWidth * 0.5f;
+                _anchors[i].Radius = outlineWidth * 1.1f * _zs;
+                _anchors[i].Thickness = outlineWidth * 0.5f * _zs;
                 _anchors[i].transform.position = new Vector3(world[i].x, world[i].y, transform.position.z - 0.025f);
             }
         }
@@ -358,7 +390,7 @@ namespace Falcon.InGame.Core
                 var l = go.AddComponent<Polyline>();
                 l.Closed = false;
                 l.Color = PreviewColor;
-                l.Thickness = outlineWidth * 0.3f;
+                l.Thickness = outlineWidth * 0.3f * _zs;
                 l.SortingOrder = sortingOrder + 5;
                 _handleLines.Add(l);
                 var lc = new GameObject("HandleCase").AddComponent<Polyline>(); // viền đen dưới thanh cong: thấy rõ trên mọi màu mảnh
@@ -366,7 +398,7 @@ namespace Falcon.InGame.Core
                 lc.transform.localPosition = new Vector3(0f, 0f, 0.001f);
                 lc.Closed = false;
                 lc.Color = CaseColor;
-                lc.Thickness = outlineWidth * 0.9f;
+                lc.Thickness = outlineWidth * 0.9f * _zs;
                 lc.SortingOrder = sortingOrder + 4;
                 _handleCases.Add(lc);
                 var dot = new GameObject("HandleDot").AddComponent<Disc>();
@@ -388,9 +420,9 @@ namespace Falcon.InGame.Core
                 var seg = new List<Vector2> { a, b };
                 _handleLines[i].SetPoints(seg);
                 _handleCases[i].SetPoints(seg);
-                _handleDots[i].Radius = outlineWidth * 0.8f;
+                _handleDots[i].Radius = outlineWidth * 0.8f * _zs;
                 _handleDots[i].transform.localPosition = new Vector3(b.x, b.y, -0.03f);
-                _handleDotCases[i].Radius = outlineWidth * 1.15f;
+                _handleDotCases[i].Radius = outlineWidth * 1.15f * _zs;
                 _handleDotCases[i].transform.localPosition = new Vector3(b.x, b.y, -0.029f);
             }
         }
@@ -409,7 +441,7 @@ namespace Falcon.InGame.Core
             }
             _snap.gameObject.SetActive(show);
             if (!show) return;
-            _snap.Radius = outlineWidth * 0.9f;
+            _snap.Radius = outlineWidth * 0.9f * _zs;
             _snap.transform.position = new Vector3(world.x, world.y, transform.position.z - 0.02f);
         }
 
@@ -555,7 +587,7 @@ namespace Falcon.InGame.Core
                 go.transform.SetParent(transform, false);
                 _cut = go.AddComponent<Polyline>();
                 _cut.Closed = false; // mặc định của Polyline là khép kín: sẽ vẽ thêm đoạn thẳng từ điểm cuối về điểm đầu
-                _cut.Thickness = outlineWidth * 1.5f;
+                _cut.Thickness = outlineWidth * 1.5f * _zs;
                 _cut.Color = PreviewColor;
                 _cut.Joins = PolylineJoins.Round;
                 _cut.SortingOrder = sortingOrder + 5;
@@ -564,7 +596,7 @@ namespace Falcon.InGame.Core
                 back.transform.localPosition = new Vector3(0f, 0f, 0.001f);
                 _cutCase = back.AddComponent<Polyline>();
                 _cutCase.Closed = false;
-                _cutCase.Thickness = outlineWidth * 2.6f;
+                _cutCase.Thickness = outlineWidth * 2.6f * _zs;
                 _cutCase.Color = CaseColor;
                 _cutCase.Joins = PolylineJoins.Round;
                 _cutCase.SortingOrder = sortingOrder + 4;
@@ -604,8 +636,15 @@ namespace Falcon.InGame.Core
         private void EnsureMaterial()
         {
             if (_material) return;
-            _glass = GlassTexture.Create();
-            _facets = GlassTexture.CreateFacets();
+            // Nạp texture đã bake sẵn (Resources/PictureGlass); chưa bake thì tính bằng code, chậm vài giây ở lần đầu
+            _glass = Resources.Load<Texture2D>("PictureGlass/glass");
+            _facets = Resources.Load<Texture2D>("PictureGlass/facets");
+            _ownsTextures = !_glass || !_facets;
+            if (_ownsTextures)
+            {
+                _glass = GlassTexture.Create();
+                _facets = GlassTexture.CreateFacets();
+            }
             var shader = Shader.Find("Falcon/GlassPiece");
             _glassShader = shader != null;
             _material = new Material(shader != null ? shader : Shader.Find("Sprites/Default"));
@@ -629,7 +668,7 @@ namespace Falcon.InGame.Core
         private void Style(Polyline l, bool hot, bool decor = false)
         {
             l.Color = hot ? highlightColor : _glassOn ? outlineColor : FlatLeadColor;
-            l.Thickness = hot ? outlineWidth * 1.5f : (_glassOn ? outlineWidth : outlineWidth * FlatLeadScale) * (decor ? decorLineScale : _lead);
+            l.Thickness = hot ? outlineWidth * 0.75f * _zs : (_glassOn ? outlineWidth : outlineWidth * FlatLeadScale) * (decor ? decorLineScale : _lead);
             l.SortingOrder = sortingOrder + (hot ? 2 : 1);
         }
 
@@ -683,8 +722,11 @@ namespace Falcon.InGame.Core
             Clear();
             if (_material) Destroy(_material);
             if (_shadowMaterial) Destroy(_shadowMaterial);
-            if (_glass) Destroy(_glass);
-            if (_facets) Destroy(_facets);
+            if (_ownsTextures)
+            {
+                if (_glass) Destroy(_glass);
+                if (_facets) Destroy(_facets);
+            }
             if (_source && _source.sprite) Destroy(_source.sprite);
             if (_overlay && _overlay.sprite) Destroy(_overlay.sprite);
             if (_overlayTex) Destroy(_overlayTex);

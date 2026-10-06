@@ -11,6 +11,7 @@ namespace Falcon.InGame.LevelEditor
     {
         public const float Epsilon = 0.75f;
         private const int FlatGapRadius = 1; // khe giữa các mảnh ảnh không nét: 2 + 2 × radius pixel ở lưới workSize
+        private const int IslandMaxArea = 150, IslandReach = 7; // cụm tách rời nhỏ hơn 150px và có mảnh khác trong 7px (lưới ×3)
         private const int GapTrim = 2; // pixel bỏ mỗi bên nét dày ở lưới ×3 (≈0,7px ở lưới 640); 0 = tắt
         private const float SigmaPerLevel = 0.57f; // mức 3 ở lưới x3 ~ sigma 5 mẫu
         internal const int TidyUnit = 4;
@@ -46,6 +47,7 @@ namespace Falcon.InGame.LevelEditor
             if (scale > 1) map = RegionSmoother.Upscale(map, scale);
             if (map.synthetic) RegionOps.FillEmptyBlobs(map);
             RegionOps.TrimGaps(map, GapTrim * Math.Max(1, scale) / 3); // nét giữ độ mảnh như ảnh gốc: vòng làm mượt và phóng lưới làm nét phình ra
+            RegionOps.AbsorbIslands(map, IslandMaxArea, IslandReach); // vụn tách rời cùng nhãn (thường ở góc/mép): về mảnh gần nhất thay vì dính vào mảnh sai
             PieceSize.RemoveSpecks(map, SpeckFraction);
             PieceSize.LimitCount(map, MaxPieces);
             PieceSize.EnsureTextFits(map); // mảnh nhỏ nhất vẫn phải chứa được chữ số (làm sau khi phóng: làm trước khi phóng khiến dải mỏng bị tô nhầm màu nền)

@@ -315,6 +315,58 @@ namespace Falcon.InGame.LevelEditor
             m.reg = res;
         }
 
+        // Cụm nhỏ tách rời khỏi thân mảnh cùng nhãn (vụn ở góc/mép, thường do phóng lưới) về mảnh gần nhất trong tầm `reach` pixel; không lấp khe nên nét giữ nguyên
+        public static void AbsorbIslands(RegionMap m, int maxArea, int reach)
+        {
+            int w = m.w, h = m.h, n = w * h;
+            var comp = new int[n];
+            var stack = new System.Collections.Generic.Stack<int>();
+            var comps = new System.Collections.Generic.List<(int label, System.Collections.Generic.List<int> px)>();
+            for (var s0 = 0; s0 < n; s0++)
+            {
+                if (m.reg[s0] <= 0 || comp[s0] != 0) continue;
+                var label = m.reg[s0];
+                var px = new System.Collections.Generic.List<int>();
+                comps.Add((label, px));
+                comp[s0] = comps.Count;
+                stack.Push(s0);
+                while (stack.Count > 0)
+                {
+                    var p = stack.Pop();
+                    px.Add(p);
+                    int x = p % w, y = p / w;
+                    void Visit(int q) { if (m.reg[q] == label && comp[q] == 0) { comp[q] = comps.Count; stack.Push(q); } }
+                    if (x > 0) Visit(p - 1);
+                    if (x < w - 1) Visit(p + 1);
+                    if (y > 0) Visit(p - w);
+                    if (y < h - 1) Visit(p + w);
+                }
+            }
+            var biggest = new System.Collections.Generic.Dictionary<int, int>();
+            for (var i = 0; i < comps.Count; i++)
+                if (!biggest.TryGetValue(comps[i].label, out var b) || comps[b].px.Count < comps[i].px.Count) biggest[comps[i].label] = i;
+            foreach (var (label, px) in comps)
+            {
+                if (px.Count > maxArea || biggest[label] >= 0 && comps[biggest[label]].px == px) continue;
+                var votes = new System.Collections.Generic.Dictionary<int, int>();
+                foreach (var p in px)
+                {
+                    int x = p % w, y = p / w;
+                    for (var dy = -reach; dy <= reach; dy++)
+                    for (var dx = -reach; dx <= reach; dx++)
+                    {
+                        int xx = x + dx, yy = y + dy;
+                        if (xx < 0 || yy < 0 || xx >= w || yy >= h || dx * dx + dy * dy > reach * reach) continue;
+                        var l = m.reg[yy * w + xx];
+                        if (l > 0 && l != label) votes[l] = votes.TryGetValue(l, out var c) ? c + 1 : 1;
+                    }
+                }
+                if (votes.Count == 0) continue;
+                var best = votes.OrderByDescending(kv => kv.Value).First().Key;
+                foreach (var p in px) m.reg[p] = best;
+            }
+        }
+
         private const int MaxErasedSpeck = 3000; // cụm khoét chỉ giáp 1 mảnh (hạt đã bị khe xoá sạch) nhỏ hơn cỡ này (px ở lưới gốc) thì trả về mảnh chủ
 
         // Hạt nhỏ bị khe xoá sạch chỉ để lại 1 chấm đen: cụm pixel vừa khoét giáp đúng 1 mảnh, nhỏ, không chạm mép tranh hay vùng trống có sẵn thì trả về mảnh đó

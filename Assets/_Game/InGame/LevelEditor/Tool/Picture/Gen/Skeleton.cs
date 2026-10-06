@@ -304,12 +304,13 @@ namespace Falcon.InGame.LevelEditor
 
         // Nối đầu mút với đường xương khác nằm phía trước trong tầm maxDist (bịt khe hở nét chì mờ)
         // ink != null: chỉ nối khi đoạn nối nằm trên mặt nạ nét (khe hở xa hơn nhưng vẫn là chỗ nét dày giao nhau)
-        public static void CloseGaps(bool[] sk, int w, int h, int maxDist, bool[] ink = null)
+        public static void CloseGaps(bool[] sk, int w, int h, int maxDist, bool[] ink = null, bool[] skipEnd = null)
         {
             var ends = new List<int>();
             for (var i = 0; i < sk.Length; i++) if (sk[i] && Degree(sk, w, h, i) <= 1) ends.Add(i);
             foreach (var e in ends)
             {
+                if (skipEnd != null && skipEnd[e]) continue;
                 var branch = new List<int> { e };
                 var prev = -1;
                 var cur = e;

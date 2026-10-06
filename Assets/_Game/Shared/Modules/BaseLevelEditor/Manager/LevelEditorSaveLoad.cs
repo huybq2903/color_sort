@@ -80,7 +80,11 @@ namespace Falcon.Shared.BaseLevelEditor
             }
         }
 
+        /// <summary>Hàm chụp preview của level hiện tại (null = không có preview), gọi mỗi lần Save.</summary>
+        public Func<Texture2D> ThumbnailCapture { get; set; }
+
         public string LevelName { get; private set; }
+        public string CurrentPath => FilePath;
         public bool HasUnsavedChanges { get; private set; }
         public bool HasError { get; private set; }
         private string FilePath { get; set; }
@@ -138,6 +142,7 @@ namespace Falcon.Shared.BaseLevelEditor
                 FilePath = path;
                 LoadLevel(levelData);
                 LevelName = Path.GetFileNameWithoutExtension(path);
+                AddRecent(path, false);
             }
         }
 
@@ -147,7 +152,9 @@ namespace Falcon.Shared.BaseLevelEditor
             var levelData = LevelData.FromJson(json) ?? new LevelData();
             FilePath = path;
             LoadLevel(levelData);
-            return Path.GetFileNameWithoutExtension(path);
+            LevelName = Path.GetFileNameWithoutExtension(path);
+            AddRecent(path, false);
+            return LevelName;
         }
 
         public void SaveFileAs(out List<string> failed)
@@ -166,6 +173,7 @@ namespace Falcon.Shared.BaseLevelEditor
                 _originJsonData = _levelData.ToJson();
                 UpdateChangesStatus();
                 LevelName = Path.GetFileNameWithoutExtension(path);
+                AddRecent(path, true);
             }
         }
 
@@ -183,6 +191,25 @@ namespace Falcon.Shared.BaseLevelEditor
             File.WriteAllText(FilePath, _levelData.ToJson().Compress());
             _originJsonData = _levelData.ToJson();
             UpdateChangesStatus();
+            AddRecent(FilePath, true);
+        }
+
+        private void AddRecent(string path, bool withThumb)
+        {
+            Texture2D thumb = null;
+            try
+            {
+                if (withThumb) thumb = ThumbnailCapture?.Invoke();
+                RecentLevels.Touch(path, thumb);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Recent: {e.Message}");
+            }
+            finally
+            {
+                if (thumb) Destroy(thumb);
+            }
         }
 
         public void SaveTempToPlay()

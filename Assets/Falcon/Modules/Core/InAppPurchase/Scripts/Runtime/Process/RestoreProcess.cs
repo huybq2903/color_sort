@@ -32,5 +32,9 @@ namespace Falcon.Modules.Core.InAppPurchase.Runtime
         protected override void OnPurchaseFailed()
         {
         }
+
+        protected override void Log()
+        {
+        }
     }
 }

@@ -59,7 +59,12 @@ MonoBehaviour:
   - productID: com.fc.untape.sorting.color.jam.removeadspack
     defaultPrice: 12.99$
     type: 0
-  validations: []
+  validations:
+  - enabled: 1
+    assemblyQualifiedTypeName: Falcon.Modules.InAppValidation.CSSC.Runtime.CSSCValidationManager,
+      Falcon.Modules.InAppValidation.CSSC.Runtime, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    nameDisplay: CSSCValidationManager
   loggers:
   - enabled: 1
     assemblyQualifiedTypeName: Falcon.Modules.Core.InAppPurchase.Runtime.InternalLogger,
@@ -71,3 +76,8 @@ MonoBehaviour:
       Falcon.Modules.InAppLog.Bigdata.Runtime, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     nameDisplay: BigdataLogger
+  - enabled: 1
+    assemblyQualifiedTypeName: Falcon.Modules.InAppValidation.CSSC.Runtime.CSSCValidationManager,
+      Falcon.Modules.InAppValidation.CSSC.Runtime, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    nameDisplay: CSSCValidationManager

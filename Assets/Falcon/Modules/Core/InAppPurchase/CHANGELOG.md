@@ -1,3 +1,8 @@
+## 1.3.5
+Update: Restore purchase no longer send log yet
+----------------------------------
+
+
 ## 1.3.4
 Đổi tên GetLocalizedPriceDouble/GetLocalizedPriceDoubleAsync thành GetUsdPriceDouble/GetUsdPriceDoubleAsync cho đúng bản chất (hàm này luôn parse defaultPrice usd trong config, không phải giá localized). Thêm event "falcon.modules.iap.purchase_success.usd" (GameEvent<double>) emit giá usd khi mua thành công
 ----------------------------------

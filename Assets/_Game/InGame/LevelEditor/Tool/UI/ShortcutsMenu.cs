@@ -39,7 +39,7 @@ namespace Falcon.InGame.LevelEditor
             "Z  Hoàn tác  ·  Y  Làm lại\n" +
             "Giữ chuột giữa kéo  Dịch chuyển màn hình";
 
-        private const float MinW = 360f, MaxW = 640f, HPad = 16f, VPad = 10f, WinPad = 24f, BtnW = 100f; // WinPad: chừa cho lề trong của cửa sổ Imui
+        private const float MinW = 360f, MaxW = 640f, HPad = 16f, VPad = 10f, WinPad = 24f; // WinPad: chừa cho lề trong của cửa sổ Imui
 
         public override void Draw(ImGui gui)
         {
@@ -48,24 +48,20 @@ namespace Falcon.InGame.LevelEditor
             var settings = new ImTextSettings(gui.Style.Layout.TextSize, 0f, 0f, true);
             var text = gui.MeasureTextSize(Content, in settings, new Vector2(MaxW - HPad * 2f - WinPad, 0f));
             var w = Mathf.Clamp(text.x + HPad * 2f + WinPad, MinW, MaxW);
-            var h = titleBarH + VPad + text.y + VPad + rowH + VPad;
+            var h = titleBarH + VPad + text.y + VPad;
             var screen = gui.Canvas.ScreenSize;
             var rect = new ImRect((screen.x - w) / 2f, (screen.y - h) / 2f, w, h);
 
-            gui.BeginWindow("Phím tắt", rect, ImWindowFlag.NoResizing | ImWindowFlag.NoMoving | ImWindowFlag.NoCloseButton);
+            var open = true;
+            gui.BeginWindow("Phím tắt", ref open, rect, ImWindowFlag.NoResizing | ImWindowFlag.NoMoving);
             var layoutW = gui.GetLayoutWidth();
             gui.AddSpacing(VPad);
             var contentRect = gui.AddLayoutRect(layoutW, text.y);
             var textRect = new ImRect(contentRect.X + HPad, contentRect.Y, Mathf.Max(1f, contentRect.W - HPad * 2f), contentRect.H); // thụt hai bên cho chữ không dính viền
             gui.Canvas.Text(Content, new Color32(203, 213, 225, 255), textRect, in settings);
-            gui.AddSpacing(VPad);
-            gui.BeginHorizontal(layoutW, rowH);
-            gui.AddSpacing((layoutW - BtnW) / 2f);
-            var ok = gui.Button("Đóng", new ImSize(BtnW, rowH));
-            gui.EndHorizontal();
             gui.EndWindow();
 
-            if (ok) IsOpen = false;
+            if (!open) IsOpen = false;
         }
     }
 }
