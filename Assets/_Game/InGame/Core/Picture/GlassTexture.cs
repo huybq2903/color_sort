@@ -39,12 +39,12 @@ namespace Falcon.InGame.Core
             var br = new float[size * size];
             var hu = new float[size * size];
             for (var i = 0; i < br.Length; i++) { br[i] = 0.5f; hu[i] = 0.5f; }
-            const int Layers = 4;
-            var Amp = new[] { 1.5f, 0.85f, 0.55f, 0.35f };
+            const int Layers = 3;
+            var Amp = new[] { 1.1f, 0.7f, 0.45f };
             for (var layer = 0; layer < Layers; layer++)
             {
-                var count = layer == 3 ? 100 : 36 + layer * 30;
-                var radius = (layer == 3 ? 0.05f : 0.34f - layer * 0.09f) * size;
+                var count = 12 + layer * 8; // ít mặt, mặt to: kính mềm, không vỡ vụn
+                var radius = (0.46f - layer * 0.12f) * size;
                 for (var k = 0; k < count; k++)
                 {
                     float cx = (float)rnd.NextDouble() * size, cy = (float)rnd.NextDouble() * size;
@@ -63,12 +63,42 @@ namespace Falcon.InGame.Core
                         Fill(br, hu, size, p, ox * size, oy * size, v, h);
                 }
             }
+            var sbr = Blur(br, size, size / 40);
+            var shu = Blur(hu, size, size / 40);
+            for (var i = 0; i < br.Length; i++) { br[i] = Mathf.Lerp(br[i], sbr[i], 0.8f); hu[i] = Mathf.Lerp(hu[i], shu[i], 0.8f); } // mép mặt loang mềm, vẫn còn nếp nhẹ
             var px = new Color32[size * size];
             for (var i = 0; i < px.Length; i++) px[i] = new Color32(Enc(br[i]), 0, Enc(hu[i]), 255);
             var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear, name = "GlassFacets" };
             tex.SetPixels32(px);
             tex.Apply();
             return tex;
+        }
+
+        // Làm mờ hộp 2 lượt, cuộn vòng theo tile
+        private static float[] Blur(float[] src, int size, int radius)
+        {
+            var cur = src;
+            for (var pass = 0; pass < 2; pass++)
+            {
+                var tmp = new float[cur.Length];
+                var dst = new float[cur.Length];
+                for (var y = 0; y < size; y++)
+                for (var x = 0; x < size; x++)
+                {
+                    float s = 0;
+                    for (var k = -radius; k <= radius; k++) s += cur[y * size + (x + k + size) % size];
+                    tmp[y * size + x] = s / (2 * radius + 1);
+                }
+                for (var y = 0; y < size; y++)
+                for (var x = 0; x < size; x++)
+                {
+                    float s = 0;
+                    for (var k = -radius; k <= radius; k++) s += tmp[((y + k + size) % size) * size + x];
+                    dst[y * size + x] = s / (2 * radius + 1);
+                }
+                cur = dst;
+            }
+            return cur;
         }
 
         // Tô tam giác có viền chống răng cưa ~1px, cuộn vòng theo tile

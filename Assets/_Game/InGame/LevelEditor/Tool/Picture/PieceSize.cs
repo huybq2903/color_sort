@@ -7,7 +7,7 @@ namespace Falcon.InGame.LevelEditor
     /// <summary>Mỗi mảnh phải chứa được chữ số (giá trị của mảnh): mảnh có hình tròn nội tiếp nhỏ hơn bán kính tối thiểu thì gộp vào mảnh kề chung biên dài nhất.</summary>
     public static class PieceSize
     {
-        public const float TextRadiusFraction = 0.025f; // bán kính hình tròn nội tiếp tối thiểu theo cạnh ngắn của tranh
+        public const float TextRadiusFraction = 0.012f; // bán kính hình tròn nội tiếp tối thiểu theo cạnh ngắn của tranh
         private const int MaxPasses = 12;
 
         public static float MinRadius(RegionMap m) => TextRadiusFraction * Mathf.Min(m.w, m.h);
@@ -59,9 +59,11 @@ namespace Falcon.InGame.LevelEditor
                     changed = true;
                 }
                 if (!changed) return;
-                BridgeMerged(m, Find);
+                var mergedPx = MergedPixels(m, Find);
+                BridgeMerged(m, Find, mergedPx);
                 for (var i = 0; i < m.reg.Length; i++)
                     if (m.reg[i] > 0) m.reg[i] = Find(m.reg[i]);
+                FillOrphanGaps(m, mergedPx);
                 PixelRegions.Relabel(m);
             }
         }
@@ -91,8 +93,10 @@ namespace Falcon.InGame.LevelEditor
                     changed = true;
                 }
                 if (!changed) return;
-                BridgeMerged(m, Find);
+                var mergedPx = MergedPixels(m, Find);
+                BridgeMerged(m, Find, mergedPx);
                 for (var i = 0; i < m.reg.Length; i++) if (m.reg[i] > 0) m.reg[i] = Find(m.reg[i]);
+                FillOrphanGaps(m, mergedPx);
                 PixelRegions.Relabel(m);
             }
         }
@@ -133,8 +137,10 @@ namespace Falcon.InGame.LevelEditor
                     merged++;
                 }
                 if (merged == 0) return;
-                BridgeMerged(m, Find);
+                var mergedPx = MergedPixels(m, Find);
+                BridgeMerged(m, Find, mergedPx);
                 for (var i = 0; i < m.reg.Length; i++) if (m.reg[i] > 0) m.reg[i] = Find(m.reg[i]);
+                FillOrphanGaps(m, mergedPx);
                 PixelRegions.Relabel(m);
             }
         }
@@ -258,13 +264,68 @@ namespace Falcon.InGame.LevelEditor
             for (var x = 0; x < w; x++) Scan(x, w, h);
         }
 
+        // Pixel của các mảnh sắp bị gộp đi (nhãn đổi sau Find)
+        private static bool[] MergedPixels(RegionMap m, System.Func<int, int> find)
+        {
+            var res = new bool[m.reg.Length];
+            if (!m.gaps) return res;
+            for (var i = 0; i < res.Length; i++) res[i] = m.reg[i] > 0 && find(m.reg[i]) != m.reg[i];
+            return res;
+        }
+
+        // Sau khi gộp mảnh nhỏ (hạt, chấm) vào mảnh chủ, vòng khe bao quanh nó mồ côi: cụm pixel trống chỉ giáp đúng 1 mảnh, kề chỗ vừa gộp, không chạm mép tranh thì lấp về mảnh đó
+        private static void FillOrphanGaps(RegionMap m, bool[] mergedPixels)
+        {
+            if (!m.gaps) return;
+            int w = m.w, h = m.h, n = w * h;
+            var seen = new bool[n];
+            var stack = new System.Collections.Generic.Stack<int>();
+            var comp = new System.Collections.Generic.List<int>();
+            for (var s0 = 0; s0 < n; s0++)
+            {
+                if (m.reg[s0] != 0 || seen[s0]) continue;
+                comp.Clear();
+                stack.Push(s0);
+                seen[s0] = true;
+                int label = 0;
+                bool single = true, border = false, nearMerge = false;
+                while (stack.Count > 0)
+                {
+                    var p = stack.Pop();
+                    comp.Add(p);
+                    int x = p % w, y = p / w;
+                    if (x == 0 || y == 0 || x == w - 1 || y == h - 1) border = true;
+                    void Visit(int q)
+                    {
+                        if (m.reg[q] == 0)
+                        {
+                            if (!seen[q]) { seen[q] = true; stack.Push(q); }
+                            return;
+                        }
+                        if (mergedPixels[q]) nearMerge = true;
+                        if (label == 0) label = m.reg[q];
+                        else if (label != m.reg[q]) single = false;
+                    }
+                    if (x > 0) Visit(p - 1);
+                    if (x < w - 1) Visit(p + 1);
+                    if (y > 0) Visit(p - w);
+                    if (y < h - 1) Visit(p + w);
+                }
+                if (single && !border && nearMerge && label > 0) foreach (var p in comp) m.reg[p] = label;
+            }
+        }
+
         // Hai mảnh sắp gộp mà cách nhau bằng khe thì lấp khe, để mảnh gộp liền 1 khối
-        private static void BridgeMerged(RegionMap m, System.Func<int, int> find) =>
+        private static void BridgeMerged(RegionMap m, System.Func<int, int> find, bool[] mergedPixels) =>
             ForEachGap(m, (a, b, s, len, stride) =>
             {
                 var fa = find(a);
                 if (fa != find(b)) return;
-                for (var t = 0; t < len; t++) m.reg[s + t * stride] = fa;
+                for (var t = 0; t < len; t++)
+                {
+                    m.reg[s + t * stride] = fa;
+                    mergedPixels[s + t * stride] = true; // pixel khe vừa lấp cũng tính là chỗ vừa gộp, để nhận ra phần vòng khe còn sót kề nó
+                }
             });
     }
 }

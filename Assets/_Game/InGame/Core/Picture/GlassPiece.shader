@@ -72,16 +72,23 @@ Shader "Falcon/GlassPiece"
                 float w = i.facet;
                 if (w > 0.01)
                 {
-                    float2 uvK = float2(i.uv.x * 0.30 + i.uv.y * 0.07, i.uv.y * 0.30 - i.uv.x * 0.07);
+                    float2 uvK = float2(i.uv.x * 0.17 + i.uv.y * 0.04, i.uv.y * 0.17 - i.uv.x * 0.04); // mặt cắt cỡ lớn
                     float3 f = tex2D(_Facets, uvK + 0.31).rgb;
                     float lumNow = dot(col, float3(0.299, 0.587, 0.114));
-                    col *= 1.0 + (f.r - 0.5) * 0.58 * w * (1.0 - 0.45 * smoothstep(0.7, 0.95, lumNow));
+                    col *= 1.0 + (f.r - 0.5) * 0.40 * w * (1.0 - 0.45 * smoothstep(0.7, 0.95, lumNow));
                                         float3 tint = 0.5 + 0.5 * cos(6.2832 * (f.b + float3(0.0, 0.33, 0.67)));
                     col = lerp(col, col * (0.90 + 0.20 * tint), w * 0.14 * smoothstep(0.55, 0.85, lumNow) * (1.0 - whiteMask));   // ánh ngũ sắc nhạt trên mảnh sáng
                     float spec = smoothstep(0.62, 0.98, f.r);
                     col += spec * w * 0.16 * (1.0 - smoothstep(0.25, 0.65, lumNow));                           // bóng phản chiếu trên mảnh tối
                 }
-                return fixed4(saturate(col), i.color.a);
+                // loang màu và ánh sáng mềm: vùng sáng tản rộng, màu trôi nhẹ giữa các mảng, lõi trong hơn
+                float glow = smoothstep(0.35, 0.85, t.g);
+                float lumSoft = dot(col, float3(0.299, 0.587, 0.114));
+                col = lerp(col, col * float3(1.06, 1.0, 0.94), (t.g - 0.5) * 0.9 * (1.0 - whiteMask));            // ấm ↔ lạnh, loang rộng
+                col += (1.0 - col) * glow * 0.14 * (0.4 + 0.6 * saturate(1.0 - lumSoft));                          // ánh sáng xuyên qua kính
+                col = lerp(col, lerp(float3(lumSoft, lumSoft, lumSoft), col, 1.12), 0.5);                             // giữ màu trong, không xám
+                float alpha = i.color.a * (0.93 + 0.07 * glow);                                                      // hơi trong: lộ nền chì và bóng phía sau
+                return fixed4(saturate(col), alpha);
             }
             ENDCG
         }

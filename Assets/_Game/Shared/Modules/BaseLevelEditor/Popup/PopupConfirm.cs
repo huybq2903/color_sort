@@ -22,9 +22,14 @@ namespace Falcon.Shared.BaseLevelEditor
         private Action _onBack;
         private Action _onContinue;
 
-        public PopupConfirm(string content)
+        private readonly string _backLabel;
+        private readonly string _continueLabel;
+
+        public PopupConfirm(string content, string backLabel = "Quay về", string continueLabel = "Tiếp tục")
         {
             _content = content;
+            _backLabel = backLabel;
+            _continueLabel = continueLabel;
         }
 
         public void SetAction(Action onBack, Action onContinue)
@@ -60,9 +65,9 @@ namespace Falcon.Shared.BaseLevelEditor
 
             gui.BeginHorizontal(layoutW, rowH);
             gui.AddSpacing(BtnSp);
-            var backClicked     = gui.Button("Quay về", new ImSize(btnW, rowH));
+            var backClicked     = gui.Button(_backLabel, new ImSize(btnW, rowH));
             gui.AddSpacing(BtnSp);
-            var continueClicked = gui.Button("Tiếp tục", new ImSize(btnW, rowH));
+            var continueClicked = gui.Button(_continueLabel, new ImSize(btnW, rowH));
             gui.AddSpacing(BtnSp);
             gui.EndHorizontal();
 

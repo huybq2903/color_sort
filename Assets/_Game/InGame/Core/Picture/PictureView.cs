@@ -54,7 +54,7 @@ namespace Falcon.InGame.Core
         private Disc _snap;
         private readonly List<TextMeshPro> _values = new();
         private bool _showValues = true;
-        private const float ValueMaxHeight = 0.055f; // chiều cao số tối đa theo chiều cao tranh
+        private const float ValueMaxHeight = 0.055f, ValueMinHeight = 0.03f, ValueOutline = 0.22f; // chiều cao số tối đa / tối thiểu theo chiều cao tranh
         private readonly List<Disc> _anchors = new();
         private readonly List<Polyline> _handleLines = new();
         private readonly List<Disc> _handleDots = new();
@@ -248,6 +248,7 @@ namespace Falcon.InGame.Core
             t.ForceMeshUpdate();
             var box = new Vector2(radius * 1.85f, radius * 1.2f); // hình chữ nhật nội tiếp trong đường tròn nội tiếp của mảnh
             var k = Mathf.Min(box.x / Mathf.Max(0.0001f, t.preferredWidth), box.y / Mathf.Max(0.0001f, t.preferredHeight), viewHeight * ValueMaxHeight / Mathf.Max(0.0001f, t.preferredHeight)); // mảnh to không có số quá lớn
+            k = Mathf.Max(k, viewHeight * ValueMinHeight / Mathf.Max(0.0001f, t.preferredHeight)); // mảnh nhỏ: số vẫn đủ lớn để đọc, được tràn ra viền
             t.fontSize = 10f * k;
             t.rectTransform.sizeDelta = box;
             t.sortingOrder = sortingOrder + 3;
@@ -665,7 +666,13 @@ namespace Falcon.InGame.Core
                 var g = c.grayscale * 0.35f + 0.35f; // xám nhưng vẫn phân biệt nhẹ giữa các mảnh
                 c = new Color(g, g, g, 1f);
             }
-            if (id < _values.Count && _values[id]) _values[id].color = c.r * 0.299f + c.g * 0.587f + c.b * 0.114f > 0.6f ? new Color(0.06f, 0.09f, 0.16f) : new Color(0.97f, 0.98f, 0.99f);
+            if (id < _values.Count && _values[id])
+            {
+                var darkText = c.r * 0.299f + c.g * 0.587f + c.b * 0.114f > 0.6f;
+                _values[id].color = darkText ? new Color(0.06f, 0.09f, 0.16f) : new Color(0.97f, 0.98f, 0.99f);
+                _values[id].outlineColor = darkText ? new Color32(250, 251, 252, 255) : new Color32(15, 23, 41, 255); // viền ngược màu chữ: số tràn ra khe chì hay mảnh bên cạnh vẫn đọc được
+                _values[id].outlineWidth = ValueOutline;
+            }
             var cols = new Color[_meshes[id].vertexCount];
             for (var i = 0; i < cols.Length; i++) cols[i] = c;
             _meshes[id].colors = cols;

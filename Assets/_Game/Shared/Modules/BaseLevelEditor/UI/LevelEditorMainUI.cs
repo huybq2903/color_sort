@@ -183,8 +183,12 @@ namespace Falcon.Shared.BaseLevelEditor
                 }
             }
 
+            DrawMenuBarExtra();
             Gui.EndMenuBar();
         }
+
+        /// <summary>Chỗ cho lớp con thêm mục vào cuối menu bar.</summary>
+        protected virtual void DrawMenuBarExtra() { }
 
         protected virtual void DrawNameFile()
         {

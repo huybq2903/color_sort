@@ -21,9 +21,13 @@ namespace Falcon.InGame.LevelEditor
 
             // ngoài tranh (id 0) cũng tranh chấp như 1 vùng → viền giáp nền trong suốt cũng mượt
             var outside = new float[W * H];
+            var weight = ThinGapWeights(m); // tranh có khe: nét mảnh (1-2 pixel) có trọng số cao hơn để không bị các mảnh lấn mất khi làm mượt
             for (var Y = 0; Y < H; Y++)
             for (var X = 0; X < W; X++)
-                outside[Y * W + X] = m.reg[Y / scale * m.w + X / scale] == 0 ? 1f : 0f;
+            {
+                var src = Y / scale * m.w + X / scale;
+                outside[Y * W + X] = m.reg[src] == 0 ? weight?[src] ?? 1f : 0f;
+            }
             best = Blur(outside, W, H, kernel);
 
             for (var id = 1; id <= m.Count; id++)
@@ -47,7 +51,31 @@ namespace Falcon.InGame.LevelEditor
                 }
             }
 
-            return new RegionMap { w = W, h = H, reg = outReg, colors = new List<int>(m.colors), inked = m.inked, gaps = m.gaps };
+            return new RegionMap { w = W, h = H, reg = outReg, colors = new List<int>(m.colors), inked = m.inked, gaps = m.gaps, synthetic = m.synthetic };
+        }
+
+        private const float ThinInk = 1.5f, ThinWeight = 1.8f;
+
+        private static float[] ThinGapWeights(RegionMap m)
+        {
+            if (!m.gaps) return null;
+            var d = ImageOps.Edt(System.Array.ConvertAll(m.reg, v => v == 0), m.w, m.h);
+            var w = new float[d.Length];
+            for (var y = 0; y < m.h; y++)
+            for (var x = 0; x < m.w; x++)
+            {
+                if (d[y * m.w + x] <= 0f) continue;
+                var peak = 0f; // bề rộng nét = khoảng cách lớn nhất tới mép trong vùng lân cận (mép của nét dày vẫn thấy tâm nét)
+                for (var dy = -2; dy <= 2; dy++)
+                for (var dx = -2; dx <= 2; dx++)
+                {
+                    int xx = x + dx, yy = y + dy;
+                    if (xx >= 0 && yy >= 0 && xx < m.w && yy < m.h) peak = Mathf.Max(peak, d[yy * m.w + xx]);
+                }
+                w[y * m.w + x] = peak <= ThinInk ? ThinWeight : 1f;
+            }
+            for (var i = 0; i < w.Length; i++) if (w[i] == 0f) w[i] = 1f;
+            return w;
         }
 
         private static float[] Gaussian(float sigma)

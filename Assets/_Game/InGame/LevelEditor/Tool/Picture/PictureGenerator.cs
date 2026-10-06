@@ -10,6 +10,8 @@ namespace Falcon.InGame.LevelEditor
     public static class PictureGenerator
     {
         public const float Epsilon = 0.75f;
+        private const int FlatGapRadius = 1; // khe giữa các mảnh ảnh không nét: 2 + 2 × radius pixel ở lưới workSize
+        private const int GapTrim = 2; // pixel bỏ mỗi bên nét dày ở lưới ×3 (≈0,7px ở lưới 640); 0 = tắt
         private const float SigmaPerLevel = 0.57f; // mức 3 ở lưới x3 ~ sigma 5 mẫu
         internal const int TidyUnit = 4;
         private const int MaxPieces = 100; // game có tối đa 100 mảnh mỗi tranh
@@ -28,17 +30,29 @@ namespace Falcon.InGame.LevelEditor
         public static PictureProperty Generate(Color32[] px, int w, int h, GenSettings s, int bgHint = -1)
         {
             var lab = LabImage.From(px);
-            var map = BlackLineRoute.Build(px, lab, w, h) ?? InkRoute.Build(px, lab, w, h) ?? FlatRoute.Build(px, lab, w, h);
+            var map = BlackLineRoute.Build(px, lab, w, h) ?? InkRoute.Build(px, lab, w, h);
+            if (map == null)
+            {
+                map = FlatRoute.Build(px, lab, w, h);
+                if (map != null)
+                {
+                    PieceSize.RemoveSpecks(map, SpeckFraction); // hạt nhỏ gộp trước khi khoét khe: để khe co chúng rồi mới gộp thì vòng khe của hạt còn lại và nhập vào đường khe gần đó thành chỗ nhô
+                    RegionOps.KeepFrame(map, px); // khung màu đồng nhất quanh ảnh thành viền như ảnh có viền
+                    RegionOps.CarveGaps(map, FlatGapRadius); // ảnh không nét: khe cố định giữa các mảnh cho giống tranh có viền
+                }
+            }
             if (map == null) return null;
             var scale = Math.Max(1, s.smoothScale);
             if (scale > 1) map = RegionSmoother.Upscale(map, scale);
+            if (map.synthetic) RegionOps.FillEmptyBlobs(map);
+            RegionOps.TrimGaps(map, GapTrim * Math.Max(1, scale) / 3); // nét giữ độ mảnh như ảnh gốc: vòng làm mượt và phóng lưới làm nét phình ra
             PieceSize.RemoveSpecks(map, SpeckFraction);
             PieceSize.LimitCount(map, MaxPieces);
             PieceSize.EnsureTextFits(map); // mảnh nhỏ nhất vẫn phải chứa được chữ số (làm sau khi phóng: làm trước khi phóng khiến dải mỏng bị tô nhầm màu nền)
             return BuildPicture(map, s); // viền chì cùng 1 độ dày mặc định, dù nét trong ảnh dày mỏng khác nhau
         }
 
-        private static PictureProperty BuildPicture(RegionMap map, GenSettings s)
+        internal static PictureProperty BuildPicture(RegionMap map, GenSettings s)
         {
             var p = new PictureProperty { width = map.w, height = map.h, unit = TidyUnit, gen = s.Clone() };
             p.gen.inkGaps = map.gaps;

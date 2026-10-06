@@ -131,6 +131,232 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Dồn nhãn liên tục 1..n
+        private const int MaxFrame = 16;
+        private const float FrameSideFraction = 0.8f;
+        private const int FrameTolerance = 14, FrameSameColour = 24;
+
+        // Ảnh không nét có khung màu đồng nhất dày 2..MaxFrame px ở cả 4 cạnh (cùng 1 màu): khung (kèm 1px mềm mép) thành nét nhãn 0 như viền đen của ảnh có viền; false nếu không có khung
+        public static bool KeepFrame(RegionMap m, Color32[] px)
+        {
+            int w = m.w, h = m.h;
+            var depth = new int[4];
+            var colour = new Color32[4];
+            for (var side = 0; side < 4; side++)
+            {
+                depth[side] = FrameDepth(px, w, h, side, out colour[side]);
+                if (depth[side] < 2) return false;
+            }
+            for (var i = 1; i < 4; i++)
+                if (Mathf.Max(Mathf.Abs(colour[i].r - colour[0].r), Mathf.Abs(colour[i].g - colour[0].g), Mathf.Abs(colour[i].b - colour[0].b)) > FrameSameColour) return false;
+            int l = depth[0] + 1, r = depth[1] + 1, t = depth[2] + 1, b = depth[3] + 1;
+            for (var y = 0; y < h; y++)
+            for (var x = 0; x < w; x++)
+                if (x < l || x >= w - r || y < t || y >= h - b) m.reg[y * w + x] = 0;
+            m.gaps = true;
+            return true;
+        }
+
+        // Số dòng liên tiếp từ mép (side 0 trái, 1 phải, 2 trên, 3 dưới) có >= FrameSideFraction pixel cùng màu với dòng sát mép; 0 nếu không phải khung mảnh
+        private static int FrameDepth(Color32[] px, int w, int h, int side, out Color32 colour)
+        {
+            var len = side < 2 ? h : w;
+            int from = len / 10, to = len - len / 10;
+            Color32 At(int d, int k) => side switch
+            {
+                0 => px[k * w + d],
+                1 => px[k * w + (w - 1 - d)],
+                2 => px[d * w + k],
+                _ => px[(h - 1 - d) * w + k],
+            };
+            var rs = new System.Collections.Generic.List<int>();
+            var gs = new System.Collections.Generic.List<int>();
+            var bs = new System.Collections.Generic.List<int>();
+            for (var k = from; k < to; k++) { var c = At(0, k); rs.Add(c.r); gs.Add(c.g); bs.Add(c.b); }
+            rs.Sort(); gs.Sort(); bs.Sort();
+            var refColour = new Color32((byte)rs[rs.Count / 2], (byte)gs[gs.Count / 2], (byte)bs[bs.Count / 2], 255);
+            colour = refColour;
+            float Fraction(int d)
+            {
+                var ok = 0;
+                for (var k = from; k < to; k++)
+                {
+                    var c = At(d, k);
+                    if (Mathf.Max(Mathf.Abs(c.r - refColour.r), Mathf.Abs(c.g - refColour.g), Mathf.Abs(c.b - refColour.b)) <= FrameTolerance) ok++;
+                }
+                return ok / (float)(to - from);
+            }
+            var depth = 0;
+            while (depth < MaxFrame + 2 && Fraction(depth) >= FrameSideFraction) depth++;
+            return depth == 0 || depth > MaxFrame ? 0 : depth;
+        }
+
+        // Ảnh không có nét: khoét khe bề rộng 2 + 2 × radius pixel dọc mọi biên giữa hai mảnh (không đụng mép tranh và vùng ngoài tranh), rồi tách lại các mảnh bị khe cắt rời
+        public static void CarveGaps(RegionMap m, int radius)
+        {
+            MergeErasableSpecks(m, radius);
+            int w = m.w, h = m.h, n = w * h;
+            var edge = new bool[n];
+            for (var i = 0; i < n; i++)
+            {
+                var a = m.reg[i];
+                if (a <= 0) continue;
+                int x = i % w, y = i / w;
+                if (x + 1 < w && m.reg[i + 1] > 0 && m.reg[i + 1] != a) { edge[i] = true; edge[i + 1] = true; }
+                if (y + 1 < h && m.reg[i + w] > 0 && m.reg[i + w] != a) { edge[i] = true; edge[i + w] = true; }
+            }
+            for (var r = 0; r < radius; r++) edge = ImageOps.Dilate3(edge, w, h);
+            var carved = new bool[n];
+            for (var i = 0; i < n; i++) if (edge[i] && m.reg[i] > 0) { carved[i] = true; m.reg[i] = 0; }
+            RestoreErasedSpecks(m, carved);
+            m.gaps = true;
+            m.synthetic = true;
+            PixelRegions.Relabel(m);
+        }
+
+        // Hạt mà khe sẽ xoá sạch (mọi pixel của nó cách biên không quá radius + 1) gộp vào mảnh kề chung biên dài nhất trước khi khoét: nếu để vòng khe của nó nhập vào đường khe gần đó sẽ thành chỗ nhô ra
+        private static void MergeErasableSpecks(RegionMap m, int radius)
+        {
+            int w = m.w, h = m.h, n = w * h;
+            var edge = new bool[n];
+            for (var i = 0; i < n; i++)
+            {
+                var a = m.reg[i];
+                if (a <= 0) continue;
+                int x = i % w, y = i / w;
+                if (x + 1 < w && m.reg[i + 1] > 0 && m.reg[i + 1] != a) { edge[i] = true; edge[i + 1] = true; }
+                if (y + 1 < h && m.reg[i + w] > 0 && m.reg[i + w] != a) { edge[i] = true; edge[i + w] = true; }
+            }
+            var inner = new bool[n];
+            for (var i = 0; i < n; i++) inner[i] = !edge[i];
+            var dist = ImageOps.Edt(inner, w, h); // khoảng cách tới biên gần nhất (0 trên biên)
+            var count = m.colors.Count;
+            var reach = new float[count];
+            var seen = new bool[count];
+            var pair = new System.Collections.Generic.Dictionary<long, int>();
+            for (var i = 0; i < n; i++)
+            {
+                var a = m.reg[i];
+                if (a <= 0) continue;
+                seen[a] = true;
+                if (dist[i] > reach[a]) reach[a] = dist[i];
+                int x = i % w, y = i / w;
+                void Pair(int b)
+                {
+                    if (b <= 0 || b == a) return;
+                    var k = (long)a * count + b;
+                    pair[k] = pair.TryGetValue(k, out var c) ? c + 1 : 1;
+                }
+                if (x + 1 < w) Pair(m.reg[i + 1]);
+                if (x > 0) Pair(m.reg[i - 1]);
+                if (y + 1 < h) Pair(m.reg[i + w]);
+                if (y > 0) Pair(m.reg[i - w]);
+            }
+            var target = new int[count];
+            for (var a = 1; a < count; a++)
+            {
+                if (!seen[a] || reach[a] > radius + 1) continue;
+                var best = 0;
+                var bestN = 0;
+                for (var b = 1; b < count; b++)
+                    if (pair.TryGetValue((long)a * count + b, out var c) && c > bestN) { bestN = c; best = b; }
+                target[a] = best;
+            }
+            for (var a = 1; a < count; a++) // chuỗi hạt gộp vào hạt: lần theo tới mảnh không bị gộp
+            {
+                var t = target[a];
+                for (var step = 0; t > 0 && target[t] > 0 && target[t] != a && step < 8; step++) t = target[t];
+                target[a] = t != a ? t : 0;
+            }
+            var any = false;
+            for (var a = 1; a < count; a++) if (target[a] > 0) any = true;
+            if (!any) return;
+            for (var i = 0; i < n; i++) if (m.reg[i] > 0 && target[m.reg[i]] > 0) m.reg[i] = target[m.reg[i]];
+        }
+
+        // Làm mỏng nét dày: bỏ `trim` pixel ngoài cùng mỗi bên của khe, nhưng chỉ ở chỗ nét đủ dày (>= 2*trim + 2) nên nét mảnh không bao giờ bị đứt; pixel bỏ trả về mảnh gần nhất
+        public static void TrimGaps(RegionMap m, int trim)
+        {
+            if (!m.gaps || trim <= 0) return;
+            int w = m.w, h = m.h, n = w * h;
+            var ink = new bool[n];
+            for (var i = 0; i < n; i++) ink[i] = m.reg[i] == 0;
+            var d = ImageOps.Edt(ink, w, h);
+            var need = trim + 1f;
+            var peak = new float[n];
+            for (var y = 0; y < h; y++)
+            for (var x = 0; x < w; x++)
+            {
+                var i = y * w + x;
+                if (!ink[i]) continue;
+                var p = 0f;
+                for (var dy = -trim - 1; dy <= trim + 1; dy++)
+                for (var dx = -trim - 1; dx <= trim + 1; dx++)
+                {
+                    int xx = x + dx, yy = y + dy;
+                    if (xx >= 0 && yy >= 0 && xx < w && yy < h && d[yy * w + xx] > p) p = d[yy * w + xx];
+                }
+                peak[i] = p;
+            }
+            var q = new System.Collections.Generic.Queue<int>();
+            var free = new bool[n];
+            for (var i = 0; i < n; i++) free[i] = ink[i] && d[i] <= trim && peak[i] >= need + 1f;
+            for (var i = 0; i < n; i++) if (!ink[i]) q.Enqueue(i);
+            var res = (int[])m.reg.Clone();
+            while (q.Count > 0)
+            {
+                var p = q.Dequeue();
+                int x = p % w, y = p / w;
+                void Try(int t) { if (free[t] && res[t] == 0) { res[t] = res[p]; q.Enqueue(t); } }
+                if (x > 0) Try(p - 1);
+                if (x < w - 1) Try(p + 1);
+                if (y > 0) Try(p - w);
+                if (y < h - 1) Try(p + w);
+            }
+            m.reg = res;
+        }
+
+        private const int MaxErasedSpeck = 3000; // cụm khoét chỉ giáp 1 mảnh (hạt đã bị khe xoá sạch) nhỏ hơn cỡ này (px ở lưới gốc) thì trả về mảnh chủ
+
+        // Hạt nhỏ bị khe xoá sạch chỉ để lại 1 chấm đen: cụm pixel vừa khoét giáp đúng 1 mảnh, nhỏ, không chạm mép tranh hay vùng trống có sẵn thì trả về mảnh đó
+        // Sau khi phóng lưới: hạt quá nhỏ bị khe lấn mất hẳn để lại chấm trống đơn độc (chỉ giáp 1 mảnh); với khe do thuật toán khoét thì không phải nét thật nên lấp về mảnh đó
+        public static void FillEmptyBlobs(RegionMap m) => RestoreErasedSpecks(m, null);
+
+        private static void RestoreErasedSpecks(RegionMap m, bool[] carved)
+        {
+            int w = m.w, h = m.h, n = w * h;
+            var seen = new bool[n];
+            var stack = new System.Collections.Generic.Stack<int>();
+            var comp = new System.Collections.Generic.List<int>();
+            for (var s0 = 0; s0 < n; s0++)
+            {
+                if (!(carved != null ? carved[s0] : m.reg[s0] == 0) || seen[s0]) continue;
+                comp.Clear();
+                stack.Push(s0);
+                seen[s0] = true;
+                var label = 0;
+                bool single = true, border = false;
+                while (stack.Count > 0)
+                {
+                    var p = stack.Pop();
+                    comp.Add(p);
+                    int x = p % w, y = p / w;
+                    if (x == 0 || y == 0 || x == w - 1 || y == h - 1) border = true;
+                    void Visit(int q)
+                    {
+                        if (carved != null ? carved[q] : m.reg[q] == 0) { if (!seen[q]) { seen[q] = true; stack.Push(q); } return; }
+                        if (m.reg[q] == 0) { border = true; return; } // kề vùng trống có sẵn (ngoài tranh, khung)
+                        if (label == 0) label = m.reg[q];
+                        else if (label != m.reg[q]) single = false;
+                    }
+                    if (x > 0) Visit(p - 1);
+                    if (x < w - 1) Visit(p + 1);
+                    if (y > 0) Visit(p - w);
+                    if (y < h - 1) Visit(p + w);
+                }
+                if (single && !border && label > 0 && comp.Count <= MaxErasedSpeck) foreach (var p in comp) m.reg[p] = label;
+            }
+        }
+
         public static int Compact(int[] lab)
         {
             var map = new Dictionary<int, int>();
