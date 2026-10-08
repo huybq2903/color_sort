@@ -15,6 +15,7 @@ namespace Falcon.InGame.Core
         public List<int[]> lines = new(); // nét đen trang trí (polyline mở, cùng toạ độ points), không phải mảnh
         public List<int> lineWidths = new(); // độ dày mỗi nét trang trí (đơn vị như points); 0 = dày bằng viền
         public List<int> lineThickness = new(); // độ dày mỗi nét theo % độ dày viền; 0 = mặc định (chấm dùng lineWidths)
+        public List<string> lineIds = new(); // id mỗi nét (song song với lines); level cũ chưa có thì EnsureIds tự sinh
         public GenSettings gen = new();
 
         // Kẹp mọi điểm vào khung chữ nhật của tranh, mảnh không bao giờ tràn ra ngoài
@@ -38,6 +39,28 @@ namespace Falcon.InGame.Core
             lines?.ForEach(Clamp);
         }
 
+        // Gán id cho mảnh và nét còn thiếu (level cũ, mảnh mới tách); giữ nguyên id đã có
+        public void EnsureIds()
+        {
+            var used = new HashSet<string>();
+            var next = 1;
+            string Fresh(string prefix)
+            {
+                string id;
+                do id = prefix + next++; while (used.Contains(id));
+                used.Add(id);
+                return id;
+            }
+            foreach (var r in regions) if (!string.IsNullOrEmpty(r.id)) used.Add(r.id);
+            lineIds ??= new List<string>();
+            foreach (var id in lineIds) if (!string.IsNullOrEmpty(id)) used.Add(id);
+            foreach (var r in regions) if (string.IsNullOrEmpty(r.id)) r.id = Fresh("r");
+            var count = lines?.Count ?? 0;
+            while (lineIds.Count < count) lineIds.Add(null);
+            if (lineIds.Count > count) lineIds.RemoveRange(count, lineIds.Count - count);
+            for (var i = 0; i < lineIds.Count; i++) if (string.IsNullOrEmpty(lineIds[i])) lineIds[i] = Fresh("l");
+        }
+
         public PictureProperty Clone() => new()
         {
             width = width,
@@ -47,12 +70,13 @@ namespace Falcon.InGame.Core
             lines = lines?.ConvertAll(l => (int[])l.Clone()),
             lineWidths = lineWidths != null ? new List<int>(lineWidths) : null,
             lineThickness = lineThickness != null ? new List<int>(lineThickness) : null,
-            regions = regions.ConvertAll(r => new RegionData { points = (int[])r.points?.Clone(), colorId = r.colorId, value = r.value, valueManual = r.valueManual, holes = r.holes?.ConvertAll(h => (int[])h.Clone()), widths = (int[])r.widths?.Clone(), holeWidths = r.holeWidths?.ConvertAll(h => (int[])h.Clone()) }),
+            lineIds = lineIds != null ? new List<string>(lineIds) : null,
+            regions = regions.ConvertAll(r => new RegionData { id = r.id, points = (int[])r.points?.Clone(), colorId = r.colorId, value = r.value, valueManual = r.valueManual, holes = r.holes?.ConvertAll(h => (int[])h.Clone()), widths = (int[])r.widths?.Clone(), holeWidths = r.holeWidths?.ConvertAll(h => (int[])h.Clone()) }),
         };
     }
 
     /// <summary>1 mảnh: polygon đơn CCW trên lưới góc pixel.</summary>
-    public class RegionData
+    public class RegionData : EntityData
     {
         [JsonConverter(typeof(DeltaIntArrayConverter))]
         public int[] points;

@@ -15,6 +15,7 @@ namespace Falcon.InGame.Core
         [SerializeField] private Color shineColor = new(1f, 0.82f, 0.55f, 0.85f);
         [SerializeField, Tooltip("Độ lệch bóng đổ dưới tranh (world unit).")] private Vector2 shadowOffset = new(0.05f, -0.07f);
         [SerializeField] private Color highlightColor = new(1f, 0.85f, 0.1f, 1f);
+        [SerializeField] private Color selectionColor = new(1f, 0.2f, 0.75f, 1f);
         [SerializeField] private Color cutColor = new(1f, 0.25f, 0.25f, 1f);
         [SerializeField] private Color frameColor = new(1f, 0.6f, 0.1f, 1f);
         [SerializeField, Tooltip("Cỡ 1 chu kỳ vân kính theo tỉ lệ chiều cao tranh; cỡ cố định, mảnh to thì vân lặp lại.")] private float glassPeriod = 0.11f;
@@ -66,6 +67,8 @@ namespace Falcon.InGame.Core
         private static readonly Color PreviewColor = new(0f, 1f, 0f, 1f); // đường xem trước và thanh cong: xanh lá neon, xa mọi màu palette nhất (ΔE >= 40)
         private static readonly Color CaseColor = Color.black; // viền đen đi kèm để vẫn thấy trên mảnh xanh lá và mảnh sáng
         private Polyline _cutCase;
+        private Polyline _cutBand; // dải mờ đúng bề rộng khe sẽ tạo giữa hai mảnh
+        private float _bandCells;
         private int _decorHot = -1;
 
         public int RegionCount => _meshes.Count;
@@ -94,8 +97,8 @@ namespace Falcon.InGame.Core
             if (_snap) _snap.Radius = outlineWidth * 0.9f * _zs;
             if (_cut) _cut.Thickness = outlineWidth * 1.5f * _zs;
             if (_cutCase) _cutCase.Thickness = outlineWidth * 2.6f * _zs;
-            if (_highlight >= 0 && _highlight < _outlines.Count) foreach (var o in _outlines[_highlight]) Style(o, true);
-            foreach (var i in _selection) if (i < _outlines.Count) foreach (var o in _outlines[i]) Style(o, true);
+            if (_highlight >= 0 && _highlight < _outlines.Count) foreach (var o in _outlines[_highlight]) Style(o, true, selected: _selection.Contains(_highlight));
+            foreach (var i in _selection) if (i < _outlines.Count) foreach (var o in _outlines[i]) Style(o, true, selected: true);
             if (_decorHot >= 0) StyleDecor(_decorHot, true);
         }
 
@@ -264,10 +267,22 @@ namespace Falcon.InGame.Core
             mr.sortingOrder = sortingOrder - 2;
         }
 
+        private readonly Dictionary<int, (Vector2 pos, float radius)> _labelCache = new(); // vị trí số theo hình mảnh: dựng lại tranh không tính lại mảnh không đổi
+
         // Số giá trị cát ở tâm đường tròn nội tiếp lớn nhất của mảnh; cỡ chữ tự co cho vừa
         private void AddValueLabel(GameObject go, List<Vector2> pts, List<IReadOnlyList<Vector2>> holes, int value)
         {
-            var c = PolyLabel.Find(pts, holes, out var radius);
+            var key = new System.HashCode();
+            foreach (var v in pts) key.Add(v);
+            if (holes != null) foreach (var h in holes) { key.Add(h.Count); foreach (var v in h) key.Add(v); }
+            var hash = key.ToHashCode();
+            if (!_labelCache.TryGetValue(hash, out var hit))
+            {
+                if (_labelCache.Count > 4096) _labelCache.Clear();
+                hit = (PolyLabel.Find(pts, holes, out var r), r);
+                _labelCache[hash] = hit;
+            }
+            var (c, radius) = hit;
             var t = new GameObject("Value").AddComponent<TextMeshPro>();
             t.transform.SetParent(go.transform, false);
             t.transform.localPosition = new Vector3(c.x, c.y, -0.02f);
@@ -488,18 +503,18 @@ namespace Falcon.InGame.Core
         {
             if (id >= _outlines.Count) id = -1;
             if (id == _highlight) return;
-            if (_highlight >= 0) foreach (var o in _outlines[_highlight]) Style(o, _selection.Contains(_highlight));
+            if (_highlight >= 0) foreach (var o in _outlines[_highlight]) Style(o, _selection.Contains(_highlight), selected: _selection.Contains(_highlight));
             _highlight = id;
-            if (_highlight >= 0) foreach (var o in _outlines[_highlight]) Style(o, true);
+            if (_highlight >= 0) foreach (var o in _outlines[_highlight]) Style(o, true, selected: _selection.Contains(_highlight));
         }
 
         // Các mảnh đang chọn (nhiều mảnh) viền sáng như khi rê chuột
         public void SetSelection(IReadOnlyCollection<int> ids)
         {
-            foreach (var i in _selection) if (i < _outlines.Count && i != _highlight) foreach (var o in _outlines[i]) Style(o, false);
+            foreach (var i in _selection) if (i < _outlines.Count) foreach (var o in _outlines[i]) Style(o, i == _highlight);
             _selection.Clear();
             if (ids != null) foreach (var i in ids) if (i >= 0 && i < _outlines.Count) _selection.Add(i);
-            foreach (var i in _selection) foreach (var o in _outlines[i]) Style(o, true);
+            foreach (var i in _selection) foreach (var o in _outlines[i]) Style(o, true, selected: true);
         }
 
         // Ẩn đoạn viền vòng ngoài từ đỉnh lo tới hi (theo chiều tăng chỉ số) của mảnh: chỉ vẽ phần còn lại của vòng
@@ -600,6 +615,14 @@ namespace Falcon.InGame.Core
                 _cutCase.Color = CaseColor;
                 _cutCase.Joins = PolylineJoins.Round;
                 _cutCase.SortingOrder = sortingOrder + 4;
+                var band = new GameObject("CutBand");
+                band.transform.SetParent(go.transform, false);
+                band.transform.localPosition = new Vector3(0f, 0f, 0.002f);
+                _cutBand = band.AddComponent<Polyline>();
+                _cutBand.Closed = false;
+                _cutBand.Color = new Color(0.04f, 0.04f, 0.04f, 0.55f); // tối như rãnh thật
+                _cutBand.Joins = PolylineJoins.Round;
+                _cutBand.SortingOrder = sortingOrder + 3;
             }
             _cut.gameObject.SetActive(show && worldPoints != null && worldPoints.Count >= 2);
             if (!_cut.gameObject.activeSelf) return;
@@ -607,6 +630,22 @@ namespace Falcon.InGame.Core
             foreach (var w in worldPoints) pts.Add(transform.InverseTransformPoint(w));
             _cut.SetPoints(pts);
             _cutCase.SetPoints(pts);
+            _cutBand.SetPoints(pts);
+            ApplyBand();
+        }
+
+        // Bề rộng khe xem trước theo ô lưới; 0 = ẩn
+        public void SetCutBand(float cells)
+        {
+            _bandCells = cells;
+            ApplyBand();
+        }
+
+        private void ApplyBand()
+        {
+            if (!_cutBand) return;
+            _cutBand.gameObject.SetActive(_bandCells > 0f);
+            if (_bandCells > 0f) _cutBand.Thickness = _bandCells * _scale;
         }
 
         public void Clear()
@@ -665,9 +704,9 @@ namespace Falcon.InGame.Core
             return res;
         }
 
-        private void Style(Polyline l, bool hot, bool decor = false)
+        private void Style(Polyline l, bool hot, bool decor = false, bool selected = false)
         {
-            l.Color = hot ? highlightColor : _glassOn ? outlineColor : FlatLeadColor;
+            l.Color = selected ? selectionColor : hot ? highlightColor : _glassOn ? outlineColor : FlatLeadColor;
             l.Thickness = hot ? outlineWidth * 0.75f * _zs : (_glassOn ? outlineWidth : outlineWidth * FlatLeadScale) * (decor ? decorLineScale : _lead);
             l.SortingOrder = sortingOrder + (hot ? 2 : 1);
         }

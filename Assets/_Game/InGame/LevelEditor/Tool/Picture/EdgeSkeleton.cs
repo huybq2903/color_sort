@@ -10,6 +10,7 @@ namespace Falcon.InGame.LevelEditor
         public int a, b;
         public int lo, hi; // chỉ số đỉnh đầu và cuối của đoạn trong vòng của mảnh a
         public List<Vector2Int> pts;
+        public int hole = -1; // >= 0: run là cả vòng lỗ thứ `hole` của mảnh a (khép kín, pts đầu = pts cuối)
     }
 
     /// <summary>Tách biên mảnh thành các đoạn dùng chung, khớp Bézier để sửa, lấy mẫu ngược về polyline.</summary>
@@ -74,30 +75,116 @@ namespace Falcon.InGame.LevelEditor
             return runs;
         }
 
+        // pic (ô lưới) cách vòng ngoài của mảnh không quá radius; rẻ hơn RunsOf nhiều
+        public static bool NearRing(PictureProperty p, int region, Vector2 pic, float radius)
+        {
+            var ring = ToPoints(p.regions[region].points);
+            var unit = Mathf.Max(1, p.unit);
+            for (var i = 0; i < ring.Count; i++)
+                if (PictureModel.DistToSegment(pic, (Vector2)ring[i] / unit, (Vector2)ring[(i + 1) % ring.Count] / unit) <= radius) return true;
+            return false;
+        }
+
+        // Vòng lỗ thứ h của mảnh thành một đoạn khép kín để sửa bằng bút
+        public static EdgeRun HoleRun(PictureProperty p, int region, int h)
+        {
+            var holes = p.regions[region].holes;
+            if (holes == null || h < 0 || h >= holes.Count) return null;
+            var pts = ToPoints(holes[h]);
+            if (pts.Count < 3) return null;
+            pts.Add(pts[0]);
+            return new EdgeRun { a = region, b = -1, hole = h, pts = pts };
+        }
+
+        // Lỗ của mảnh có biên gần pic (ô lưới) nhất trong bán kính; -1 nếu không có
+        public static int NearestHole(PictureProperty p, int region, Vector2 pic, float radius)
+        {
+            var holes = p.regions[region].holes;
+            if (holes == null) return -1;
+            var unit = Mathf.Max(1, p.unit);
+            var best = -1;
+            var bestD = radius;
+            for (var h = 0; h < holes.Count; h++)
+            {
+                var ring = ToPoints(holes[h]);
+                for (var i = 0; i < ring.Count; i++)
+                {
+                    var d = PictureModel.DistToSegment(pic, (Vector2)ring[i] / unit, (Vector2)ring[(i + 1) % ring.Count] / unit);
+                    if (d < bestD) { bestD = d; best = h; }
+                }
+            }
+            return best;
+        }
+
         // Tranh có khe: các mảnh không chung đỉnh, mỗi cạnh của vòng thuộc về mảnh gần nhất bên kia khe (-1 = không có mảnh nào trong tầm khe)
         private static int[] GapKeys(PictureProperty p, int region, List<Vector2Int> ring)
         {
             var limit = Mathf.Max(1, p.width / 48) * Mathf.Max(1, p.unit) + 0.01f; // khớp PieceSize.MaxGap
             var rings = new List<Vector2Int>[p.regions.Count];
-            for (var r = 0; r < rings.Length; r++) if (r != region) rings[r] = ToPoints(p.regions[r].points);
+            var grid = new Dictionary<long, List<(int r, int k)>>(); // lưới ô cỡ limit: mỗi cạnh nằm trong mọi ô mà hộp bao nới limit của nó phủ tới
+            long Key(int cx, int cy) => ((long)cx << 32) ^ (uint)cy;
+            for (var r = 0; r < rings.Length; r++)
+            {
+                if (r == region) continue;
+                rings[r] = ToPoints(p.regions[r].points);
+                var m = rings[r].Count;
+                for (var k = 0; k < m; k++)
+                {
+                    Vector2 a = rings[r][k], b = rings[r][(k + 1) % m];
+                    int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - limit) / limit), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + limit) / limit);
+                    int y0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - limit) / limit), y1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + limit) / limit);
+                    for (var cx = x0; cx <= x1; cx++)
+                    for (var cy = y0; cy <= y1; cy++)
+                    {
+                        var key = Key(cx, cy);
+                        if (!grid.TryGetValue(key, out var list)) grid[key] = list = new List<(int, int)>();
+                        list.Add((r, k));
+                    }
+                }
+            }
             var n = ring.Count;
             var keys = new int[n];
+            var dist = new float[n];
             for (var i = 0; i < n; i++)
             {
                 var mid = ((Vector2)ring[i] + ring[(i + 1) % n]) * 0.5f;
                 var bestD = limit;
                 keys[i] = -1;
-                for (var r = 0; r < rings.Length; r++)
+                if (!grid.TryGetValue(Key(Mathf.FloorToInt(mid.x / limit), Mathf.FloorToInt(mid.y / limit)), out var near)) continue;
+                foreach (var (r, k) in near) // ô giữ cạnh theo thứ tự (mảnh, cạnh) như vòng lặp cũ nên kết quả khi hoà khoảng cách không đổi
                 {
-                    if (rings[r] == null) continue;
-                    var m = rings[r].Count;
-                    for (var k = 0; k < m; k++)
-                    {
-                        var d = PictureModel.DistToSegment(mid, rings[r][k], rings[r][(k + 1) % m]);
-                        if (d <= bestD) { bestD = d; keys[i] = r; }
-                    }
+                    var d = PictureModel.DistToSegment(mid, rings[r][k], rings[r][(k + 1) % rings[r].Count]);
+                    if (d <= bestD) { bestD = d; keys[i] = r; }
                 }
+                dist[i] = bestD;
             }
+
+            // Ngưỡng chung 40 ô gom cả cạnh gần mảnh kề nhưng không nằm trên rãnh (VD cạnh tranh sát chỗ rãnh bắt đầu): chỉ giữ cạnh cách mảnh kề không quá 2 lần độ rộng rãnh, tính bằng trung vị có trọng số độ dài cạnh (cạnh cắt dài quyết định, cạnh vụn ở góc không kéo ngưỡng lên)
+            var byNeighbour = new Dictionary<int, List<(float d, float len)>>();
+            for (var i = 0; i < n; i++)
+            {
+                if (keys[i] < 0) continue;
+                if (!byNeighbour.TryGetValue(keys[i], out var l)) byNeighbour[keys[i]] = l = new List<(float, float)>();
+                l.Add((dist[i], ((Vector2)ring[(i + 1) % n] - ring[i]).magnitude));
+            }
+            var reach = new Dictionary<int, float>();
+            foreach (var kv in byNeighbour)
+            {
+                var list = kv.Value;
+                list.Sort((x, y) => x.d.CompareTo(y.d));
+                var total = 0f;
+                foreach (var e in list) total += e.len;
+                var acc = 0f;
+                var median = list[list.Count - 1].d;
+                foreach (var e in list)
+                {
+                    acc += e.len;
+                    if (acc >= total * 0.5f) { median = e.d; break; }
+                }
+                reach[kv.Key] = Mathf.Max(2f * median, 3f * Mathf.Max(1, p.unit));
+            }
+            for (var i = 0; i < n; i++)
+                if (keys[i] >= 0 && dist[i] > reach[keys[i]]) keys[i] = -1;
             return keys;
         }
 

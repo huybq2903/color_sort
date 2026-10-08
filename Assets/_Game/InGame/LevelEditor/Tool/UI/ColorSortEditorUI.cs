@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Falcon.InGame.Core;
+using Falcon.Shared.BaseInGame;
 using Falcon.Shared.BaseLevelEditor;
 using Imui.Controls;
 using Imui.Core;
@@ -18,11 +19,14 @@ namespace Falcon.InGame.LevelEditor
         private const float ThumbMaxH = 240f;
         private const int PerRow = 5;
         private static readonly int[] SmoothOptions = { 1, 3, 5, 7 };
-        private static readonly string[] ModeLabels = { "Chọn (V)", "Vẽ (D)", "Tô (B)" };
-        private static readonly string[] DrawLabels = { "Tách (1)", "Vẽ biên (2)" }; // Nét (3) tạm ẩn, bổ sung sau
+        private static readonly string[] CutKindLabels = { "Tách", "Vẽ lỗ" };
         private static readonly string[] ValueLabels = { "50", "100", "150", "200", "250", "300" };
 
         private LevelEditorPicture _picture;
+        private readonly LineData _lineEntity = new();
+        private readonly HoleData _holeEntity = new();
+        private static readonly PictureInfoData InfoEntity = new();
+        private static readonly NullData NoneEntity = new() { id = "none" };
         private PopupLoading _loading;
         private const float UpdateCheckSeconds = 1800f; // 30 phút hỏi GitHub một lần
         private readonly AppUpdater _updater = new();
@@ -31,6 +35,7 @@ namespace Falcon.InGame.LevelEditor
         {
             base.Initialized();
             _picture = LevelEditorManager.Get<LevelEditorPicture>();
+            RegisterPictureInspectors();
             _loading = new PopupLoading(() => _picture.BusyText);
             _saveLoad.ThumbnailCapture = () => PictureThumbnail.Render(_picture.Picture);
 #if !UNITY_EDITOR
@@ -71,14 +76,11 @@ namespace Falcon.InGame.LevelEditor
             var menuH = Gui.Style.Layout.InnerSpacing * 2f + Gui.GetRowHeight();
             var logH = Gui.GetRowHeight();
             var rect = new ImRect(10f, 10f + logH, LeftW, screen.y - menuH - 10f - logH);
-            _picture.ViewInset = (rect.X + rect.W) / screen.x;
 
             Gui.BeginWindow("Picture", rect, ImWindowFlag.NoMovingAndResizing);
             try
             {
                 DrawSourceSection();
-                Gui.Separator("Chế độ");
-                DrawModeSection();
                 Gui.Separator("Xem");
                 DrawViewSection();
             }
@@ -88,30 +90,41 @@ namespace Falcon.InGame.LevelEditor
             }
         }
 
-        // Inspector bên phải: thuộc tính của mảnh đang chọn (số cát, thao tác), nét đang chọn, hoặc thông tin chung của tranh
-        protected override void DrawRightPanel()
+        // Inspector bên phải: mỗi trạng thái của tranh (mảnh, đường cắt, nét, thông tin chung) là một inspector đăng ký theo kiểu selection
+        protected override IEntityDataContainer CurrentSelection
         {
-            if (_picture == null) return;
-            var screen = Gui.Canvas.ScreenSize;
-            var menuH = Gui.Style.Layout.InnerSpacing * 2f + Gui.GetRowHeight();
-            var logH = Gui.GetRowHeight();
-            var rect = new ImRect(screen.x - RightW - 10f, 10f + logH, RightW, screen.y - menuH - 10f - logH);
-            _picture.ViewInsetRight = (RightW + 10f) / screen.x;
-
-            Gui.BeginWindow("Inspector", rect, ImWindowFlag.NoMovingAndResizing);
-            try
+            get
             {
+                if (_picture == null) return null;
                 var p = _picture.Picture;
-                if (p == null) Gui.Text("Chưa có tranh", true);
-                else if (_picture.SelectedCount > 0) { if (_picture.IsCutTool) DrawCutSection(p); DrawPieceInspector(p); }
-                else if (_picture.IsCutTool) DrawCutInspector(p);
-                else if (_picture.InspectedLine >= 0 || _picture.IsLineTool) DrawLineInspector(p);
-                else DrawPictureInspector(p);
+                if (p == null) return PictureSelection.Of<NoPictureSelection>(NoneEntity);
+                var first = _picture.PrimarySelected;
+                if (_picture.EditingHole >= 0 && first >= 0 && first < p.regions.Count)
+                {
+                    _holeEntity.region = first;
+                    _holeEntity.hole = _picture.EditingHole;
+                    _holeEntity.id = $"{p.regions[first].id}:h{_holeEntity.hole + 1}";
+                    return PictureSelection.Of<HoleSelection>(_holeEntity);
+                }
+                if (_picture.SelectedCount > 0 && first >= 0 && first < p.regions.Count) return PictureSelection.Of<PieceSelection>(p.regions[first]);
+                if (_picture.InspectedLine >= 0 || _picture.IsLineTool)
+                {
+                    var li = _picture.InspectedLine;
+                    _lineEntity.index = li;
+                    _lineEntity.id = li >= 0 && p.lineIds != null && li < p.lineIds.Count ? p.lineIds[li] : "new";
+                    return PictureSelection.Of<LineSelection>(_lineEntity);
+                }
+                return PictureSelection.Of<PictureInfoSelection>(InfoEntity);
             }
-            finally
-            {
-                Gui.EndWindow();
-            }
+        }
+
+        private void RegisterPictureInspectors()
+        {
+            RegisterInspector(new PictureInspector<NoPictureSelection>(() => Gui.Text("Chưa có tranh", true)));
+            RegisterInspector(new PictureInspector<PieceSelection>(() => DrawPieceInspector(_picture.Picture)));
+            RegisterInspector(new PictureInspector<HoleSelection>(() => DrawHoleInspector(_holeEntity)));
+            RegisterInspector(new PictureInspector<LineSelection>(() => DrawLineInspector(_picture.Picture)));
+            RegisterInspector(new PictureInspector<PictureInfoSelection>(() => DrawPictureInspector(_picture.Picture)));
         }
 
         private void DrawInspectorHeader(Color32 swatch, string title, string sub)
@@ -134,8 +147,8 @@ namespace Falcon.InGame.LevelEditor
             var swatch = colors.Count == 1 ? ColorPalette.Get(colors[0]) : new Color32(120, 130, 150, 255);
             DrawInspectorHeader(swatch, sel == 1 ? $"Mảnh #{idx + 1}" : $"{sel} mảnh", colors.Count == 1 ? $"Màu #{colors[0]}" : $"{colors.Count} màu khác nhau");
 
-            Gui.Separator("Bảng màu (bấm để tô)");
-            DrawPalette(true, false);
+            Gui.Separator("Bảng màu (bấm để đổi màu)");
+            DrawPalette(_picture.PickPaletteColor, false);
 
             Gui.Separator("Số cát");
             var known = _picture.TryGetSelectedValue(out var value);
@@ -153,27 +166,36 @@ namespace Falcon.InGame.LevelEditor
             DrawSelection();
         }
 
-        private void DrawCutInspector(PictureProperty p)
-        {
-            DrawInspectorHeader(new Color32(15, 23, 42, 255), _picture.Tool == PictureTool.Split ? "Đường cắt" : "Vẽ lại biên", "Vẽ trên mảnh bằng bút");
-            DrawCutSection(p);
-        }
-
-        // Độ dày đường cắt: chỉ tranh có khe nét mới có (khe giữa hai mảnh mới tách); tranh thường dùng viền chung
+        // Đường cắt của mảnh đang chọn: rãnh đen chỉnh ngay lúc đặt điểm (dải đen mờ trên đường cắt) và hai nút chọn kết quả Tách / Vẽ lỗ ở dưới
         private void DrawCutSection(PictureProperty p)
         {
-            Gui.Separator(_picture.Tool == PictureTool.Split ? "Đường cắt" : "Vẽ lại biên");
-            if (!p.gen.inkGaps) { Gui.Text("Tranh không có khe nét: đường cắt dùng viền chung của hai mảnh.", true); return; }
-            if (_picture.Tool == PictureTool.Redraw) { Gui.Text("Tranh có khe nét chưa vẽ lại được biên chung. Dùng Chọn mảnh rồi click biên để sửa.", true); return; }
-            Gui.Text("Độ dày khe (ô lưới, 0 = không khe)", true);
+            Gui.Text(_picture.Splitting ? "Đang cắt: Shift+click đặt điểm, bấm gần điểm đầu để khép kín · Enter cắt · Esc huỷ" : "Shift+click để đặt điểm cắt mảnh này · Enter cắt", true);
+            if (_picture.CutAsHole)
+                Gui.Text("Vẽ lỗ: đường khép kín, phần trong vòng bị khoét thành lỗ. Lỗ không có cát và không được chạm biên mảnh.", true);
+            else if (!p.gen.inkGaps)
+                Gui.Text("Tranh không có khe nét: đường cắt dùng viền chung của hai mảnh.", true);
+            else
+            {
+                Gui.Text("Rãnh đen giữa hai mảnh sau khi tách", true);
+                DrawGrooveEditor(_picture.CutThickness, v => _picture.CutThickness = v);
+                Gui.Text(_picture.PenAnchorCount >= 2 ? "Dải đen mờ trên đường cắt là rãnh sẽ tạo ra." : "Đặt ít nhất 2 điểm cắt để thấy dải rãnh.", true);
+            }
+            DrawChoiceRow(CutKindLabels, _picture.CutAsHole ? 1 : 0, i => _picture.CutAsHole = i == 1);
+        }
+
+        // -, ô số, +, thanh trượt cho độ rộng rãnh (ô lưới); set được gọi mỗi khi giá trị đổi
+        private void DrawGrooveEditor(int current, Action<int> set)
+        {
             var rowH = Gui.GetRowHeight();
-            var v = _picture.CutThickness;
+            var v = current;
             Gui.BeginHorizontal();
             if (Gui.Button("-", new ImSize(44f, rowH))) v = Mathf.Max(0, v - 1);
             Gui.NumericEdit(ref v, new ImSize(80f, rowH), default, 1, 0, 80);
             if (Gui.Button("+", new ImSize(44f, rowH))) v = Mathf.Min(80, v + 1);
+            Gui.Text("ô lưới");
             Gui.EndHorizontal();
-            _picture.CutThickness = v;
+            Gui.Slider(ref v, 0, 40);
+            if (v != current) set(v);
         }
 
         // Nét đang chọn: thông tin và độ dày của nét đó; chưa chọn nét nào mà đang ở bút vẽ: độ dày áp cho nét sắp vẽ
@@ -222,10 +244,8 @@ namespace Falcon.InGame.LevelEditor
             Gui.Text($"Tổng cát: {p.regions.Sum(r => r.value)}", true);
             Gui.Text($"Đặt tay: {p.regions.Count(r => r.valueManual)} mảnh", true);
 
-            // Chế độ Tô cần chọn màu cọ nên bảng màu bấm được (không hiện số); các chế độ khác chỉ xem số mảnh theo màu
-            var paint = _picture.Mode == PictureMode.Paint;
-            Gui.Separator(paint ? "Bảng màu (chọn màu để tô)" : "Số mảnh theo màu");
-            DrawPalette(paint, !paint);
+            Gui.Separator("Số cát theo màu (bấm màu để chọn các mảnh)");
+            DrawPalette(_picture.SelectByColor, true);
         }
 
         private void DrawSourceSection()
@@ -273,11 +293,21 @@ namespace Falcon.InGame.LevelEditor
         private void DrawSelection()
         {
             Gui.Separator("Thao tác");
-            Gui.BeginHorizontal();
+            if (_picture.SelectedCount == 1) DrawCutSection(_picture.Picture);
             if (_picture.SelectedCount >= 2 && Gui.Button("Gộp (M)")) _picture.MergeSelected();
-            if (Gui.Button("Bỏ chọn (Esc)")) _picture.ClearSelection();
-            Gui.EndHorizontal();
             DrawSubdivide();
+            if (Gui.Button(_picture.SelectedCount >= 2 ? "Xoá các mảnh (Del)" : "Xoá mảnh (Del)")) _picture.DeleteSelectedPieces();
+        }
+
+        // Lỗ đang chọn (click biên lỗ): thông tin như một entity, xoá lỗ; sửa biên bằng cách kéo điểm trên tranh
+        private void DrawHoleInspector(HoleData hole)
+        {
+            DrawInspectorHeader(new Color32(15, 23, 42, 255), $"Lỗ #{hole.hole + 1}", $"Thuộc mảnh #{hole.region + 1}");
+            var contains = _picture.HoleContains(hole.hole);
+            if (contains.Length > 0) Gui.Text($"Bên trong lỗ có mảnh {contains}", true);
+            Gui.Text("Kéo điểm hoặc đầu thanh cong trên tranh để sửa · Shift+click biên lỗ thêm điểm · Enter chốt · Esc huỷ", true);
+            Gui.Separator("Thao tác");
+            if (Gui.Button("Xoá lỗ")) _picture.DeleteHole(hole.hole);
         }
 
         // Chia mảnh đang chọn: số mảnh sau khi chia, mặc định gợi ý theo diện tích mảnh
@@ -287,13 +317,6 @@ namespace Falcon.InGame.LevelEditor
             Gui.Text($"Số mảnh: {n}", true);
             if (Gui.Slider(ref n, Subdivide.MinCount, Subdivide.MaxCount)) _picture.SplitCount = n;
             if (Gui.Button("Chia mảnh (K)")) _picture.SubdivideSelected();
-        }
-
-        // Chế độ Chọn / Vẽ / Tô; khi Vẽ thì thêm hàng chọn kiểu vẽ
-        private void DrawModeSection()
-        {
-            DrawChoiceRow(ModeLabels, (int)_picture.Mode, i => _picture.SetMode((PictureMode)i));
-            if (_picture.Mode == PictureMode.Draw) DrawChoiceRow(DrawLabels, (int)_picture.Draw, i => _picture.SetDrawKind((DrawKind)i));
         }
 
         // Hàng nút lựa chọn một trong nhiều; viền vàng = đang dùng
@@ -320,9 +343,9 @@ namespace Falcon.InGame.LevelEditor
         };
 
         // Lưới cố định 5 cột x 8; ô đang chọn viền trắng, số trên ô = số mảnh dùng màu đó
-        private void DrawPalette(bool clickable, bool showCounts)
+        private void DrawPalette(Action<int> pick, bool showCounts)
         {
-            var counts = showCounts ? _picture.ColorCounts() : null;
+            var counts = showCounts ? _picture.ColorSand() : null;
             var colors = ColorPalette.Colors;
             var swatch = Mathf.Min(MaxSwatch, (Gui.Layout.GetAvailableWidth() - Gui.Style.Layout.Spacing * (PerRow - 1)) / PerRow);
             for (var k = 0; k < colors.Length; k++)
@@ -331,10 +354,10 @@ namespace Falcon.InGame.LevelEditor
                 if (k % PerRow == 0) Gui.BeginHorizontal();
                 var r = Gui.AddLayoutRectWithSpacing(swatch, swatch);
                 Color c = colors[i];
-                if (clickable)
+                if (pick != null)
                 {
-                    if (Gui.ColorButton(0xC0100000u + (uint)i, c, r)) _picture.PickPaletteColor(i);
-                    if (i == _picture.CurrentColorId) Gui.Canvas.RectOutline(r, new Color32(255, 255, 255, 255), 3f);
+                    if (Gui.ColorButton(0xC0100000u + (uint)i, c, r)) pick(i);
+                    if (!showCounts && i == _picture.CurrentColorId) Gui.Canvas.RectOutline(r, new Color32(255, 255, 255, 255), 3f);
                 }
                 else
                 {

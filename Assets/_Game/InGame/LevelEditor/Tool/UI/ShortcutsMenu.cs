@@ -21,20 +21,22 @@ namespace Falcon.InGame.LevelEditor
     public class PopupShortcuts : PopupBase
     {
         private const string Content =
-            "CHẾ ĐỘ\n" +
-            "V  Chọn  ·  D  Vẽ  ·  B  Tô\n" +
-            "Tab hoặc 1 / 2  Đổi kiểu vẽ (Tách, Vẽ biên)\n\n" +
             "CHỌN\n" +
-            "Click  Chọn mảnh hoặc nét  ·  Shift+click  Thêm / bớt\n" +
+            "Click  Chọn mảnh hoặc nét  ·  Ctrl+click  Chọn thêm / bớt mảnh\n" +
             "Kéo trên nền  Chọn khung  ·  Click biên của mảnh đã chọn  Sửa biên\n" +
             "M  Gộp các mảnh đã chọn  ·  K  Chia mảnh đã chọn\n" +
-            "Delete  Xoá nét đang chọn  ·  Esc  Bỏ chọn\n\n" +
-            "BÚT (Vẽ, Sửa biên)\n" +
+            "Bấm màu trong Thông tin tranh  Chọn mọi mảnh màu đó\n" +
+            "Delete  Xoá nét hoặc mảnh đang chọn  ·  Esc  Bỏ chọn\n\n" +
+            "CẮT MẢNH (đang chọn đúng 1 mảnh)\n" +
+            "Shift+click  Đặt điểm cắt (điểm đầu trên biên hoặc trong mảnh)\n" +
+            "Từ điểm thứ 3, bấm gần điểm đầu  Khép kín đường cắt\n" +
+            "Enter  Cắt  ·  Bỏ chọn mảnh hoặc Esc  Huỷ\n" +
+            "Đường khép kín + \"Khoét lỗ trống\"  Tạo lỗ trong mảnh (lỗ không chạm biên, không có cát)\n" +
+            "Click biên lỗ  Hiện thông tin lỗ, kéo điểm trên tranh để sửa  ·  Nút Xoá lỗ  Lấp lỗ lại\n\n" +
+            "BÚT (Sửa biên)\n" +
             "Shift+click  Đặt điểm, hoặc chèn điểm lên đường khi sửa biên\n" +
             "Kéo đầu thanh cong  Uốn đường  ·  Delete  Xoá điểm\n" +
             "Enter  Chốt  ·  Esc  Huỷ\n\n" +
-            "TÔ\n" +
-            "Click hoặc kéo  Tô màu đang chọn  ·  Shift+click  Đổi cả màu\n\n" +
             "CHUNG\n" +
             "Z  Hoàn tác  ·  Y  Làm lại\n" +
             "Giữ chuột giữa kéo  Dịch chuyển màn hình";

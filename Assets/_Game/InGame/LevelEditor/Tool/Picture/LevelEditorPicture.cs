@@ -14,12 +14,10 @@ using UnityEngine.InputSystem;
 
 namespace Falcon.InGame.LevelEditor
 {
-    public enum PictureMode { Select, Draw, Paint }
 
-    public enum DrawKind { Split, Redraw, Line }
 
     // Công cụ đang hiệu lực, suy ra từ chế độ (và kiểu vẽ khi ở chế độ Vẽ)
-    public enum PictureTool { Select, Paint, Split, Redraw, AddLine }
+    public enum PictureTool { Select, Split, AddLine }
 
     // Điểm neo: vị trí + tay cầm ra/vào (độ lệch so với điểm); tay cầm 0 = góc nhọn
     internal struct PenAnchor
@@ -80,26 +78,53 @@ namespace Falcon.InGame.LevelEditor
         public bool ShowGlass { get; private set; } = true;
         public bool ShowValues { get; private set; } = true;
         public float SourceAlpha { get; private set; }
-        public float ViewInset { get; set; } = 0.2f; // UI cập nhật mỗi frame: phần bề ngang bị panel trái che
-        public float ViewInsetRight { get; set; } // như trên, cho panel Inspector bên phải
-        public PictureMode Mode { get; private set; } = PictureMode.Select;
-        public DrawKind Draw { get; private set; } = DrawKind.Split;
+        private bool _splitting;
+        public bool Splitting // đang đặt điểm cắt cho mảnh đang chọn (Shift+click khi chọn đúng 1 mảnh)
+        {
+            get => _splitting;
+            private set
+            {
+                _splitting = value;
+                SyncCutBand();
+            }
+        }
         public int SelectedLine => _selectedLine;
         public int InspectedLine => _selectedLine >= 0 ? _selectedLine : _editLine; // nét đang chọn, hoặc nét đang nạp vào bút để sửa
         public int NewLineThickness { get; set; } // độ dày nét sắp vẽ theo % viền; 0 = mặc định
         public bool IsLineTool => Tool == PictureTool.AddLine;
-        public bool IsCutTool => Tool is PictureTool.Split or PictureTool.Redraw;
-        public int CutThickness { get; set; } = 6; // tranh có khe nét: bề rộng khe của đường cắt (ô lưới)
-        public PictureTool Tool => Mode switch
+        public bool IsCutTool => Tool == PictureTool.Split;
+        private bool _cutAsHole;
+        public bool CutAsHole // đường cắt khép kín khoét thành lỗ trống thay vì tách mảnh con
         {
-            PictureMode.Paint => PictureTool.Paint,
-            PictureMode.Draw => Draw switch { DrawKind.Split => PictureTool.Split, DrawKind.Redraw => PictureTool.Redraw, _ => PictureTool.AddLine },
-            _ => PictureTool.Select,
-        };
+            get => _cutAsHole;
+            set
+            {
+                _cutAsHole = value;
+                SyncCutBand();
+            }
+        }
+
+        private int _cutThickness = 3;
+        public int CutThickness // tranh có khe nét: bề rộng khe của đường cắt (ô lưới)
+        {
+            get => _cutThickness;
+            set
+            {
+                if (_cutThickness == value) return;
+                _cutThickness = value;
+                SyncCutBand();
+            }
+        }
+
+        // Dải khe xem trước chỉ có khi đang tách trên tranh có khe
+        private void SyncCutBand() => view.SetCutBand(_splitting && !_cutAsHole && _propertyData != null && _propertyData.gen.inkGaps ? _cutThickness : 0f);
+        public PictureTool Tool => Splitting ? PictureTool.Split : PictureTool.Select;
+        public int PenAnchorCount => _pen.Count;
         public int SelectedCount => _selected.Count;
         public bool IsSelected(int index) => _selected.Contains(index);
         public int SplitCount { get; set; } = 2; // số mảnh sau khi chia mảnh đang chọn (mặc định = gợi ý theo diện tích)
         public int SelectedIndex => _selected.Count == 1 ? _selected[0] : -1;
+        public int PrimarySelected => _selected.Count > 0 ? _selected[0] : -1; // mảnh chọn đầu tiên (nhiều mảnh: đại diện cho nhóm)
         public int CurrentColorId { get; set; } = 1;
 
         public void Initialized()
@@ -114,12 +139,6 @@ namespace Falcon.InGame.LevelEditor
             _subs.Add(_input.PointerDown.Subscribe(OnPointerDown));
             _subs.Add(_input.PointerMove.Subscribe(OnPointerMove));
             _subs.Add(_input.PointerUp.Subscribe(OnPointerUp));
-            _subs.Add(_input.HotKeyDown(Key.V).Subscribe(_ => SetMode(PictureMode.Select)));
-            _subs.Add(_input.HotKeyDown(Key.D).Subscribe(_ => SetMode(PictureMode.Draw)));
-            _subs.Add(_input.HotKeyDown(Key.B).Subscribe(_ => SetMode(PictureMode.Paint)));
-            _subs.Add(_input.HotKeyDown(Key.Tab).Subscribe(_ => { if (Mode == PictureMode.Draw) SetDrawKind((DrawKind)(((int)Draw + 1) % 2)); })); // Nét tạm ẩn: chỉ xoay giữa Tách và Vẽ biên
-            _subs.Add(_input.HotKeyDown(Key.Digit1).Subscribe(_ => { if (Mode == PictureMode.Draw) SetDrawKind(DrawKind.Split); }));
-            _subs.Add(_input.HotKeyDown(Key.Digit2).Subscribe(_ => { if (Mode == PictureMode.Draw) SetDrawKind(DrawKind.Redraw); }));
             _subs.Add(_input.HotKeyDown(Key.LeftBracket).Subscribe(_ => StepSelectedValue(-1)));
             _subs.Add(_input.HotKeyDown(Key.RightBracket).Subscribe(_ => StepSelectedValue(1)));
             _subs.Add(_input.HotKeyDown(Key.M).Subscribe(_ => MergeSelected()));
@@ -133,6 +152,7 @@ namespace Falcon.InGame.LevelEditor
         protected override void OnLoadLevel(OnLoadLevel data)
         {
             base.OnLoadLevel(data);
+            _propertyData?.EnsureIds();
             _job = null; // bỏ kết quả Generate của level cũ
             Settings = _propertyData != null ? _propertyData.gen.Clone() : new GenSettings();
             Settings.splitMode = 1; // luôn cắt cong
@@ -147,8 +167,7 @@ namespace Falcon.InGame.LevelEditor
             _source = null;
             ShowColor = true;
             SourceAlpha = 0f;
-            Mode = PictureMode.Select;
-            Draw = DrawKind.Split;
+            Splitting = false;
             EndBox();
             CancelPen(); // level khác: bỏ đoạn biên đang sửa của level cũ
             RebuildView();
@@ -266,23 +285,28 @@ namespace Falcon.InGame.LevelEditor
             RefreshSource();
         }
 
-        public void SetMode(PictureMode m)
+        private const string CutHint = "Cắt: Shift+click đặt điểm (điểm đầu trên biên hoặc trong mảnh; từ điểm thứ 3, bấm gần điểm đầu để khép kín), kéo đầu thanh cong để uốn · Enter cắt · Esc huỷ · Del xoá điểm";
+        private const float ClosePixels = 18f; // từ điểm thứ 3: điểm đặt cách điểm đầu chừng này (pixel màn hình) thì hút vào điểm đầu
+
+        // Điểm cắt đầu tiên: chỉ khi chọn đúng 1 mảnh; bút giữ các điểm cho tới khi Enter hoặc bỏ chọn mảnh
+        private void StartCut(LevelEditorPointerEvent e, Vector2 pic)
         {
-            if (Mode == m) return;
-            Mode = m;
-            ResetInteraction();
-            LevelEditorMainUI.Log(ModeHint());
+            Splitting = true;
+            _splitIndex = SelectedIndex;
+            PressPath(e, pic, -1);
+            if (_pen.Count == 0)
+            {
+                Splitting = false;
+                _splitIndex = -1;
+                return;
+            }
+            LevelEditorMainUI.Log(CutHint);
         }
 
-        public void SetDrawKind(DrawKind k)
-        {
-            Draw = k;
-            if (Mode != PictureMode.Draw) Mode = PictureMode.Draw;
-            ResetInteraction();
-            LevelEditorMainUI.Log(ModeHint());
-        }
+        private Vector3 SnapToStart(Vector3 pos) =>
+            Splitting && _pen.Count >= 2 && (Screen2(pos) - Screen2(_pen[0].pos)).magnitude <= ClosePixels ? _pen[0].pos : pos;
 
-        // Đổi chế độ: bỏ mọi thao tác đang dở (bút, khung chọn, uốn mềm) và nét đang chọn
+        // Đổi trạng thái: bỏ mọi thao tác đang dở (bút, khung chọn, uốn mềm) và nét đang chọn
         private void ResetInteraction()
         {
             EndBox();
@@ -292,29 +316,18 @@ namespace Falcon.InGame.LevelEditor
             view.SetLineHighlight(-1);
         }
 
-        private string ModeHint() => Mode switch
-        {
-            PictureMode.Select => "Chọn: click chọn · Shift+click thêm · kéo nền chọn khung · click biên của mảnh đã chọn để sửa (Enter chốt, Shift+click biên thêm điểm) · M gộp · K chia · Del xoá nét",
-            PictureMode.Paint => "Tô: click hoặc kéo để tô màu đang chọn · Shift+click đổi cả màu",
-            _ => Draw switch
-            {
-                DrawKind.Split => "Vẽ ▸ Tách: Shift+click đặt điểm, kéo đầu thanh cong để uốn · Enter chốt · Esc huỷ · Del xoá điểm · Tab đổi kiểu",
-                DrawKind.Redraw => "Vẽ ▸ Vẽ biên: Shift+click đặt điểm, kéo đầu thanh cong để uốn · Enter chốt · Esc huỷ · Del xoá điểm · Tab đổi kiểu",
-                _ => "Vẽ ▸ Nét: Shift+click đặt điểm, kéo đầu thanh cong để uốn, click nét có sẵn để sửa · Enter chốt · Esc huỷ · Tab đổi kiểu",
-            },
-        };
-
         public void FitView()
         {
-            if (_propertyData != null) _camera?.FitTo(view.WorldBounds, ViewInset, ViewInsetRight);
-            else if (_source) _camera?.FitTo(view.FrameBounds, ViewInset, ViewInsetRight);
+            if (_propertyData != null) _camera?.FitTo(view.WorldBounds);
+            else if (_source) _camera?.FitTo(view.FrameBounds);
         }
 
-        public Dictionary<int, int> ColorCounts() =>
+        // Tổng số cát của các mảnh theo từng màu
+        public Dictionary<int, int> ColorSand() =>
             _propertyData == null ? new Dictionary<int, int>() :
-            _propertyData.regions.GroupBy(r => r.colorId).ToDictionary(g => g.Key, g => g.Count());
+            _propertyData.regions.GroupBy(r => r.colorId).ToDictionary(g => g.Key, g => g.Sum(r => r.value));
 
-        private bool IsPathTool => Tool is PictureTool.Split or PictureTool.Redraw or PictureTool.AddLine || _editRun != null;
+        private bool IsPathTool => Tool is PictureTool.Split or PictureTool.AddLine || _editRun != null;
 
         private void OnPointerDown(LevelEditorPointerEvent e)
         {
@@ -323,19 +336,11 @@ namespace Falcon.InGame.LevelEditor
             var hit = _model.HitTest(pic);
             if (e.Button != 0) return;
             if (Tool == PictureTool.Select) { PressSelect(e, pic); return; }
-            if (Tool == PictureTool.Paint && hit < 0) return;
+            if (Tool == PictureTool.Split && (e.Modifiers & KeyModifiers.Shift) == 0 && !OnPenControl(e)) { PressSelect(e, pic); return; }
 
             switch (Tool)
             {
-                case PictureTool.Paint when (e.Modifiers & KeyModifiers.Shift) != 0:
-                    ReplaceColor(_propertyData.regions[hit].colorId);
-                    break;
-                case PictureTool.Paint:
-                    PaintRegion(hit);
-                    BeginDrag();
-                    break;
                 case PictureTool.Split:
-                case PictureTool.Redraw:
                 case PictureTool.AddLine:
                     PressPath(e, pic, hit);
                     break;
@@ -343,6 +348,10 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Chế độ Chọn: kéo tiếp neo hoặc tay cầm đang sửa; click gần biên của mảnh đã chọn = sửa biên; còn lại là chọn (click hoặc kéo khung, chốt khi thả)
+        // Con trỏ đang trên điểm neo hoặc đầu tay cầm của bút?
+        private bool OnPenControl(LevelEditorPointerEvent e) =>
+            _sel >= 0 && _sel < _pen.Count && HandleHit(e.ScreenPosition) != PenDrag.None || NearestAnchor(e.ScreenPosition) >= 0;
+
         private void PressSelect(LevelEditorPointerEvent e, Vector2 pic)
         {
             if (_editRun != null)
@@ -352,9 +361,11 @@ namespace Falcon.InGame.LevelEditor
                 else CancelPen();
             }
             var shift = (e.Modifiers & KeyModifiers.Shift) != 0;
-            if (!shift && SelectedIndex >= 0 && BeginEditRun(pic)) return; // Shift+click luôn là chọn thêm/bớt
+            var ctrl = (e.Modifiers & KeyModifiers.Ctrl) != 0;
+            if (shift && !ctrl && SelectedIndex >= 0) { StartCut(e, pic); return; } // chọn đúng 1 mảnh: Shift+click đặt điểm cắt
+            if (!shift && !ctrl && !Splitting && SelectedIndex >= 0 && BeginEditRun(pic)) return; // Ctrl+click (hoặc Shift khi chưa chọn đúng 1 mảnh) là chọn thêm/bớt
             _boxing = true;
-            _boxShift = shift;
+            _boxShift = shift || ctrl;
             _boxStartPic = pic;
             _boxStartScreen = e.ScreenPosition;
             _input.SetPointerCaptured(true);
@@ -374,6 +385,13 @@ namespace Falcon.InGame.LevelEditor
             if (_penDrag == PenDrag.None)
             {
                 var near = NearestAnchor(e.ScreenPosition);
+                if (Splitting && shift && near == 0 && _pen.Count >= 2)
+                {
+                    _pen.Add(new PenAnchor { pos = _pen[0].pos }); // khép kín: điểm cuối trùng điểm đầu
+                    _sel = _pen.Count - 1;
+                    PushPenChange(_penBefore);
+                    return true;
+                }
                 if (near >= 0) { _sel = near; _penDrag = PenDrag.Anchor; }
                 else if (shift && _pen.Count > 1 && InsertOnCurve(e.ScreenPosition)) _penDrag = PenDrag.Anchor;
             }
@@ -399,10 +417,16 @@ namespace Falcon.InGame.LevelEditor
             }
             if (_pen.Count == 0 && Tool == PictureTool.Split)
             {
-                if (hit < 0) return true; // điểm đầu của đường cắt phải nằm trong một mảnh
-                _splitIndex = hit;
+                if (_splitIndex < 0) _splitIndex = SelectedIndex; // xoá hết điểm làm CancelPen reset _splitIndex: lấy lại mảnh đang chọn
+                if (_splitIndex < 0) return true;
             }
-            _pen.Add(new PenAnchor { pos = Place(e, out _) });
+            var pos = SnapToStart(Place(e, out var onEdge));
+            if (Splitting && _pen.Count == 0 && !onEdge && _model.HitTest(view.WorldToPicture(pos)) != _splitIndex)
+            {
+                LevelEditorMainUI.Warn("Điểm đầu phải nằm trong hoặc trên biên của mảnh đang chọn");
+                return true;
+            }
+            _pen.Add(new PenAnchor { pos = pos });
             _sel = _pen.Count - 1;
             PushPenChange(_penBefore);
             return true;
@@ -556,8 +580,18 @@ namespace Falcon.InGame.LevelEditor
         {
             var unit = Mathf.Max(1, _propertyData.unit);
             var radius = EditPickPixels / Mathf.Max(0.01f, PixelsPerCell(pic)); // bán kính chọn tính theo pixel màn hình, không lấn mất việc chọn mảnh
+            var hole = EdgeSkeleton.NearestHole(_propertyData, SelectedIndex, pic, radius);
+            if (hole >= 0) return StartRunEdit(EdgeSkeleton.HoleRun(_propertyData, SelectedIndex, hole));
+            if (!EdgeSkeleton.NearRing(_propertyData, SelectedIndex, pic, radius)) return false; // click xa biên: khỏi tính RunsOf nặng
             var run = EdgeSkeleton.Nearest(EdgeSkeleton.RunsOf(_propertyData, SelectedIndex), pic, unit, radius, _propertyData.gen.inkGaps);
+            return StartRunEdit(run);
+        }
+
+        // Nạp một đoạn biên (hoặc cả vòng lỗ) vào bút để sửa
+        private bool StartRunEdit(EdgeRun run)
+        {
             if (run == null) return false;
+            var unit = Mathf.Max(1, _propertyData.unit);
             var cubics = EdgeSkeleton.Fit(run, unit);
             if (cubics.Count == 0) return false;
             Vector3 W(Vector2 p)
@@ -580,13 +614,14 @@ namespace Falcon.InGame.LevelEditor
             _penOriginal = PenSnapshot();
             HideRunOutline(run);
             RefreshPen(null);
-            LevelEditorMainUI.Log("Sửa biên: kéo điểm hoặc đầu thanh cong, Shift+click biên để thêm điểm, Del xoá điểm · Enter chốt · Esc huỷ");
+            LevelEditorMainUI.Log(run.hole >= 0 ? "Sửa lỗ: kéo điểm hoặc đầu thanh cong, Shift+click biên lỗ để thêm điểm, Del xoá điểm · Enter chốt · Esc huỷ" : "Sửa biên: kéo điểm hoặc đầu thanh cong, Shift+click biên để thêm điểm, Del xoá điểm · Enter chốt · Esc huỷ");
             return true;
         }
 
         // Ẩn viền cũ của đoạn đang sửa ở cả hai mảnh, cho đỡ rối với đường xem trước; CancelPen hiện lại
         private void HideRunOutline(EdgeRun run)
         {
+            if (run.hole >= 0) return; // vòng lỗ không nằm trong vòng ngoài của mảnh
             int Find(int[] pts, Vector2Int v)
             {
                 for (var i = 0; i + 1 < pts.Length; i += 2) if (pts[i] == v.x && pts[i + 1] == v.y) return i / 2;
@@ -607,8 +642,8 @@ namespace Falcon.InGame.LevelEditor
         {
             snapped = false;
             var w = e.WorldPosition;
-            if (Tool != PictureTool.AddLine && _editRun == null && _model != null && _propertyData != null
-                && _model.NearestBoundaryPoint(view.WorldToPicture(w), SnapFraction * _propertyData.height, out var q))
+            if (Tool != PictureTool.AddLine && _editRun == null && !(Splitting && _cutAsHole) && _model != null && _propertyData != null
+                && _model.NearestBoundaryPoint(view.WorldToPicture(w), SnapFraction * _propertyData.height, out var q, Splitting ? (_splitIndex >= 0 ? _splitIndex : SelectedIndex) : -1))
             {
                 snapped = true;
                 var v = view.PictureToWorld(q);
@@ -634,7 +669,15 @@ namespace Falcon.InGame.LevelEditor
             if (IsPathTool) { MovePath(e, pic); return; }
             if (!_dragging) return;
 
-            if (Tool == PictureTool.Paint && hit >= 0) PaintRegion(hit);
+        }
+
+        // Vòng lỗ khép kín: điểm đầu và điểm cuối trùng nhau, kéo một bên thì bên kia theo (cả tay cầm)
+        private void SyncClosedEnds(int i)
+        {
+            var last = _pen.Count - 1;
+            if (last < 2) return;
+            if (i == 0) { var b = _pen[0]; _pen[last] = b; }
+            else if (i == last) { var b = _pen[last]; _pen[0] = b; }
         }
 
         private void MovePath(LevelEditorPointerEvent e, Vector2 pic)
@@ -647,7 +690,7 @@ namespace Falcon.InGame.LevelEditor
                 var a = _pen[_sel];
                 if (_penDrag == PenDrag.Anchor)
                 {
-                    var locked = _editRun != null && (_sel == 0 || _sel == _pen.Count - 1); // điểm nối không dịch
+                    var locked = _editRun != null && _editRun.hole < 0 && (_sel == 0 || _sel == _pen.Count - 1); // điểm nối không dịch (vòng lỗ thì không có điểm nối)
                     if (!locked) { a.pos = Place(e, out _); _runDirty = true; }
                 }
                 else
@@ -658,12 +701,15 @@ namespace Falcon.InGame.LevelEditor
                     _runDirty = true;
                 }
                 _pen[_sel] = a;
+                if (_editRun != null && _editRun.hole >= 0) SyncClosedEnds(_sel);
                 RefreshPen(null);
                 return;
             }
             if (_editRun == null && (e.Modifiers & KeyModifiers.Shift) != 0)
             {
                 var p = Place(e, out var snapped); // giữ Shift: sắp đặt điểm, cho thấy chỗ hút vào biên và đường nối tiếp từ điểm cuối
+                var closed = SnapToStart(p);
+                if (closed != p) { p = closed; snapped = true; }
                 view.SetSnapMarker(snapped, p);
                 if (_pen.Count > 0)
                 {
@@ -754,6 +800,8 @@ namespace Falcon.InGame.LevelEditor
             var path = new List<Vector3>();
             if (_pen.Count == 1) path.Add(_pen[0].pos); else Flatten(_pen, path);
             var split = _splitIndex;
+            var splitting = Splitting;
+            var closed = PenClosed;
             var edit = _editLine;
             var run = _editRun;
             var dirty = _runDirty;
@@ -763,12 +811,13 @@ namespace Falcon.InGame.LevelEditor
                 if (dirty) EditRunAlong(path, run); // chưa sửa gì thì không ghi dữ liệu
                 return;
             }
-            CommitPath(path, split, edit);
+            CommitPath(path, split, edit, splitting, closed);
         }
 
         // Esc: bỏ đường đang vẽ (nét đang sửa giữ nguyên bản cũ)
         private void CancelPen()
         {
+            Splitting = false;
             if (_editLine >= 0) view.SetLineVisible(_editLine, true);
             _editLine = -1;
             _editRun = null;
@@ -793,7 +842,8 @@ namespace Falcon.InGame.LevelEditor
         private void OnDelete()
         {
             if (_pen.Count > 0) DeleteAnchor();
-            else DeleteSelectedLine();
+            else if (_selectedLine >= 0) DeleteSelectedLine();
+            else DeleteSelectedPieces();
         }
 
         // Bỏ điểm neo đang chọn (mặc định điểm cuối)
@@ -809,15 +859,16 @@ namespace Falcon.InGame.LevelEditor
             PushPenChange(before);
         }
 
-        private void CommitPath(IReadOnlyList<Vector3> path, int splitIndex, int editLine)
+        private void CommitPath(IReadOnlyList<Vector3> path, int splitIndex, int editLine, bool splitting, bool closed)
         {
             if (_propertyData == null) return;
-            switch (Tool)
+            if (splitting && IsValid(splitIndex) && _cutAsHole)
             {
-                case PictureTool.Split when IsValid(splitIndex): SplitAlong(path, splitIndex); break;
-                case PictureTool.Redraw: RedrawAlong(path); break;
-                case PictureTool.AddLine: AddLineAlong(path, editLine); break;
+                if (closed) AddHoleAlong(path, splitIndex);
+                else LevelEditorMainUI.Warn("Khoét lỗ cần đường khép kín: bấm gần điểm đầu để khép");
             }
+            else if (splitting && IsValid(splitIndex)) SplitAlong(path, splitIndex);
+            else if (Tool == PictureTool.AddLine) AddLineAlong(path, editLine);
         }
 
         private void BeginDrag()
@@ -859,8 +910,78 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Chốt đường biên đã sửa: hai đầu ghim lại đúng điểm nối rồi thay vào cả hai mảnh
+        // Điểm world của bút thành vòng lỗ theo toạ độ lưu (bỏ điểm lặp, bỏ điểm cuối trùng điểm đầu)
+        private List<Vector2Int> WorldToRing(IReadOnlyList<Vector3> world)
+        {
+            var unit = Mathf.Max(1, _propertyData.unit);
+            var ring = new List<Vector2Int>();
+            foreach (var w in world)
+            {
+                var q = Vector2Int.RoundToInt(view.WorldToPicture(w) * unit);
+                if (ring.Count == 0 || ring[ring.Count - 1] != q) ring.Add(q);
+            }
+            if (ring.Count > 1 && ring[0] == ring[ring.Count - 1]) ring.RemoveAt(ring.Count - 1);
+            return ring;
+        }
+
+        private void FinishHoleEdit(PictureModel work, int index, string message)
+        {
+            Execute(work.Picture);
+            SelectRegions(new[] { index }, false); // giữ mảnh đang chọn sau khi tranh dựng lại
+            LevelEditorMainUI.Log(message);
+        }
+
+        private void EditHoleAlong(IReadOnlyList<Vector3> world, EdgeRun run)
+        {
+            var work = new PictureModel(_propertyData.Clone());
+            if (!work.ReplaceHole(run.a, run.hole, WorldToRing(world), out var err))
+            {
+                LevelEditorMainUI.Warn(err);
+                return;
+            }
+            FinishHoleEdit(work, run.a, "Đã sửa lỗ");
+        }
+
+        private void AddHoleAlong(IReadOnlyList<Vector3> world, int index)
+        {
+            var work = new PictureModel(_propertyData.Clone());
+            if (!work.AddHole(index, WorldToRing(world), out var err))
+            {
+                LevelEditorMainUI.Warn(err);
+                return;
+            }
+            FinishHoleEdit(work, index, "Đã khoét lỗ");
+        }
+
+        // Xoá lỗ h của mảnh đang chọn: phần lỗ thuộc lại về mảnh
+        public void DeleteHole(int h)
+        {
+            var index = SelectedIndex;
+            if (index < 0 || _propertyData == null || IsBusy) return;
+            var work = new PictureModel(_propertyData.Clone());
+            if (!work.RemoveHole(index, h, out var err))
+            {
+                if (err != null) LevelEditorMainUI.Warn(err);
+                return;
+            }
+            FinishHoleEdit(work, index, "Đã xoá lỗ");
+        }
+
+        public int EditingHole => _editRun != null ? _editRun.hole : -1;
+
+        // Mảnh nằm trong lỗ h của mảnh đang chọn, dạng "#3, #5" (rỗng nếu không có)
+        public string HoleContains(int h)
+        {
+            if (SelectedIndex < 0 || _model == null) return "";
+            return string.Join(", ", _model.PiecesInHole(SelectedIndex, h).Select(r => "#" + (r + 1)));
+        }
+
+        // Đường cắt đang đặt đã khép kín (điểm cuối trùng điểm đầu)
+        public bool PenClosed => _pen.Count >= 4 && _editRun == null && (_pen[0].pos - _pen[_pen.Count - 1].pos).sqrMagnitude < 1e-8f;
+
         private void EditRunAlong(IReadOnlyList<Vector3> world, EdgeRun run)
         {
+            if (run.hole >= 0) { EditHoleAlong(world, run); return; }
             var unit = Mathf.Max(1, _propertyData.unit);
             var chain = new List<Vector2Int>();
             foreach (var w in world)
@@ -881,6 +1002,17 @@ namespace Falcon.InGame.LevelEditor
             LevelEditorMainUI.Log("Đã sửa biên");
         }
 
+        // Xoá các mảnh đang chọn (một bước undo); chỗ mảnh để lại là khoảng trống, mảnh nằm trong lỗ thì lỗ trống ra
+        public void DeleteSelectedPieces()
+        {
+            if (_propertyData == null || _selected.Count == 0 || IsBusy) return;
+            var work = new PictureModel(_propertyData.Clone());
+            var n = work.RemovePieces(_selected);
+            if (n == 0) return;
+            Execute(work.Picture);
+            LevelEditorMainUI.Log($"Đã xoá {n} mảnh");
+        }
+
         // Xoá nét trang trí đang chọn (Delete)
         public void DeleteSelectedLine()
         {
@@ -889,43 +1021,6 @@ namespace Falcon.InGame.LevelEditor
             if (!work.RemoveLineAt(_selectedLine)) return;
             Execute(work.Picture);
             LevelEditorMainUI.Log("Đã xoá nét");
-        }
-
-        private void PaintRegion(int i)
-        {
-            if (!IsValid(i)) return;
-            if (_propertyData.regions[i].colorId == CurrentColorId) return;
-            var after = _propertyData.Clone();
-            after.regions[i].colorId = CurrentColorId;
-            Execute(after);
-        }
-
-        private void ReplaceColor(int from)
-        {
-            if (from == CurrentColorId) return;
-            var after = _propertyData.Clone();
-            var n = 0;
-            foreach (var r in after.regions)
-            {
-                if (r.colorId != from) continue;
-                r.colorId = CurrentColorId;
-                n++;
-            }
-            Execute(after);
-            LevelEditorMainUI.Log($"Đổi {n} mảnh màu #{from} → #{CurrentColorId}");
-        }
-
-        private void RedrawAlong(IReadOnlyList<Vector3> world)
-        {
-            var path = world.Select(w => view.WorldToPicture(w)).ToList();
-            var work = new PictureModel(_propertyData.Clone());
-            if (!work.RedrawBoundary(path, out var err))
-            {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            Execute(work.Picture);
-            LevelEditorMainUI.Log("Đã vẽ lại đường biên");
         }
 
         private void SplitAlong(IReadOnlyList<Vector3> world, int index)
@@ -940,6 +1035,18 @@ namespace Falcon.InGame.LevelEditor
             }
             Execute(work.Picture);
             LevelEditorMainUI.Log($"Tách thành {n + 1} mảnh");
+        }
+
+        // Chọn mọi mảnh cùng màu (bấm màu trong inspector tranh)
+        public void SelectByColor(int colorId)
+        {
+            if (_propertyData == null) return;
+            var ids = new List<int>();
+            for (var i = 0; i < _propertyData.regions.Count; i++) if (_propertyData.regions[i].colorId == colorId) ids.Add(i);
+            if (ids.Count == 0) return;
+            SelectLine(-1);
+            SelectRegions(ids, false);
+            LevelEditorMainUI.Log($"Chọn {ids.Count} mảnh màu #{colorId}");
         }
 
         // Chọn ids; add = thêm vào lựa chọn hiện có, không thì thay thế
@@ -977,6 +1084,7 @@ namespace Falcon.InGame.LevelEditor
 
         private void AfterSelectionChanged()
         {
+            if (Splitting && (_selected.Count != 1 || _selected[0] != _splitIndex)) CancelPen(); // bỏ chọn hoặc đổi mảnh: huỷ cắt và các điểm đã đặt
             view.SetSelection(_selected);
             if (_selected.Count == 0 || _propertyData == null) return;
             CurrentColorId = _propertyData.regions[_selected[_selected.Count - 1]].colorId; // bảng màu focus theo mảnh chọn gần nhất
@@ -1141,6 +1249,7 @@ namespace Falcon.InGame.LevelEditor
         {
             if (_editRun != null) CancelPen(); // dữ liệu đổi giữa lúc sửa biên: bỏ đoạn cũ; không đụng kéo Tô/Gộp đang chạy
             _propertyData = p;
+            p?.EnsureIds();
             p?.ClampToFrame();
             PieceValue.Assign(p); // giá trị cát luôn khớp diện tích hiện tại (sau gộp, tách, vẽ biên)
             if (p == null) Messenger<OnRemovePropertyData>.Emit(new OnRemovePropertyData { propertyType = "picture" });
@@ -1150,6 +1259,7 @@ namespace Falcon.InGame.LevelEditor
 
         private void RebuildView()
         {
+            CancelPen(); // dữ liệu tranh đổi: bỏ điểm cắt đang đặt
             _selected.Clear();
             _selectedLine = -1;
             _model = _propertyData != null ? new PictureModel(_propertyData) : null;

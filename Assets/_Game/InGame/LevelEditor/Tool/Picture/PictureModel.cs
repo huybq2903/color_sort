@@ -16,7 +16,9 @@ namespace Falcon.InGame.LevelEditor
         // Biên chung của hai mảnh chỉ có cùng tập đỉnh khi tranh được vector hoá (BoundaryGraph)
         internal static bool Vectorised(PictureProperty p) => p.unit > 1 && p.gen.tidy && p.gen.curveSmooth > 0f;
 
-        private const float PickRadius = 6f, RedrawSmooth = 0.5f; // bán kính chọn (ô lưới); vuốt mạnh hơn mặc định
+        private const float PickRadius = 6f; // bán kính chọn (ô lưới)
+
+        private Vector2 Clamp(Vector2 p) => new(Mathf.Clamp(p.x, 0f, Picture.width), Mathf.Clamp(p.y, 0f, Picture.height));
 
         public PictureProperty Picture { get; }
         public RegionMap Map { get; }
@@ -27,7 +29,6 @@ namespace Falcon.InGame.LevelEditor
             Map = RegionRaster.Rasterize(p);
         }
 
-        private Vector2 Clamp(Vector2 p) => new(Mathf.Clamp(p.x, 0f, Picture.width), Mathf.Clamp(p.y, 0f, Picture.height));
 
         private const float DotFraction = 0.016f; // đường kính chấm mặc định theo chiều cao tranh
 
@@ -47,7 +48,7 @@ namespace Falcon.InGame.LevelEditor
             SyncLineWidths();
             var width = pic.Count == 1 ? Mathf.RoundToInt(DotFraction * Picture.height * unit) : 0;
             if (replace >= 0 && replace < Picture.lines.Count) { Picture.lines[replace] = o; Picture.lineWidths[replace] = width; } // sửa nét: giữ độ dày cũ
-            else { Picture.lines.Add(o); Picture.lineWidths.Add(width); Picture.lineThickness.Add(Mathf.Max(0, thickness)); }
+            else { Picture.lines.Add(o); Picture.lineWidths.Add(width); Picture.lineThickness.Add(Mathf.Max(0, thickness)); Picture.lineIds.Add(null); }
             return true;
         }
 
@@ -88,19 +89,21 @@ namespace Falcon.InGame.LevelEditor
             Picture.lines.RemoveAt(best);
             Picture.lineWidths.RemoveAt(best);
             Picture.lineThickness.RemoveAt(best);
+            Picture.lineIds.RemoveAt(best);
             return true;
         }
 
         // Điểm gần nhất trên đường biên mọi mảnh trong bán kính (toạ độ lưới); false nếu không có
-        public bool NearestBoundaryPoint(Vector2 pic, float radius, out Vector2 point)
+        public bool NearestBoundaryPoint(Vector2 pic, float radius, out Vector2 point, int region = -1)
         {
             point = pic;
             var unit = Mathf.Max(1, Picture.unit);
             var bestD = radius;
             var found = false;
-            foreach (var r in Picture.regions)
+            for (var ri = 0; ri < Picture.regions.Count; ri++)
             {
-                var pts = r.points;
+                if (region >= 0 && ri != region) continue; // chỉ xét biên của mảnh này
+                var pts = Picture.regions[ri].points;
                 var n = pts.Length / 2;
                 for (var i = 0; i < n; i++)
                 {
@@ -125,6 +128,7 @@ namespace Falcon.InGame.LevelEditor
             Picture.lines.RemoveAt(index);
             Picture.lineWidths.RemoveAt(index);
             Picture.lineThickness.RemoveAt(index);
+            Picture.lineIds.RemoveAt(index);
             return true;
         }
 
@@ -135,6 +139,8 @@ namespace Falcon.InGame.LevelEditor
             while (Picture.lineWidths.Count < Picture.lines.Count) Picture.lineWidths.Add(0);
             Picture.lineThickness ??= new List<int>();
             while (Picture.lineThickness.Count < Picture.lines.Count) Picture.lineThickness.Add(0);
+            Picture.lineIds ??= new List<string>();
+            while (Picture.lineIds.Count < Picture.lines.Count) Picture.lineIds.Add(null);
         }
 
         private static float SegDistance(Vector2 p, Vector2 a, Vector2 b)
@@ -296,7 +302,9 @@ namespace Falcon.InGame.LevelEditor
             return Commit(index, id, pieces);
         }
 
-        // Cắt theo đường cong tự do: đường đi (toạ độ lưới) là rào, mỗi cụm liền còn lại là 1 mảnh; hai đầu được kéo dài để chắc chắn ra tới biên mảnh
+        private const float CutOverreach = 3f; // đường cắt thò ra khỏi hai điểm chọn tối đa chừng này (ô lưới) để chắc chạm biên, không cắt tiếp phần khác của mảnh
+
+        // Cắt theo đường cong tự do: đường đi (toạ độ lưới) là rào, mỗi cụm liền còn lại là 1 mảnh; hai đầu chỉ thò ra vài ô để chắc chạm biên mảnh
         // gap > 0 (tranh có khe nét): dải rộng gap ô lưới quanh đường cắt thành khe trống giữa hai mảnh
         public int SplitPath(int index, IReadOnlyList<Vector2> path, out string error, int gap = 0)
         {
@@ -304,14 +312,24 @@ namespace Falcon.InGame.LevelEditor
             var id = index + 1;
             if (path == null || path.Count < 2) { error = "Đường cắt quá ngắn"; return 0; }
             var pts = new List<Vector2>(path);
-            var far = Mathf.Max(Map.w, Map.h);
-            var d0 = (pts[0] - pts[Mathf.Min(3, pts.Count - 1)]).normalized;
-            var d1 = (pts[pts.Count - 1] - pts[Mathf.Max(0, pts.Count - 4)]).normalized;
-            if (d0 != Vector2.zero) pts.Insert(0, pts[0] + d0 * far);
-            if (d1 != Vector2.zero) pts.Add(pts[pts.Count - 1] + d1 * far);
+            var closed = pts.Count >= 3 && (pts[0] - pts[pts.Count - 1]).magnitude < 1.5f; // đường cắt khép kín (cắt riêng một mảng trong lòng mảnh): không thò đầu mút
+            if (closed)
+            {
+                pts.Add(pts[0]);
+            }
+            else
+            {
+                var d0 = (pts[0] - pts[Mathf.Min(3, pts.Count - 1)]).normalized;
+                var d1 = (pts[pts.Count - 1] - pts[Mathf.Max(0, pts.Count - 4)]).normalized;
+                if (d0 != Vector2.zero) pts.Insert(0, pts[0] + d0 * CutOverreach);
+                if (d1 != Vector2.zero) pts.Add(pts[pts.Count - 1] + d1 * CutOverreach);
+            }
 
-            var inRegion = new HashSet<int>(Pixels(id));
-            var barrier = new HashSet<int>();
+            int w = Map.w, h = Map.h, total = w * h;
+            var inRegion = new bool[total];
+            for (var i = 0; i < total; i++) inRegion[i] = Map.reg[i] == id;
+            var barrier = new bool[total];
+            var barrierList = new List<int>();
             for (var k = 0; k + 1 < pts.Count; k++)
             {
                 var a = pts[k];
@@ -321,177 +339,263 @@ namespace Falcon.InGame.LevelEditor
                 {
                     var q = Vector2.Lerp(a, b, t / (float)steps);
                     int x = Mathf.FloorToInt(q.x), y = Mathf.FloorToInt(q.y);
-                    if (x < 0 || y < 0 || x >= Map.w || y >= Map.h) continue;
-                    var i = y * Map.w + x;
-                    if (inRegion.Contains(i)) barrier.Add(i);
+                    if (x < 0 || y < 0 || x >= w || y >= h) continue;
+                    var i = y * w + x;
+                    if (inRegion[i] && !barrier[i]) { barrier[i] = true; barrierList.Add(i); }
                 }
             }
-            if (barrier.Count == 0) { error = "Đường cắt không đi qua mảnh"; return 0; }
-            HashSet<int> gapPix = null;
+            if (barrierList.Count == 0) { error = "Đường cắt không đi qua mảnh"; return 0; }
+            List<int> gapList = null;
             if (gap > 0)
             {
-                gapPix = new HashSet<int>();
+                gapList = new List<int>();
+                var inGap = new bool[total];
                 var rad = gap * 0.5f;
                 var ri = Mathf.CeilToInt(rad);
-                foreach (var b in barrier)
+                foreach (var b in barrierList)
                     for (var dy = -ri; dy <= ri; dy++)
                     for (var dx = -ri; dx <= ri; dx++)
                     {
-                        int x = b % Map.w + dx, y = b / Map.w + dy;
-                        if (dx * dx + dy * dy > rad * rad || x < 0 || y < 0 || x >= Map.w || y >= Map.h) continue;
-                        if (inRegion.Contains(y * Map.w + x)) gapPix.Add(y * Map.w + x);
+                        int x = b % w + dx, y = b / w + dy;
+                        if (dx * dx + dy * dy > rad * rad || x < 0 || y < 0 || x >= w || y >= h) continue;
+                        var q = y * w + x;
+                        if (inRegion[q] && !inGap[q]) { inGap[q] = true; gapList.Add(q); }
                     }
-                barrier.UnionWith(gapPix);
+                foreach (var q in gapList)
+                    if (!barrier[q]) { barrier[q] = true; barrierList.Add(q); }
             }
 
-            var comp = new Dictionary<int, int>();
+            var comp = new int[total];
+            System.Array.Fill(comp, -1);
             var comps = new List<List<int>>();
-            foreach (var seed in inRegion)
+            var stack = new Stack<int>();
+            for (var seed = 0; seed < total; seed++)
             {
-                if (barrier.Contains(seed) || comp.ContainsKey(seed)) continue;
+                if (!inRegion[seed] || barrier[seed] || comp[seed] >= 0) continue;
                 var list = new List<int>();
-                var stack = new Stack<int>();
                 comp[seed] = comps.Count;
                 stack.Push(seed);
                 while (stack.Count > 0)
                 {
                     var p = stack.Pop();
                     list.Add(p);
-                    int x = p % Map.w, y = p / Map.w;
+                    int x = p % w, y = p / w;
                     void Visit(int q)
                     {
-                        if (!inRegion.Contains(q) || barrier.Contains(q) || comp.ContainsKey(q)) return;
+                        if (!inRegion[q] || barrier[q] || comp[q] >= 0) return;
                         comp[q] = comps.Count;
                         stack.Push(q);
                     }
                     if (x > 0) Visit(p - 1);
-                    if (x < Map.w - 1) Visit(p + 1);
-                    if (y > 0) Visit(p - Map.w);
-                    if (y < Map.h - 1) Visit(p + Map.w);
+                    if (x < w - 1) Visit(p + 1);
+                    if (y > 0) Visit(p - w);
+                    if (y < h - 1) Visit(p + w);
                 }
                 comps.Add(list);
             }
             if (comps.Count < 2) { error = "Đường cắt chưa chia mảnh làm đôi (kéo xuyên qua mảnh)"; return 0; }
 
-            // pixel trên đường cắt thuộc cụm kề nó
-            var queue = new Queue<int>(comp.Keys);
-            var pending = gapPix != null ? new HashSet<int>() : new HashSet<int>(barrier); // có khe: pixel dải cắt để trống, không chia cho mảnh nào
-            while (queue.Count > 0 && pending.Count > 0)
+            // pixel trên đường cắt thuộc cụm kề nó (có khe: pixel dải cắt để trống, không chia cho mảnh nào)
+            var queue = new Queue<int>();
+            foreach (var list in comps) foreach (var p in list) queue.Enqueue(p);
+            var pending = new bool[total];
+            var pendingCount = 0;
+            if (gapList == null) foreach (var q in barrierList) { pending[q] = true; pendingCount++; }
+            while (queue.Count > 0 && pendingCount > 0)
             {
                 var p = queue.Dequeue();
-                int x = p % Map.w, y = p / Map.w;
+                int x = p % w, y = p / w;
                 void Spread(int q)
                 {
-                    if (!pending.Remove(q)) return;
+                    if (!pending[q]) return;
+                    pending[q] = false;
+                    pendingCount--;
                     comp[q] = comp[p];
                     comps[comp[p]].Add(q);
                     queue.Enqueue(q);
                 }
                 if (x > 0) Spread(p - 1);
-                if (x < Map.w - 1) Spread(p + 1);
-                if (y > 0) Spread(p - Map.w);
-                if (y < Map.h - 1) Spread(p + Map.w);
+                if (x < w - 1) Spread(p + 1);
+                if (y > 0) Spread(p - w);
+                if (y < h - 1) Spread(p + w);
             }
             if (comps.Any(c => c.Count < MinPiecePixels)) { error = "Mảnh cắt ra quá nhỏ"; return 0; }
-            if (gapPix != null) foreach (var p in gapPix) Map.reg[p] = 0;
+            if (gapList != null) foreach (var p in gapList) Map.reg[p] = 0;
             return Commit(index, id, comps);
         }
 
-        // Vẽ lại đường biên chung: nét vẽ (toạ độ lưới) bắt đầu gần một đường biên; đoạn biên giữa đỉnh gần đầu nét và đỉnh gần cuối nét được thay bằng nét vẽ, cả 2 mảnh kề cùng đổi nên vẫn khít nhau
-        public bool RedrawBoundary(IReadOnlyList<Vector2> path, out string error)
+        // ---- Lỗ trong mảnh: lỗ không có cát, không được chạm biên mảnh (chạm biên là một phần bị khoét: sửa biên) ----
+
+        private const float HoleMinCells2 = 100f; // diện tích lỗ nhỏ nhất (ô lưới²), khớp BoundaryGraph.MinHoleArea
+
+        private static List<Vector2> RingOf(int[] pts)
+        {
+            var o = new List<Vector2>(pts.Length / 2);
+            for (var i = 0; i + 1 < pts.Length; i += 2) o.Add(new Vector2(pts[i], pts[i + 1]));
+            return o;
+        }
+
+        private static float SignedArea(IReadOnlyList<Vector2> r)
+        {
+            double s = 0;
+            for (int i = 0, j = r.Count - 1; i < r.Count; j = i++) s += (double)r[j].x * r[i].y - (double)r[i].x * r[j].y;
+            return (float)(s * 0.5);
+        }
+
+        private static bool PointIn(IReadOnlyList<Vector2> poly, Vector2 p)
+        {
+            var inside = false;
+            for (int i = 0, j = poly.Count - 1; i < poly.Count; j = i++)
+            {
+                if (poly[i].y > p.y == poly[j].y > p.y) continue;
+                var x = poly[i].x + (p.y - poly[i].y) * (poly[j].x - poly[i].x) / (poly[j].y - poly[i].y);
+                if (p.x < x) inside = !inside;
+            }
+            return inside;
+        }
+
+        private static float MinDistTo(Vector2 p, IReadOnlyList<Vector2> ring)
+        {
+            var best = float.MaxValue;
+            for (var i = 0; i < ring.Count; i++) best = Mathf.Min(best, DistToSegment(p, ring[i], ring[(i + 1) % ring.Count]));
+            return best;
+        }
+
+        private static bool RingsCross(List<Vector2Int> a, IReadOnlyList<Vector2> b)
+        {
+            for (var i = 0; i < a.Count; i++)
+            {
+                Vector2Int p = a[i], q = a[(i + 1) % a.Count];
+                for (var j = 0; j < b.Count; j++)
+                    if (SegCross(p, q, Vector2Int.RoundToInt(b[j]), Vector2Int.RoundToInt(b[(j + 1) % b.Count]))) return true;
+            }
+            return false;
+        }
+
+        // Lỗ hợp lệ: đủ lớn, không tự cắt, nằm gọn trong mảnh cách biên ≥ 1 ô, không chồng lỗ khác (bỏ qua lỗ skip)
+        private bool CheckHole(int index, int skip, List<Vector2Int> ringInt, out string error)
         {
             error = null;
-            if (Picture.gen.inkGaps) { error = "Tranh có khe nét không có biên chung: dùng Chọn mảnh rồi click biên để sửa"; return false; }
-            if (path == null || path.Count < 2) { error = "Nét vẽ quá ngắn"; return false; }
-            path = path.Select(Clamp).ToList(); // nét vẽ ngoài khung bị kẹp lại, mảnh không tràn ra ngoài
             var unit = Mathf.Max(1, Picture.unit);
-            var pic = path[0];
-            var cands = new List<(float d, int r, int e)>();
+            if (ringInt.Count < 3) { error = "Lỗ cần ít nhất 3 điểm"; return false; }
+            var ring = ringInt.ConvertAll(v => (Vector2)v);
+            if (Mathf.Abs(SignedArea(ring)) / (unit * unit) < HoleMinCells2) { error = "Lỗ quá nhỏ"; return false; }
+            for (var i = 0; i < ringInt.Count; i++)
+                for (var j = i + 2; j < ringInt.Count; j++)
+                {
+                    if (i == 0 && j == ringInt.Count - 1) continue;
+                    if (SegCross(ringInt[i], ringInt[(i + 1) % ringInt.Count], ringInt[j], ringInt[(j + 1) % ringInt.Count])) { error = "Biên lỗ tự cắt nhau, kéo lại"; return false; }
+                }
+            var outer = RingOf(Picture.regions[index].points);
+            const string touch = "Lỗ phải nằm gọn trong mảnh, không chạm biên (phần chạm biên là phần bị khoét: dùng sửa biên)";
+            foreach (var v in ring)
+                if (!PointIn(outer, v) || MinDistTo(v, outer) < unit) { error = touch; return false; }
+            foreach (var v in outer)
+                if (MinDistTo(v, ring) < unit) { error = touch; return false; }
+            if (RingsCross(ringInt, outer)) { error = touch; return false; }
+            var holes = Picture.regions[index].holes;
+            if (holes != null)
+                for (var h = 0; h < holes.Count; h++)
+                {
+                    if (h == skip) continue;
+                    var other = RingOf(holes[h]);
+                    var overlap = RingsCross(ringInt, other);
+                    foreach (var v in ring) overlap |= PointIn(other, v);
+                    foreach (var v in other) overlap |= PointIn(ring, v);
+                    if (overlap) { error = "Lỗ chồng lên lỗ khác"; return false; }
+                }
+            return true;
+        }
+
+        // Các mảnh khác (ngoài host) nằm trọn trong vòng; crossing = mảnh đầu tiên bị vòng cắt ngang (một phần trong, một phần ngoài), -1 nếu không có
+        private List<int> PiecesInRing(int host, List<Vector2> ring, out int crossing)
+        {
+            crossing = -1;
+            var inside = new List<int>();
+            var ringInt = ring.ConvertAll(Vector2Int.RoundToInt);
+            Vector2 min = ring[0], max = ring[0];
+            foreach (var v in ring) { min = Vector2.Min(min, v); max = Vector2.Max(max, v); }
             for (var r = 0; r < Picture.regions.Count; r++)
             {
-                var pts = Picture.regions[r].points;
-                var n = pts.Length / 2;
-                for (var i = 0; i < n; i++)
+                if (r == host) continue;
+                var other = RingOf(Picture.regions[r].points);
+                var count = 0;
+                Vector2 omin = other[0], omax = other[0];
+                foreach (var v in other)
                 {
-                    var a = new Vector2(pts[i * 2], pts[i * 2 + 1]) / unit;
-                    var j = (i + 1) % n;
-                    var b = new Vector2(pts[j * 2], pts[j * 2 + 1]) / unit;
-                    var d = DistToSegment(pic, a, b);
-                    if (d <= PickRadius) cands.Add((d, r, i));
+                    if (PointIn(ring, v)) count++;
+                    omin = Vector2.Min(omin, v);
+                    omax = Vector2.Max(omax, v);
                 }
+                if (count == other.Count) { inside.Add(r); continue; }
+                var overlapBox = omax.x >= min.x && omin.x <= max.x && omax.y >= min.y && omin.y <= max.y;
+                if (crossing < 0 && (count > 0 || overlapBox && RingsCross(ringInt, other))) crossing = r;
             }
-            if (cands.Count == 0) { error = "Bắt đầu nét vẽ gần một đường biên"; return false; }
-            cands.Sort((x, y) => x.d.CompareTo(y.d));
-            foreach (var (_, ra, ea) in cands)
-            {
-            var A = Picture.regions[ra].points;
-            var na = A.Length / 2;
-            var e0 = (A[ea * 2], A[ea * 2 + 1]);
-            var e1 = (A[(ea + 1) % na * 2], A[(ea + 1) % na * 2 + 1]);
-            for (var rb = 0; rb < Picture.regions.Count; rb++)
-            {
-                if (rb == ra) continue;
-                var B = Picture.regions[rb].points;
-                var set = new HashSet<(int, int)>();
-                for (var k = 0; k < B.Length; k += 2) set.Add((B[k], B[k + 1]));
-                if (!set.Contains(e0) || !set.Contains(e1)) continue;
+            return inside;
+        }
 
-                var inB = new bool[na];
-                for (var i = 0; i < na; i++) inB[i] = set.Contains((A[i * 2], A[i * 2 + 1]));
-                int lo = ea, hi = (ea + 1) % na, steps = 0;
-                while (inB[(lo - 1 + na) % na] && steps++ < na) lo = (lo - 1 + na) % na;
-                steps = 0;
-                while (inB[(hi + 1) % na] && steps++ < na) hi = (hi + 1) % na;
-                var run = new List<Vector2Int>();
-                for (var i = lo; ; i = (i + 1) % na)
-                {
-                    run.Add(new Vector2Int(A[i * 2], A[i * 2 + 1]));
-                    if (i == hi) break;
-                    if (run.Count > na) { error = "Đường biên khép kín: dùng Gộp/Tách"; return false; }
-                }
-                if (run.Count < 2) { error = "Đường quá ngắn"; return false; }
+        // Các mảnh nằm trong lỗ h của mảnh index (số thứ tự mảnh, bắt đầu từ 0)
+        internal List<int> PiecesInHole(int index, int h)
+        {
+            var holes = Picture.regions[index].holes;
+            if (holes == null || h < 0 || h >= holes.Count) return new List<int>();
+            return PiecesInRing(index, RingOf(holes[h]), out _);
+        }
 
-                // đầu và cuối nét vẽ bám vào đỉnh gần nhất của đường biên; nét vẽ ngược chiều đường thì đảo lại
-                var from = NearestVertex(run, path[0] * unit);
-                var to = NearestVertex(run, path[path.Count - 1] * unit);
-                var reversed = from > to;
-                if (reversed) (from, to) = (to, from);
-                if (to == from) { error = "Vẽ dọc theo đường biên từ điểm này tới điểm kia"; return false; }
+        private static string PieceNames(IEnumerable<int> pieces) => string.Join(", ", pieces.Select(r => "#" + (r + 1)));
 
-                var drawn = new List<Vector2Int>();
-                foreach (var v in path)
-                {
-                    var q = Vector2Int.RoundToInt(v * unit);
-                    if (drawn.Count == 0 || drawn[drawn.Count - 1] != q) drawn.Add(q);
-                }
-                if (reversed) drawn.Reverse();
-                if (drawn.Count < 2) drawn.Add(drawn[0]);
-                drawn[0] = run[from];
-                drawn[drawn.Count - 1] = run[to];
-                var d = new GenSettings();
-                var sm = drawn.Count >= 8
-                    ? ContourSmoother.SmoothArc(drawn, PictureGenerator.Sigma(d) * unit * RedrawSmooth, resampleStep: PictureGenerator.TidyStep * unit, fitTolerance: d.fitTolerance * unit * RedrawSmooth)
-                    : drawn.ConvertAll(v => (Vector2)v);
-                var chain = new List<Vector2Int>();
-                foreach (var v in sm)
-                {
-                    var q = Vector2Int.RoundToInt(v);
-                    if (chain.Count == 0 || chain[chain.Count - 1] != q) chain.Add(q);
-                }
-                chain[0] = run[from];
-                chain[chain.Count - 1] = run[to];
+        private int[] HoleRing(int index, List<Vector2Int> ringInt)
+        {
+            var ring = ringInt.ConvertAll(v => (Vector2)v);
+            if (Mathf.Sign(SignedArea(ring)) == Mathf.Sign(SignedArea(RingOf(Picture.regions[index].points)))) ringInt = new List<Vector2Int>(ringInt.AsEnumerable().Reverse()); // lỗ ngược chiều vòng ngoài
+            var o = new int[ringInt.Count * 2];
+            for (var i = 0; i < ringInt.Count; i++) { o[i * 2] = ringInt[i].x; o[i * 2 + 1] = ringInt[i].y; }
+            return o;
+        }
 
-                if (CrossesOthers(chain, run, ra, rb)) { error = "Nét vẽ cắt qua đường biên khác hoặc tự cắt chính nó, vẽ lại"; return false; }
+        // Thêm lỗ cho mảnh index từ vòng điểm (toạ độ lưu, chưa khép lặp điểm đầu)
+        internal bool AddHole(int index, List<Vector2Int> ringInt, out string error)
+        {
+            if (index < 0 || index >= Picture.regions.Count) { error = "Không có mảnh để khoét lỗ"; return false; }
+            if (!CheckHole(index, -1, ringInt, out error)) return false;
+            var inside = PiecesInRing(index, ringInt.ConvertAll(v => (Vector2)v), out var crossing);
+            if (inside.Count > 0 || crossing >= 0) { error = $"Vòng khoét chạm mảnh khác ({PieceNames(inside.Concat(crossing >= 0 ? new[] { crossing } : new int[0]))})"; return false; }
+            var r = Picture.regions[index];
+            (r.holes ??= new List<int[]>()).Add(HoleRing(index, ringInt));
+            r.holeWidths = null;
+            return true;
+        }
 
-                var whole = new List<Vector2Int>(run.GetRange(0, from));
-                whole.AddRange(chain);
-                whole.AddRange(run.GetRange(to + 1, run.Count - to - 1));
-                if (!SwapRun(ra, rb, run, whole, lo, hi)) { error = "Biên không khớp mảnh kề"; return false; }
-                return true;
-            }
-            }
-            error = "Đây là biên ngoài tranh, không có mảnh kề";
-            return false;
+        // Xoá lỗ h của mảnh index: phần lỗ thuộc lại về mảnh
+        internal bool RemoveHole(int index, int h, out string error)
+        {
+            error = null;
+            if (index < 0 || index >= Picture.regions.Count) return false;
+            var r = Picture.regions[index];
+            if (r.holes == null || h < 0 || h >= r.holes.Count) return false;
+            var inside = PiecesInHole(index, h);
+            if (inside.Count > 0) { error = $"Lỗ đang chứa mảnh {PieceNames(inside)}: gộp hoặc xoá mảnh đó trước khi xoá lỗ"; return false; }
+            r.holes.RemoveAt(h);
+            if (r.holes.Count == 0) r.holes = null;
+            r.holeWidths = null;
+            return true;
+        }
+
+        // Thay vòng lỗ h của mảnh index
+        internal bool ReplaceHole(int index, int h, List<Vector2Int> ringInt, out string error)
+        {
+            error = null;
+            if (index < 0 || index >= Picture.regions.Count) { error = "Không có mảnh"; return false; }
+            var r = Picture.regions[index];
+            if (r.holes == null || h < 0 || h >= r.holes.Count) { error = "Không có lỗ này"; return false; }
+            if (!CheckHole(index, h, ringInt, out error)) return false;
+            var before = PiecesInHole(index, h);
+            var after = PiecesInRing(index, ringInt.ConvertAll(v => (Vector2)v), out var crossing);
+            if (crossing >= 0) { error = $"Lỗ mới cắt vào mảnh {PieceNames(new[] { crossing })} bên trong, kéo lại"; return false; }
+            if (!before.OrderBy(x => x).SequenceEqual(after.OrderBy(x => x))) { error = "Lỗ mới phải bao đúng các mảnh đang nằm trong lỗ"; return false; }
+            r.holes[h] = HoleRing(index, ringInt);
+            r.holeWidths = null;
+            return true;
         }
 
         // Thay đoạn run (theo chiều mảnh ra) bằng whole trong mảnh ra, và bản đảo chiều trong mảnh rb
@@ -568,19 +672,47 @@ namespace Falcon.InGame.LevelEditor
                 old.Add((oldRun[i], oldRun[i + 1]));
                 old.Add((oldRun[i + 1], oldRun[i]));
             }
-            for (var k = 0; k + 1 < chain.Count; k++)
+            var bounds = new RectInt[Picture.regions.Count];
+            for (var r = 0; r < bounds.Length; r++)
             {
-                for (var m = k + 2; m + 1 < chain.Count; m++)
+                var pts = Picture.regions[r].points;
+                int x0 = int.MaxValue, y0 = int.MaxValue, x1 = int.MinValue, y1 = int.MinValue;
+                for (var i = 0; i + 1 < pts.Length; i += 2)
+                {
+                    x0 = Mathf.Min(x0, pts[i]); x1 = Mathf.Max(x1, pts[i]);
+                    y0 = Mathf.Min(y0, pts[i + 1]); y1 = Mathf.Max(y1, pts[i + 1]);
+                }
+                bounds[r] = new RectInt(x0, y0, x1 - x0, y1 - y0);
+            }
+            var segs = chain.Count - 1;
+            var minX = new int[segs]; var maxX = new int[segs]; var minY = new int[segs]; var maxY = new int[segs];
+            for (var k = 0; k < segs; k++)
+            {
+                Vector2Int p = chain[k], q = chain[k + 1];
+                minX[k] = p.x < q.x ? p.x : q.x; maxX[k] = p.x < q.x ? q.x : p.x;
+                minY[k] = p.y < q.y ? p.y : q.y; maxY[k] = p.y < q.y ? q.y : p.y;
+            }
+            for (var k = 0; k < segs; k++)
+            {
+                int sx0 = minX[k], sx1 = maxX[k], sy0 = minY[k], sy1 = maxY[k];
+                for (var m = k + 2; m < segs; m++)
+                {
+                    if (sx1 < minX[m] || sx0 > maxX[m] || sy1 < minY[m] || sy0 > maxY[m]) continue; // hộp bao hai đoạn tách nhau
                     if (SegCross(chain[k], chain[k + 1], chain[m], chain[m + 1])) return true;
+                }
                 for (var r = 0; r < Picture.regions.Count; r++)
                 {
+                    var bb = bounds[r];
+                    if (sx1 < bb.xMin || sx0 > bb.xMax || sy1 < bb.yMin || sy0 > bb.yMax) continue; // đoạn nằm ngoài hộp bao của mảnh: không thể cắt
                     var pts = Picture.regions[r].points;
                     var n = pts.Length / 2;
                     for (var i = 0; i < n; i++)
                     {
-                        var c = new Vector2Int(pts[i * 2], pts[i * 2 + 1]);
                         var j = (i + 1) % n;
-                        var d = new Vector2Int(pts[j * 2], pts[j * 2 + 1]);
+                        int cx = pts[i * 2], cy = pts[i * 2 + 1], dx = pts[j * 2], dy = pts[j * 2 + 1];
+                        if (sx1 < (cx < dx ? cx : dx) || sx0 > (cx < dx ? dx : cx) || sy1 < (cy < dy ? cy : dy) || sy0 > (cy < dy ? dy : cy)) continue; // hộp bao hai đoạn tách nhau
+                        var c = new Vector2Int(cx, cy);
+                        var d = new Vector2Int(dx, dy);
                         if ((r == ra || r == rb) && old.Contains((c, d))) continue;
                         if (SegCross(chain[k], chain[k + 1], c, d)) return true;
                     }
@@ -599,18 +731,6 @@ namespace Falcon.InGame.LevelEditor
             var d3 = Cr(c, d, a);
             var d4 = Cr(c, d, b);
             return (d1 > 0 && d2 < 0 || d1 < 0 && d2 > 0) && (d3 > 0 && d4 < 0 || d3 < 0 && d4 > 0);
-        }
-
-        private static int NearestVertex(List<Vector2Int> run, Vector2 p)
-        {
-            var best = 0;
-            var bd = float.MaxValue;
-            for (var i = 0; i < run.Count; i++)
-            {
-                var d = ((Vector2)run[i] - p).sqrMagnitude;
-                if (d < bd) { bd = d; best = i; }
-            }
-            return best;
         }
 
         private static int IndexOf(int[] pts, Vector2Int v)
@@ -759,14 +879,41 @@ namespace Falcon.InGame.LevelEditor
             if (Picture.unit <= 1 || !g.tidy || g.curveSmooth <= 0f) return;
             var affected = new HashSet<int>(editedIds);
             foreach (var id in editedIds) AddNeighbours(id, affected);
-            var polys = BoundaryGraph.Build(Map, PictureGenerator.Sigma(g), Picture.unit, PictureGenerator.TidyStep, g.fitTolerance, out var holes);
+
+            // chỉ dựng đồ thị biên trong khung bao các mảnh bị ảnh hưởng (chừa lề), không dựng lại cả tranh
+            var all = Map.Bounds();
+            int x0 = Map.w, y0 = Map.h, x1 = 0, y1 = 0;
+            foreach (var id in affected)
+            {
+                if (id < 1 || id >= all.Length) continue;
+                var b = all[id];
+                if (b.width == 0) continue; // mảnh không còn pixel
+                x0 = Mathf.Min(x0, b.xMin); y0 = Mathf.Min(y0, b.yMin); x1 = Mathf.Max(x1, b.xMax); y1 = Mathf.Max(y1, b.yMax);
+            }
+            x0 = Mathf.Max(0, x0 - CropMargin); y0 = Mathf.Max(0, y0 - CropMargin);
+            x1 = Mathf.Min(Map.w, x1 + CropMargin); y1 = Mathf.Min(Map.h, y1 + CropMargin);
+            if (x1 <= x0 || y1 <= y0) return;
+            int cw = x1 - x0, ch = y1 - y0;
+            var crop = new RegionMap { w = cw, h = ch, reg = new int[cw * ch], colors = Map.colors, inked = Map.inked, gaps = Map.gaps, synthetic = Map.synthetic };
+            for (var y = 0; y < ch; y++) System.Array.Copy(Map.reg, (y0 + y) * Map.w + x0, crop.reg, y * cw, cw);
+
+            var polys = BoundaryGraph.Build(crop, PictureGenerator.Sigma(g), Picture.unit, PictureGenerator.TidyStep, g.fitTolerance, out var holes);
+            int ox = x0 * Picture.unit, oy = y0 * Picture.unit;
+            int[] Shift(int[] a)
+            {
+                var r = new int[a.Length];
+                for (var k = 0; k + 1 < a.Length; k += 2) { r[k] = a[k] + ox; r[k + 1] = a[k + 1] + oy; }
+                return r;
+            }
             foreach (var id in affected)
             {
                 if (id < 1 || id >= polys.Length || id > Picture.regions.Count || polys[id] == null) continue;
-                Picture.regions[id - 1].points = polys[id];
-                Picture.regions[id - 1].holes = holes[id];
+                Picture.regions[id - 1].points = Shift(polys[id]);
+                Picture.regions[id - 1].holes = holes[id]?.ConvertAll(Shift);
             }
         }
+
+        private const int CropMargin = 4; // lề (ô lưới) quanh khung dựng lại biên
 
         private void AddNeighbours(int id, HashSet<int> into)
         {
@@ -846,6 +993,19 @@ namespace Falcon.InGame.LevelEditor
                 pts[i * 2 + 1] = poly[i].y * unit;
             }
             return pts;
+        }
+
+        // Xoá các mảnh theo chỉ số (để lại khoảng trống); trả về số mảnh đã xoá
+        internal int RemovePieces(IEnumerable<int> indices)
+        {
+            var n = 0;
+            foreach (var i in indices.Distinct().OrderByDescending(x => x))
+            {
+                if (i < 0 || i >= Picture.regions.Count) continue;
+                Picture.regions.RemoveAt(i);
+                n++;
+            }
+            return n;
         }
 
         private void RemoveRegion(int index)

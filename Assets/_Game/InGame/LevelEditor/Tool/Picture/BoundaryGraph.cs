@@ -118,7 +118,7 @@ namespace Falcon.InGame.LevelEditor
                     if (nodePos.TryGetValue(a.endNode, out var pe) && (pe - sm[sm.Count - 1]).magnitude < MaxNodeShift) Blend(sm, pe - sm[sm.Count - 1], false);
                 }
                 if (!NearRaw(sm, a.grid)) sm = a.grid.Select(v => new Vector2(v.x, v.y)).ToList(); // làm mượt văng khỏi biên thô (chuỗi cắt sai): dùng biên thô
-                a.smooth = Scale(sm, unit, a.closed);
+                a.smooth = RemoveSpikes(Scale(sm, unit, a.closed), a.closed, resampleStep * unit * SpikeArmSteps);
             }
 
             // ghép polygon: mỗi vùng đi ngược chiều kim đồng hồ (vùng nằm bên trái)
@@ -168,12 +168,14 @@ namespace Falcon.InGame.LevelEditor
                     var holeLoops = loops.Where(l => l.area * sign < 0).Select(l => sign > 0 ? l.pts : l.pts.Reverse().ToArray()).ToList();
                     if (poly.Count < 3 || Math.Abs(SignedArea(poly)) < 2f) poly = RawLoop(list, unit) ?? poly; // suy biến: dùng vòng lưới thô, không bỏ mảnh
                     if (poly.Count < 3 || Math.Abs(SignedArea(poly)) < 2f) continue;
+                    RemoveRepeatLoops(poly); // vòng kín nhỏ dính vào biên (đi qua cùng một điểm hai lần)
                     TrimLoops(poly); // vòng tự cắt (hình nơ): bỏ thùy nhỏ
                     polys[id] = Flatten(poly);
 
                     foreach (var pts in holeLoops)
                     {
                         var hp = Dedup(pts);
+                        RemoveRepeatLoops(hp);
                         TrimLoops(hp);
                         if (hp.Count < 3 || -SignedArea(hp) < MinHoleArea * unit * unit || !MostlyInside(poly, hp)) continue; // lỗ li ti (vụn khe nằm trong mảnh): bỏ, mảnh phủ kín chỗ đó
                         (holeSets[id] ??= new List<int[]>()).Add(Flatten(hp));
@@ -208,6 +210,30 @@ namespace Falcon.InGame.LevelEditor
             return res.polys;
         }
 
+        private const float SpikeRatio = 0.5f, SpikeArmSteps = 3f; // gai: hai láng giềng của đỉnh cách nhau < SpikeRatio × cạnh ngắn, cạnh ngắn ≤ SpikeArmSteps bước lấy mẫu
+
+        // Gai nhọn (biên thắt nút): đỉnh quay đầu gần như ngược lại, hai láng giềng sát nhau, bị bỏ cho tới khi hết; hai đầu đường hở (ngã ba) giữ nguyên. Đường dùng chung nên hai mảnh kề vẫn khít
+        private static Vector2Int[] RemoveSpikes(Vector2Int[] pts, bool closed, float maxArm)
+        {
+            var list = new List<Vector2Int>(pts);
+            var changed = true;
+            for (var pass = 0; changed && pass < 50; pass++)
+            {
+                changed = false;
+                for (var i = 0; i < list.Count && list.Count > (closed ? 3 : 2);)
+                {
+                    if (!closed && (i == 0 || i == list.Count - 1)) { i++; continue; }
+                    var a = list[(i + list.Count - 1) % list.Count];
+                    var b = list[i];
+                    var c = list[(i + 1) % list.Count];
+                    var arm = Mathf.Min((a - b).magnitude, (c - b).magnitude);
+                    if (arm <= maxArm && (a - c).magnitude < SpikeRatio * arm) { list.RemoveAt(i); changed = true; }
+                    else i++;
+                }
+            }
+            return list.ToArray();
+        }
+
         // Lỗ thuộc polygon nếu quá nửa số đỉnh của nó nằm trong (1 đỉnh có thể trùng biên khi lỗ chạm vòng ngoài)
         private static bool MostlyInside(List<Vector2Int> poly, List<Vector2Int> hole)
         {
@@ -235,6 +261,28 @@ namespace Falcon.InGame.LevelEditor
             for (var i = bi; i < poly.Count; i++) merged.Add(poly[i]);
             poly.Clear();
             poly.AddRange(merged);
+        }
+
+        // Vòng nhỏ dính vào biên: đường đi qua cùng một điểm hai lần, đoạn giữa khép kín và nhỏ (< 10% diện tích vòng); vòng lớn là mảnh tự chạm thật nên giữ
+        private static void RemoveRepeatLoops(List<Vector2Int> ring)
+        {
+            for (var pass = 0; pass < 500; pass++)
+            {
+                var total = Math.Abs(SignedArea(ring));
+                var seen = new Dictionary<Vector2Int, int>();
+                var cut = false;
+                for (var j = 0; j < ring.Count && !cut; j++)
+                {
+                    if (!seen.TryGetValue(ring[j], out var i)) { seen[ring[j]] = j; continue; }
+                    if (Math.Abs(SignedArea(ring.GetRange(i, j - i))) < 0.1 * total)
+                    {
+                        ring.RemoveRange(i + 1, j - i); // giữ điểm i một lần, bỏ cả vòng
+                        cut = true;
+                    }
+                    else seen[ring[j]] = j;
+                }
+                if (!cut) return;
+            }
         }
 
         // Cắt vòng tự cắt chỉ khi phần bỏ đi nhỏ (< 10% diện tích): bỏ cả thùy lớn sẽ để lại khe hở lớn giữa các mảnh

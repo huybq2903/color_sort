@@ -11,6 +11,8 @@ namespace Falcon.InGame.LevelEditor
         private const int Clusters = 28, MergeMinArea = 80, KMeansIterations = 25;
         private const float BinSize = 4f, CentreSeparation = 7f, FlatCoverage = 0.65f, CoverageDelta = 5f, MinCentreFraction = 0.0008f;
         private const int MaxCentres = 64, ExtraCentres = 16;
+        internal static float AreaScale = 1f, GradScale = 1f, MaxDeltaScale = 1f; // độ gộp vùng vụn / chuyển sắc
+        internal static int KeepMinArea = 40; // vùng nổi bật nhỏ hơn cỡ này vẫn bị gộp
         private const float NoisyLevel = 1.2f;
         private const float ExtraDistance = 9f, ExtraFraction = 0.01f;
 
@@ -36,10 +38,10 @@ namespace Falcon.InGame.LevelEditor
             var veins = noisy ? null : ThinBright(px, w, h); // gân/nét sáng mảnh: ranh giới giữa các vùng (như nét chì), không thành vùng riêng
             if (veins != null) for (var i = 0; i < n; i++) if (veins[i]) assign[i] = -1;
             var lab4 = ImageOps.ComponentsByKey(assign, w, h, out _);
-            RegionOps.MergeSmall(lab4, w, h, MergeMinArea * 4, lab, midArea: MergeMinArea * 12); // gộp mạnh vùng vụn, trừ nét mảnh và chi tiết nổi bật (xem StandOut)
+            RegionOps.MergeSmall(lab4, w, h, (int)(MergeMinArea * 4 * AreaScale), lab, keepMinArea: KeepMinArea, midArea: (int)(MergeMinArea * 12 * AreaScale)); // gộp mạnh vùng vụn, trừ nét mảnh và chi tiết nổi bật (xem StandOut)
             ImageOps.FillNearest(lab4, w, h);
             // tranh phẳng: chỉ gộp các dải có biên rất mượt (chuyển sắc), biên có bước đổi màu gắt là ranh giới thật; ảnh khác: ngưỡng tự chọn
-            if (flat == null) RegionOps.MergeGradients(lab4, Blur(lab, w, h, 0.6f), w, h, protect: veins);
+            if (flat == null) RegionOps.MergeGradients(lab4, Blur(lab, w, h, 0.6f), w, h, 30f * MaxDeltaScale, protect: veins, thrScale: GradScale);
             else RegionOps.MergeGradients(lab4, lab, w, h, 11f, 1.8f, veins);
             var count = RegionOps.Compact(lab4);
             var cols = RegionOps.AssignColors(lab4, count, labPal, w, h, noisy ? 14f : 5f); // mảnh kề nhau khác tông thì khác màu bảng; không gộp theo màu bảng

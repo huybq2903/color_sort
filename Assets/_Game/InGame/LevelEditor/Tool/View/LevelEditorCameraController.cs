@@ -13,7 +13,7 @@ namespace Falcon.InGame.LevelEditor
         [SerializeField] private float zoomStep = 0.1f;
         [SerializeField] private float minOrthographicSize = 0.5f;
         [SerializeField] private float maxOrthographicSize = 100f;
-        [SerializeField, Tooltip("Chừa lề quanh tranh khi Vừa khung.")] private float fitMargin = 1.15f;
+        [SerializeField, Range(0.2f, 1f), Tooltip("Tranh chiếm chừng này của màn hình khi Vừa khung, luôn ở giữa.")] private float fitFraction = 0.5f;
 
         private LevelEditorInputHandler _input;
         private bool _panning;
@@ -37,13 +37,12 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // leftInset, rightInset: phần bề ngang màn hình (0..1) bị panel hai bên che; tranh được canh vào vùng còn lại
-        public void FitTo(Bounds b, float leftInset = 0f, float rightInset = 0f)
+        public void FitTo(Bounds b)
         {
             if (!cam || b.size.y <= 0f) return;
-            var free = Mathf.Clamp(1f - leftInset - rightInset, 0.2f, 1f);
-            var size = Mathf.Clamp(Mathf.Max(b.extents.y, b.extents.x / (cam.aspect * free)) * fitMargin, minOrthographicSize, maxOrthographicSize);
+            var size = Mathf.Clamp(Mathf.Max(b.extents.y, b.extents.x / cam.aspect) / fitFraction, minOrthographicSize, maxOrthographicSize);
             cam.orthographicSize = size;
-            cam.transform.position = new Vector3(b.center.x - (leftInset - rightInset) * size * cam.aspect, b.center.y, cam.transform.position.z);
+            cam.transform.position = new Vector3(b.center.x, b.center.y, cam.transform.position.z);
         }
 
         private void OnScroll(float dy)

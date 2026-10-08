@@ -191,20 +191,31 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Ảnh không có nét: khoét khe bề rộng 2 + 2 × radius pixel dọc mọi biên giữa hai mảnh (không đụng mép tranh và vùng ngoài tranh), rồi tách lại các mảnh bị khe cắt rời
+        private const float SmallPieceRadius = 13f; // mảnh có bán kính nội tiếp nhỏ hơn cỡ này (px ở lưới 640) dùng khe mỏng hơn
         public static void CarveGaps(RegionMap m, int radius)
         {
             MergeErasableSpecks(m, radius);
             int w = m.w, h = m.h, n = w * h;
+            var inscribed = PieceSize.InscribedRadii(m); // cỡ từng mảnh: biên giữa hai mảnh nhỏ dùng khe mảnh hơn một bậc
             var edge = new bool[n];
+            var thin = new bool[n];
+            void Mark(int p, int q)
+            {
+                var small = radius > 0 && Mathf.Min(inscribed[m.reg[p]], inscribed[m.reg[q]]) < SmallPieceRadius * m.w / 640f;
+                var t = small ? thin : edge;
+                t[p] = true; t[q] = true;
+            }
             for (var i = 0; i < n; i++)
             {
                 var a = m.reg[i];
                 if (a <= 0) continue;
                 int x = i % w, y = i / w;
-                if (x + 1 < w && m.reg[i + 1] > 0 && m.reg[i + 1] != a) { edge[i] = true; edge[i + 1] = true; }
-                if (y + 1 < h && m.reg[i + w] > 0 && m.reg[i + w] != a) { edge[i] = true; edge[i + w] = true; }
+                if (x + 1 < w && m.reg[i + 1] > 0 && m.reg[i + 1] != a) Mark(i, i + 1);
+                if (y + 1 < h && m.reg[i + w] > 0 && m.reg[i + w] != a) Mark(i, i + w);
             }
             for (var r = 0; r < radius; r++) edge = ImageOps.Dilate3(edge, w, h);
+            for (var r = 0; r < radius - 1; r++) thin = ImageOps.Dilate3(thin, w, h);
+            for (var i = 0; i < n; i++) edge[i] |= thin[i];
             var carved = new bool[n];
             for (var i = 0; i < n; i++) if (edge[i] && m.reg[i] > 0) { carved[i] = true; m.reg[i] = 0; }
             RestoreErasedSpecks(m, carved);
@@ -313,6 +324,91 @@ namespace Falcon.InGame.LevelEditor
                 if (y < h - 1) Try(p + w);
             }
             m.reg = res;
+        }
+
+        // Ngã tư chéo (hai điểm ảnh cùng nhãn chạm nhau ở góc) làm biên tự chạm thành vòng kín nhỏ: cụm nhỏ (≤ maxArea) chỉ bám góc đó bị bỏ, hoặc (tranh có khe) vài điểm ảnh khe lọt trong mảnh chỉ bám rãnh qua góc chéo được lấp bằng nhãn mảnh; trả về số chỗ đã gỡ
+        public static int RemovePinches(RegionMap m, int maxArea = 64)
+        {
+            int w = m.w, h = m.h, removed = 0;
+            var stack = new System.Collections.Generic.Stack<int>();
+            var seen = new System.Collections.Generic.HashSet<int>();
+
+            // Cụm 4-liên thông của p, dừng khi vượt maxArea; null nếu quá lớn
+            System.Collections.Generic.List<int> Island(int p)
+            {
+                var label = m.reg[p];
+                var list = new System.Collections.Generic.List<int>();
+                seen.Clear();
+                stack.Clear();
+                stack.Push(p);
+                seen.Add(p);
+                while (stack.Count > 0)
+                {
+                    var q = stack.Pop();
+                    list.Add(q);
+                    if (list.Count > maxArea) return null;
+                    int x = q % w, y = q / w;
+                    void Visit(int r) { if (m.reg[r] == label && seen.Add(r)) stack.Push(r); }
+                    if (x > 0) Visit(q - 1);
+                    if (x < w - 1) Visit(q + 1);
+                    if (y > 0) Visit(q - w);
+                    if (y < h - 1) Visit(q + w);
+                }
+                return list;
+            }
+
+            void Drop(System.Collections.Generic.List<int> island)
+            {
+                var label = m.reg[island[0]];
+                var to = 0;
+                if (!m.gaps)
+                {
+                    var votes = new System.Collections.Generic.Dictionary<int, int>();
+                    foreach (var q in island)
+                    {
+                        int x = q % w, y = q / w;
+                        void Vote(int r) { var l = m.reg[r]; if (l > 0 && l != label) votes[l] = votes.TryGetValue(l, out var c) ? c + 1 : 1; }
+                        if (x > 0) Vote(q - 1);
+                        if (x < w - 1) Vote(q + 1);
+                        if (y > 0) Vote(q - w);
+                        if (y < h - 1) Vote(q + w);
+                    }
+                    if (votes.Count > 0) to = votes.OrderByDescending(kv => kv.Value).First().Key;
+                }
+                foreach (var q in island) m.reg[q] = to;
+                removed++;
+            }
+
+            // p1, p2: hai điểm ảnh cùng nhãn chạm chéo; q1, q2: hai điểm ảnh còn lại của ô 2x2
+            void Pinch(int p1, int p2, int q1, int q2)
+            {
+                var i1 = Island(p1);
+                var i2 = Island(p2);
+                if (i1 != null && i2 != null) return; // cả hai phía đều nhỏ: mảnh nhỏ thật, không đụng
+                if (i1 != null) { Drop(i1); return; }
+                if (i2 != null) { Drop(i2); return; }
+                if (!m.gaps) return;
+                var label = m.reg[p1];
+                foreach (var q in new[] { q1, q2 }) // tranh có khe: vài điểm ảnh khe nằm lọt trong mảnh và chỉ bám rãnh qua góc chéo, lấp bằng nhãn mảnh
+                {
+                    if (m.reg[q] != 0) continue;
+                    var j = Island(q);
+                    if (j == null) continue;
+                    foreach (var r in j) m.reg[r] = label;
+                    removed++;
+                    return;
+                }
+            }
+
+            for (var y = 1; y < h; y++)
+            for (var x = 1; x < w; x++)
+            {
+                int ia = (y - 1) * w + x - 1, ib = ia + 1, ic = y * w + x - 1, id = ic + 1;
+                int a = m.reg[ia], b = m.reg[ib], c = m.reg[ic], d = m.reg[id];
+                if (a > 0 && a == d && b != a && c != a) Pinch(ia, id, ib, ic);
+                else if (b > 0 && b == c && a != b && d != b) Pinch(ib, ic, ia, id);
+            }
+            return removed;
         }
 
         // Cụm nhỏ tách rời khỏi thân mảnh cùng nhãn (vụn ở góc/mép, thường do phóng lưới) về mảnh gần nhất trong tầm `reach` pixel; không lấp khe nên nét giữ nguyên
@@ -526,7 +622,7 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Gộp 2 vùng kề khi biên giữa chúng yếu (chuyển sắc, bóng mềm); ngưỡng yếu/mạnh tự chọn theo ảnh bằng Otsu
-        public static void MergeGradients(int[] lab, Vector3[] smooth, int w, int h, float maxDeltaE = 30f, float fixedThreshold = -1f, bool[] protect = null)
+        public static void MergeGradients(int[] lab, Vector3[] smooth, int w, int h, float maxDeltaE = 30f, float fixedThreshold = -1f, bool[] protect = null, float thrScale = 1f)
         {
             var thr = fixedThreshold;
             for (var it = 0; it < MaxPasses; it++)
@@ -536,7 +632,7 @@ namespace Falcon.InGame.LevelEditor
                 var hits = protect != null ? new Dictionary<long, int>() : null;
                 var stats = PairStats(lab, smooth, w, h, stride, protect, hits).Where(kv => kv.Value.n >= 6 && (hits == null || !hits.TryGetValue(kv.Key, out var hh) || hh < 0.4f * kv.Value.n)).ToList(); // biên chủ yếu nằm trên gân/nét mảnh: ranh giới thật, không gộp
                 if (stats.Count == 0) return;
-                if (thr < 0f) thr = Mathf.Clamp(Otsu(stats.Select(kv => ((float)(kv.Value.sum / kv.Value.n), kv.Value.n)).ToList()), 2.5f, 8f);
+                if (thr < 0f) thr = Mathf.Clamp(Otsu(stats.Select(kv => ((float)(kv.Value.sum / kv.Value.n), kv.Value.n)).ToList()), 2.5f, 8f) * thrScale;
                 var sum = new Vector3[stride];
                 var n = new int[stride];
                 for (var i = 0; i < lab.Length; i++) if (lab[i] > 0) { sum[lab[i]] += smooth[i]; n[lab[i]]++; }

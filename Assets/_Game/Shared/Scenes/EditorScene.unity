@@ -513,9 +513,16 @@ MonoBehaviour:
   viewHeight: 8
   outlineWidth: 0.06
   outlineColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  copperColor: {r: 0.8, g: 0.52, b: 0.26, a: 1}
+  shineColor: {r: 1, g: 0.82, b: 0.55, a: 0.85}
+  shadowOffset: {x: 0.05, y: -0.07}
   highlightColor: {r: 1, g: 0.85, b: 0.1, a: 1}
+  selectionColor: {r: 1, g: 0.2, b: 0.75, a: 1}
   cutColor: {r: 1, g: 0.25, b: 0.25, a: 1}
-  glassTile: 0.3
+  frameColor: {r: 1, g: 0.6, b: 0.1, a: 1}
+  glassPeriod: 0.11
+  gapOutlineScale: 0.3
+  decorLineScale: 1
   sortingOrder: -10
 --- !u!1 &1975434014
 GameObject:

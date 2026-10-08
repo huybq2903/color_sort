@@ -37,16 +37,17 @@ namespace Falcon.Shared.BaseLevelEditor
         /// <summary>Ghi 1 dòng log vào panel dưới cùng (đè dòng cũ).</summary>
         public static void Log(string msg) => _log = msg;
 
-        // Toast cảnh báo nhanh nổi dưới hàng tên file, tự tắt sau ToastSeconds; bổ sung cho thanh log
-        private static string _toast;
-        private static float _toastStart;
-        private const float ToastSeconds = 3f, ToastFade = 0.4f;
+        // Toast xếp chồng (mới nhất ở dưới), trùng nội dung thì chỉ gia hạn, bấm để tắt
+        private static readonly List<(string msg, float start)> _toasts = new();
+        private const float ToastSeconds = 6f, ToastFade = 0.4f, ToastGap = 6f;
+        private const int MaxToasts = 5;
 
         /// <summary>Hiện toast (chỉ toast, không ghi log).</summary>
         public static void Toast(string msg)
         {
-            _toast = msg;
-            _toastStart = Time.unscaledTime;
+            _toasts.RemoveAll(t => t.msg == msg);
+            if (_toasts.Count >= MaxToasts) _toasts.RemoveAt(0);
+            _toasts.Add((msg, Time.unscaledTime));
         }
 
         /// <summary>Cảnh báo cần người dùng chú ý ngay: ghi log và hiện toast.</summary>
@@ -81,10 +82,16 @@ namespace Falcon.Shared.BaseLevelEditor
         {
             if (selected == null || !_inspectors.TryGetValue(selected.GetType(), out var inspector)) return;
 
-            Gui.BeginWindow($"{inspector.TargetType.Name} ({selected.BaseData.id})", rect, ImWindowFlag.NoMovingAndResizing);
             inspector.Target = selected;
-            inspector.OnInspectorGUI(Gui);
-            Gui.EndWindow();
+            Gui.BeginWindow(inspector.Title, rect, ImWindowFlag.NoMovingAndResizing);
+            try
+            {
+                inspector.OnInspectorGUI(Gui);
+            }
+            finally
+            {
+                Gui.EndWindow(); // luôn đóng window để Imui không lệch stack Begin/End
+            }
         }
 
         protected virtual void Awake()
@@ -125,29 +132,37 @@ namespace Falcon.Shared.BaseLevelEditor
         // Hộp cảnh báo đỏ giữa trên cùng, mờ dần ở cuối thời gian hiện
         protected virtual void DrawToast()
         {
-            if (string.IsNullOrEmpty(_toast)) return;
-            var age = Time.unscaledTime - _toastStart;
-            if (age > ToastSeconds)
-            {
-                _toast = null;
-                return;
-            }
-            var alpha = Mathf.Clamp01((ToastSeconds - age) / ToastFade);
+            _toasts.RemoveAll(t => Time.unscaledTime - t.start > ToastSeconds);
+            if (_toasts.Count == 0) return;
+
             var rowH = Gui.GetRowHeight();
             var screen = Gui.Canvas.ScreenSize;
             var menuBarH = Gui.Style.Layout.InnerSpacing * 2f + rowH;
             var settings = new ImTextSettings(Gui.Style.Layout.TextSize, 0.5f, 0.5f, true);
             var maxW = Mathf.Min(560f, screen.x - 40f);
-            var size = Gui.MeasureTextSize(_toast, in settings, new Vector2(maxW - 32f, 0f));
-            var w = Mathf.Min(maxW, size.x + 32f);
-            var h = size.y + 16f;
-            var rect = new ImRect((screen.x - w) / 2f, screen.y - menuBarH - rowH - 8f - h, w, h);
+            var clicked = -1;
+            var y = screen.y - menuBarH - rowH - 8f;
 
             Gui.Canvas.PushOrder(ImWindow.WINDOW_ORDER_OFFSET * 8); // nổi trên mọi panel
-            Gui.Canvas.Rect(rect, new Color32(127, 29, 29, (byte)(235 * alpha)));
-            Gui.Canvas.RectOutline(rect, new Color32(252, 165, 165, (byte)(255 * alpha)), 1.5f);
-            Gui.Canvas.Text(_toast, new Color32(255, 255, 255, (byte)(255 * alpha)), rect, in settings);
+            for (var i = _toasts.Count - 1; i >= 0; i--)
+            {
+                var (msg, start) = _toasts[i];
+                var alpha = Mathf.Clamp01((ToastSeconds - (Time.unscaledTime - start)) / ToastFade);
+                var size = Gui.MeasureTextSize(msg, in settings, new Vector2(maxW - 32f, 0f));
+                var w = Mathf.Min(maxW, size.x + 32f);
+                var h = size.y + 16f;
+                y -= h;
+                var rect = new ImRect((screen.x - w) / 2f, y, w, h);
+                y -= ToastGap;
+
+                if (Gui.Input.WasMouseDownThisFrame && rect.Contains(Gui.Input.MousePosition)) clicked = i;
+                Gui.Canvas.Rect(rect, new Color32(127, 29, 29, (byte)(235 * alpha)));
+                Gui.Canvas.RectOutline(rect, new Color32(252, 165, 165, (byte)(255 * alpha)), 1.5f);
+                Gui.Canvas.Text(msg, new Color32(255, 255, 255, (byte)(255 * alpha)), rect, in settings);
+            }
             Gui.Canvas.PopOrder();
+
+            if (clicked >= 0) _toasts.RemoveAt(clicked);
         }
 
         // Panel 1 dòng sát đáy màn hình, hiển thị _log (Ellipsis tự "…" khi tràn).

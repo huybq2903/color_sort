@@ -105,7 +105,7 @@ namespace Falcon.InGame.LevelEditor
             var alphaR = Mathf.Abs(det) > 1e-12f ? (c00 * x1 - c01 * x0) / det : 0f;
             var seg = Vector2.Distance(p0, p3);
             var eps = 1e-6f * seg;
-            if (alphaL < eps || alphaR < eps) alphaL = alphaR = seg / 3f;
+            if (alphaL < eps || alphaR < eps || alphaL > seg * 2f || alphaR > seg * 2f) alphaL = alphaR = seg / 3f; // thanh cong quá dài thì vọt ra thành gai
             return new Cubic { p0 = p0, p1 = p0 + t1 * alphaL, p2 = p3 + t2 * alphaR, p3 = p3 };
         }
 

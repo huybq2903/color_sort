@@ -16,6 +16,9 @@ namespace Falcon.Shared.BaseLevelEditor
         /// <summary>Entity đang được vẽ (panel set trước khi gọi OnInspectorGUI).</summary>
         IEntityDataContainer Target { get; set; }
 
+        /// <summary>Tiêu đề cửa sổ panel (đọc sau khi Target đã gán).</summary>
+        string Title => $"{TargetType.Name} ({Target.BaseData.id})";
+
         /// <summary>Vẽ inspector cho Target. Tự kiểm tra Target còn sống.</summary>
         void OnInspectorGUI(ImGui gui);
     }

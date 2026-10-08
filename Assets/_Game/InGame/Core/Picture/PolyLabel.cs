@@ -22,11 +22,14 @@ namespace Falcon.InGame.Core
             float w = maxX - minX, h = maxY - minY, size = Mathf.Min(w, h), half = size * 0.5f;
             radius = 0f;
             if (size <= 0f) return new Vector2(minX, minY);
-            var precision = size * 0.01f;
+            var precision = size * 0.02f; // vị trí số không cần chính xác hơn 2% cỡ mảnh
+            var o = ToArray(outer);
+            var hs = new List<Vector2[]>();
+            if (holes != null) foreach (var hole in holes) hs.Add(ToArray(hole));
             var queue = new List<Cell>();
             for (var x = minX; x < maxX; x += size)
-            for (var y = minY; y < maxY; y += size) queue.Add(Make(x + half, y + half, half, outer, holes));
-            var best = Make(minX + w * 0.5f, minY + h * 0.5f, 0f, outer, holes);
+            for (var y = minY; y < maxY; y += size) queue.Add(Make(x + half, y + half, half, o, hs));
+            var best = Make(minX + w * 0.5f, minY + h * 0.5f, 0f, o, hs);
             var guard = 0;
             while (queue.Count > 0 && guard++ < 20000)
             {
@@ -38,39 +41,48 @@ namespace Falcon.InGame.Core
                 if (c.d > best.d) best = c;
                 if (c.max - best.d <= precision) continue;
                 var hh = c.h * 0.5f;
-                queue.Add(Make(c.x - hh, c.y - hh, hh, outer, holes));
-                queue.Add(Make(c.x + hh, c.y - hh, hh, outer, holes));
-                queue.Add(Make(c.x - hh, c.y + hh, hh, outer, holes));
-                queue.Add(Make(c.x + hh, c.y + hh, hh, outer, holes));
+                queue.Add(Make(c.x - hh, c.y - hh, hh, o, hs));
+                queue.Add(Make(c.x + hh, c.y - hh, hh, o, hs));
+                queue.Add(Make(c.x - hh, c.y + hh, hh, o, hs));
+                queue.Add(Make(c.x + hh, c.y + hh, hh, o, hs));
             }
             radius = Mathf.Max(0f, best.d);
             return new Vector2(best.x, best.y);
         }
 
-        private static Cell Make(float x, float y, float h, IReadOnlyList<Vector2> outer, IReadOnlyList<IReadOnlyList<Vector2>> holes)
+        private static Vector2[] ToArray(IReadOnlyList<Vector2> l)
+        {
+            var a = new Vector2[l.Count];
+            for (var i = 0; i < a.Length; i++) a[i] = l[i];
+            return a;
+        }
+
+        private static Cell Make(float x, float y, float h, Vector2[] outer, List<Vector2[]> holes)
         {
             var d = SignedDist(x, y, outer, holes);
             return new Cell { x = x, y = y, h = h, d = d, max = d + h * 1.4142135f };
         }
 
         // Khoảng cách tới biên gần nhất: dương trong đa giác, âm ngoài
-        private static float SignedDist(float x, float y, IReadOnlyList<Vector2> outer, IReadOnlyList<IReadOnlyList<Vector2>> holes)
+        private static float SignedDist(float x, float y, Vector2[] outer, List<Vector2[]> holes)
         {
             var inside = false;
             var min = float.MaxValue;
-            void Ring(IReadOnlyList<Vector2> r)
-            {
-                for (int i = 0, j = r.Count - 1; i < r.Count; j = i++)
-                {
-                    Vector2 a = r[i], b = r[j];
-                    if ((a.y > y) != (b.y > y) && x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) inside = !inside;
-                    min = Mathf.Min(min, SegSq(x, y, a, b));
-                }
-            }
-            Ring(outer);
-            if (holes != null) foreach (var hole in holes) Ring(hole);
+            Ring(outer, x, y, ref inside, ref min);
+            foreach (var hole in holes) Ring(hole, x, y, ref inside, ref min);
             var dist = Mathf.Sqrt(min);
             return inside ? dist : -dist;
+        }
+
+        private static void Ring(Vector2[] r, float x, float y, ref bool inside, ref float min)
+        {
+            for (int i = 0, j = r.Length - 1; i < r.Length; j = i++)
+            {
+                Vector2 a = r[i], b = r[j];
+                if ((a.y > y) != (b.y > y) && x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) inside = !inside;
+                var sq = SegSq(x, y, a, b);
+                if (sq < min) min = sq;
+            }
         }
 
         private static float SegSq(float px, float py, Vector2 a, Vector2 b)

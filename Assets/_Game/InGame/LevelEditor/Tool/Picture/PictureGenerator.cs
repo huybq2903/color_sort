@@ -10,7 +10,7 @@ namespace Falcon.InGame.LevelEditor
     public static class PictureGenerator
     {
         public const float Epsilon = 0.75f;
-        private const int FlatGapRadius = 1; // khe giữa các mảnh ảnh không nét: 2 + 2 × radius pixel ở lưới workSize
+        private const int FlatGapRadius = 0; // khe giữa các mảnh ảnh không nét: 2 + 2 × radius pixel ở lưới workSize
         private const int IslandMaxArea = 150, IslandReach = 7; // cụm tách rời nhỏ hơn 150px và có mảnh khác trong 7px (lưới ×3)
         private const int GapTrim = 2; // pixel bỏ mỗi bên nét dày ở lưới ×3 (≈0,7px ở lưới 640); 0 = tắt
         private const float SigmaPerLevel = 0.57f; // mức 3 ở lưới x3 ~ sigma 5 mẫu
@@ -58,6 +58,7 @@ namespace Falcon.InGame.LevelEditor
         {
             var p = new PictureProperty { width = map.w, height = map.h, unit = TidyUnit, gen = s.Clone() };
             p.gen.inkGaps = map.gaps;
+            RegionOps.RemovePinches(map); // cụm nhỏ chỉ bám góc chéo làm biên tự chạm thành vòng kín nhỏ
             var polys = BoundaryGraph.Build(map, Sigma(s), TidyUnit, TidyStep, s.fitTolerance, out var holes);
             for (var id = 1; id < polys.Length; id++)
                 if (polys[id] != null) p.regions.Add(new RegionData { points = polys[id], colorId = map.colors[id], holes = holes[id] });
