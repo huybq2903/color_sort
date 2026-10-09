@@ -21,6 +21,33 @@ namespace Falcon.InGame.LevelEditor
 
         internal static float Sigma(GenSettings s) => s.curveSmooth * SigmaPerLevel * Math.Max(1, s.smoothScale);
 
+        /// <summary>Bản sao điểm ảnh của texture nguồn, đọc một lần ở luồng chính để mọi bước sau chạy được ở luồng nền.</summary>
+        public sealed class SourceImage
+        {
+            public readonly Color32[] px;
+            public readonly int width, height;
+
+            public SourceImage(Texture2D t)
+            {
+                px = t.GetPixels32();
+                width = t.width;
+                height = t.height;
+            }
+
+            // Lấy mẫu song tuyến như GetPixelBilinear (tâm điểm ảnh ở +0,5, kẹp mép); u, v trong 0..1
+            public Color Bilinear(float u, float v)
+            {
+                float x = u * width - 0.5f, y = v * height - 0.5f;
+                int x0 = Mathf.FloorToInt(x), y0 = Mathf.FloorToInt(y);
+                float fx = x - x0, fy = y - y0;
+                int xa = Mathf.Clamp(x0, 0, width - 1), xb = Mathf.Clamp(x0 + 1, 0, width - 1);
+                int ya = Mathf.Clamp(y0, 0, height - 1), yb = Mathf.Clamp(y0 + 1, 0, height - 1);
+                Color32 a = px[ya * width + xa], b = px[ya * width + xb], c = px[yb * width + xa], d = px[yb * width + xb];
+                float Mix(byte p00, byte p10, byte p01, byte p11) => Mathf.Lerp(Mathf.Lerp(p00, p10, fx), Mathf.Lerp(p01, p11, fx), fy) / 255f;
+                return new Color(Mix(a.r, b.r, c.r, d.r), Mix(a.g, b.g, c.g, d.g), Mix(a.b, b.b, c.b, d.b), Mix(a.a, b.a, c.a, d.a));
+            }
+        }
+
         public static PictureProperty Generate(Texture2D src, GenSettings s)
         {
             var px = Compose(src, s, out var w, out var h, out var bgId);
@@ -92,10 +119,12 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Khung bao các pixel đặc (alpha > 128) cộng lề nhỏ; ảnh không có vùng trong suốt hoặc trống thì trả cả ảnh
-        public static RectInt OpaqueBounds(Texture2D src)
+        public static RectInt OpaqueBounds(Texture2D src) => OpaqueBounds(new SourceImage(src));
+
+        public static RectInt OpaqueBounds(SourceImage src)
         {
             int w = src.width, h = src.height;
-            var px = src.GetPixels32();
+            var px = src.px;
             int x0 = w, y0 = h, x1 = -1, y1 = -1;
             for (var y = 0; y < h; y++)
             for (var x = 0; x < w; x++)
@@ -121,15 +150,17 @@ namespace Falcon.InGame.LevelEditor
         public static Color32[] Compose(Texture2D src, GenSettings s, out int w, out int h) => Compose(src, s, out w, out h, out _);
 
         // bgId: id màu nền trong bảng nếu nền là màu bảng (để cắt tia đúng vùng nền), -1 nếu không
-        public static Color32[] Compose(Texture2D src, GenSettings s, out int w, out int h, out int bgId)
+        public static Color32[] Compose(Texture2D src, GenSettings s, out int w, out int h, out int bgId) => Compose(new SourceImage(src), s, out w, out h, out bgId);
+
+        // Chạy được ở luồng nền; crop đã biết thì truyền vào để khỏi quét lại ảnh
+        public static Color32[] Compose(SourceImage src, GenSettings s, out int w, out int h, out int bgId, RectInt? knownCrop = null)
         {
-            var crop = OpaqueBounds(src);
+            var crop = knownCrop ?? OpaqueBounds(src);
             FrameLayout.CanvasSize(s.frameW, s.frameH, s.workSize, out w, out h);
             var place = FrameLayout.Place(crop.width, crop.height, s.frameW, s.frameH, s.fitCover, out var uv);
             var bg = Background(src, crop, s.bgColorId);
             var near = ColorPalette.Nearest(bg);
             bgId = ColorPalette.Get(near).Equals(bg) ? near : -1;
-            src.wrapMode = TextureWrapMode.Clamp;
             var px = new Color32[w * h];
             for (var y = 0; y < h; y++)
             for (var x = 0; x < w; x++)
@@ -137,7 +168,7 @@ namespace Falcon.InGame.LevelEditor
                 float u = (x + 0.5f) / w, v = (y + 0.5f) / h;
                 if (u < place.xMin || u >= place.xMax || v < place.yMin || v >= place.yMax) { px[y * w + x] = bg; continue; }
                 float su = uv.x + (u - place.x) / place.width * uv.width, sv = uv.y + (v - place.y) / place.height * uv.height;
-                var t = src.GetPixelBilinear((crop.x + su * crop.width) / src.width, (crop.y + sv * crop.height) / src.height);
+                var t = src.Bilinear((crop.x + su * crop.width) / src.width, (crop.y + sv * crop.height) / src.height);
                 px[y * w + x] = new Color32(
                     (byte)Mathf.RoundToInt(Mathf.Lerp(bg.r, t.r * 255f, t.a)),
                     (byte)Mathf.RoundToInt(Mathf.Lerp(bg.g, t.g * 255f, t.a)),
@@ -147,10 +178,10 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Nền chọn tay theo bảng màu; tự động: ảnh có vùng trong suốt → màu sáng trong bảng xa màu chủ thể nhất, ảnh đặc → màu trung bình viền ảnh
-        private static Color32 Background(Texture2D src, RectInt crop, int bgColorId)
+        private static Color32 Background(SourceImage src, RectInt crop, int bgColorId)
         {
             if (bgColorId >= 0) return ColorPalette.Get(Mathf.Min(bgColorId, ColorPalette.Count - 1));
-            var px = src.GetPixels32();
+            var px = src.px;
             long r = 0, g = 0, b = 0, n = 0;
             var used = new int[ColorPalette.Count];
             long sn = 0;

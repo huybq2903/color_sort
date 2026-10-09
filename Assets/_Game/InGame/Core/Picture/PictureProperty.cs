@@ -109,7 +109,7 @@ namespace Falcon.InGame.Core
         public int smoothScale = 3;
         public bool snapEdges = true; // nắn đường cắt về cạnh thật của ảnh gốc
         public bool tidy = true; // vector hoá đường viền: biên chung, spline, toạ độ mịn gấp 4
-        public float fitTolerance = 1f; // dung sai khớp Bézier (đơn vị lưới); lớn = đường cong dài hơn, 0 = tắt
+        public float fitTolerance = 1.6f; // dung sai khớp Bézier (đơn vị lưới); lớn = đường cong dài hơn, 0 = tắt
         public float curveSmooth = 3f; // 0 = tắt làm mượt viền; 1..4 mượt dần
         public int frameW = 100, frameH = 100; // khung tranh (tỉ lệ W:H), đầu ra luôn phủ kín khung
         public bool fitCover = true; // false = ảnh nằm gọn trong khung, phần dư là nền; true = phủ kín khung, cắt phần thừa

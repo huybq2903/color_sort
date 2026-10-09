@@ -626,7 +626,11 @@ namespace Falcon.InGame.LevelEditor
             }
             if (run.pts[0] == run.pts[run.pts.Count - 1]) { error = "Đường biên khép kín: dùng Gộp/Tách"; return false; }
             var whole = new List<Vector2Int>(chain);
-            if (CrossesOthers(whole, run.pts, run.a, gapMode ? -1 : run.b)) { error = "Biên mới cắt qua đường biên khác hoặc tự cắt, kéo lại"; return false; }
+            if (CrossesOthers(whole, run.pts, run.a, gapMode ? -1 : run.b, out var hit))
+            {
+                error = hit == run.a ? "Biên mới cắt qua chính mảnh này (quá sát biên đối diện), kéo lại" : hit >= 0 ? $"Biên mới cắt qua biên mảnh #{hit + 1}, kéo lại" : "Biên mới tự cắt chính nó, kéo lại";
+                return false;
+            }
             if (gapMode)
             {
                 var A = Picture.regions[run.a].points;
@@ -664,8 +668,10 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Nét mới có cắt thật sự (không tính chạm đầu mút) cạnh nào của đường biên khác, hay tự cắt mình không; cạnh của chính đoạn biên cũ bị bỏ qua
-        private bool CrossesOthers(List<Vector2Int> chain, List<Vector2Int> oldRun, int ra, int rb)
+        // hit = mảnh có biên bị cắt, -1 nếu nét tự cắt
+        private bool CrossesOthers(List<Vector2Int> chain, List<Vector2Int> oldRun, int ra, int rb, out int hit)
         {
+            hit = -1;
             var old = new HashSet<(Vector2Int, Vector2Int)>();
             for (var i = 0; i + 1 < oldRun.Count; i++)
             {
@@ -698,7 +704,7 @@ namespace Falcon.InGame.LevelEditor
                 for (var m = k + 2; m < segs; m++)
                 {
                     if (sx1 < minX[m] || sx0 > maxX[m] || sy1 < minY[m] || sy0 > maxY[m]) continue; // hộp bao hai đoạn tách nhau
-                    if (SegCross(chain[k], chain[k + 1], chain[m], chain[m + 1])) return true;
+                    if (SegCross(chain[k], chain[k + 1], chain[m], chain[m + 1])) return true; // hit = -1: tự cắt
                 }
                 for (var r = 0; r < Picture.regions.Count; r++)
                 {
@@ -714,7 +720,7 @@ namespace Falcon.InGame.LevelEditor
                         var c = new Vector2Int(cx, cy);
                         var d = new Vector2Int(dx, dy);
                         if ((r == ra || r == rb) && old.Contains((c, d))) continue;
-                        if (SegCross(chain[k], chain[k + 1], c, d)) return true;
+                        if (SegCross(chain[k], chain[k + 1], c, d)) { hit = r; return true; }
                     }
                 }
             }
@@ -758,10 +764,37 @@ namespace Falcon.InGame.LevelEditor
             return Subdivide.Recommend(px / (float)(Map.w * Map.h));
         }
 
-        // Chia từng mảnh được chọn thành các ô ôm theo hình thể (xem Subdivide); ô quá nhỏ gộp vào ô kề; trả về số mảnh mới thêm
-        public int SubdivideRegions(IReadOnlyList<int> indices, int count, out string error)
+        // Dải khe rộng gap ô lưới dọc đường giáp giữa các ô (tranh có khe nét): trả về các pixel của mảnh thành khe trống
+        private HashSet<int> CarveCellGaps(List<int> pix, int[] cell, int gap, int[] owner)
+        {
+            int w = Map.w, h = Map.h;
+            for (var i = 0; i < pix.Count; i++) owner[pix[i]] = cell[i];
+            var gaps = new HashSet<int>();
+            var rad = gap * 0.5f;
+            var ri = Mathf.CeilToInt(rad);
+            for (var i = 0; i < pix.Count; i++)
+            {
+                int p = pix[i], x = p % w, y = p / w, c = cell[i];
+                // đường giáp một pixel: chỉ phía ô có chỉ số nhỏ hơn, rồi nở ra thành dải
+                if (!((x < w - 1 && owner[p + 1] > c) || (y < h - 1 && owner[p + w] > c) || (x > 0 && owner[p - 1] > c) || (y > 0 && owner[p - w] > c))) continue;
+                for (var dy = -ri; dy <= ri; dy++)
+                for (var dx = -ri; dx <= ri; dx++)
+                {
+                    int qx = x + dx, qy = y + dy;
+                    if (dx * dx + dy * dy > rad * rad || qx < 0 || qy < 0 || qx >= w || qy >= h) continue;
+                    if (owner[qy * w + qx] >= 0) gaps.Add(qy * w + qx);
+                }
+            }
+            foreach (var p in pix) owner[p] = -1;
+            return gaps;
+        }
+
+        // Chia từng mảnh được chọn thành các ô theo kiểu pattern (xem Subdivide); ô quá nhỏ gộp vào ô kề; gap > 0 (tranh có khe nét): các ô cách nhau bằng khe rộng gap ô lưới; trả về số mảnh mới thêm
+        public int SubdivideRegions(IReadOnlyList<int> indices, int count, out string error, int gap = 0, SubdividePattern pattern = SubdividePattern.Auto)
         {
             error = null;
+            var owner = gap > 0 ? new int[Map.w * Map.h] : null;
+            if (owner != null) System.Array.Fill(owner, -1);
             var touched = new List<int>();
             var added = 0;
             foreach (var index in indices.Distinct().OrderBy(i => i))
@@ -769,12 +802,17 @@ namespace Falcon.InGame.LevelEditor
                 if (index < 0 || index >= Picture.regions.Count) continue;
                 var id = index + 1;
                 var pix = Pixels(id);
-                var cell = Subdivide.FlowAssign(Map, pix, count, out var n);
+                var cell = Subdivide.FlowAssign(Map, pix, count, pattern, out var n);
                 if (cell == null) continue;
 
+                var gaps = owner != null ? CarveCellGaps(pix, cell, gap, owner) : null;
                 var groups = new List<int>[n];
                 for (var k = 0; k < n; k++) groups[k] = new List<int>();
-                for (var i = 0; i < pix.Count; i++) groups[cell[i]].Add(pix[i]);
+                for (var i = 0; i < pix.Count; i++)
+                {
+                    if (gaps != null && gaps.Contains(pix[i])) { Map.reg[pix[i]] = 0; continue; } // khe: để trống, không thuộc ô nào
+                    groups[cell[i]].Add(pix[i]);
+                }
                 for (var k = 0; k < n; k++) foreach (var p in groups[k]) Map.reg[p] = -(k + 2);
                 var pieces = new List<List<int>>();
                 for (var k = 0; k < n; k++) pieces.AddRange(Components(groups[k], -(k + 2)));
@@ -799,6 +837,12 @@ namespace Falcon.InGame.LevelEditor
                     pieces[to].AddRange(pieces[j]);
                     pieces[j].Clear();
                 }
+                if (gaps != null) // có khe thì mảnh vụn không có láng giềng để gộp: bỏ thành khe
+                    foreach (var pc in pieces.Where(pc => pc.Count > 0 && pc.Count < MinPiecePixels))
+                    {
+                        foreach (var p in pc) Map.reg[p] = 0;
+                        pc.Clear();
+                    }
                 pieces.RemoveAll(pc => pc.Count == 0);
                 if (pieces.Count < 2)
                 {
@@ -814,7 +858,7 @@ namespace Falcon.InGame.LevelEditor
                 error = "Không chia được: mảnh quá nhỏ hoặc quá hẹp";
                 return 0;
             }
-            RebuildBoundaries(touched);
+            RebuildBoundaries(touched, flow: true);
             return added;
         }
 
@@ -873,7 +917,8 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Tranh vector hoá: dựng lại biên chung cho mảnh bị sửa và các mảnh kề để chúng khít nhau; mảnh khác giữ nguyên (không bị làm mượt lại)
-        private void RebuildBoundaries(IEnumerable<int> editedIds)
+        // flow: làm mượt mạnh theo độ dài đường (chỉ chia mảnh dùng), các thao tác khác giữ làm mượt nhẹ
+        private void RebuildBoundaries(IEnumerable<int> editedIds, bool flow = false)
         {
             var g = Picture.gen;
             if (Picture.unit <= 1 || !g.tidy || g.curveSmooth <= 0f) return;
@@ -897,7 +942,7 @@ namespace Falcon.InGame.LevelEditor
             var crop = new RegionMap { w = cw, h = ch, reg = new int[cw * ch], colors = Map.colors, inked = Map.inked, gaps = Map.gaps, synthetic = Map.synthetic };
             for (var y = 0; y < ch; y++) System.Array.Copy(Map.reg, (y0 + y) * Map.w + x0, crop.reg, y * cw, cw);
 
-            var polys = BoundaryGraph.Build(crop, PictureGenerator.Sigma(g), Picture.unit, PictureGenerator.TidyStep, g.fitTolerance, out var holes);
+            var polys = BoundaryGraph.Build(crop, PictureGenerator.Sigma(g), Picture.unit, PictureGenerator.TidyStep, g.fitTolerance, out var holes, flow);
             int ox = x0 * Picture.unit, oy = y0 * Picture.unit;
             int[] Shift(int[] a)
             {

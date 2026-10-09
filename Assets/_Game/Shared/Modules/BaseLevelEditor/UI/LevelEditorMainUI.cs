@@ -37,17 +37,23 @@ namespace Falcon.Shared.BaseLevelEditor
         /// <summary>Ghi 1 dòng log vào panel dưới cùng (đè dòng cũ).</summary>
         public static void Log(string msg) => _log = msg;
 
-        // Toast xếp chồng (mới nhất ở dưới), trùng nội dung thì chỉ gia hạn, bấm để tắt
-        private static readonly List<(string msg, float start)> _toasts = new();
-        private const float ToastSeconds = 6f, ToastFade = 0.4f, ToastGap = 6f;
+        // Toast xếp lớp: toast mới thấp hơn toast cũ một chút, lớp cũ tối dần; vị trí chuyển động mượt; mỗi thông báo luôn là một toast mới; bấm để tắt
+        private sealed class ToastItem
+        {
+            public string msg;
+            public float start;
+            public float offset; // độ lệch xuống so với hàng đầu (px), đang chuyển dần tới đích
+        }
+
+        private static readonly List<ToastItem> _toasts = new();
+        private const float ToastSeconds = 6f, ToastFade = 0.4f, ToastIn = 0.18f, ToastPeek = 9f, ToastInset = 5f, ToastSlide = 16f, ToastEase = 16f;
         private const int MaxToasts = 5;
 
         /// <summary>Hiện toast (chỉ toast, không ghi log).</summary>
         public static void Toast(string msg)
         {
-            _toasts.RemoveAll(t => t.msg == msg);
             if (_toasts.Count >= MaxToasts) _toasts.RemoveAt(0);
-            _toasts.Add((msg, Time.unscaledTime));
+            _toasts.Add(new ToastItem { msg = msg, start = Time.unscaledTime, offset = _toasts.Count * ToastPeek - ToastSlide }); // bắt đầu cao hơn đích, trượt xuống
         }
 
         /// <summary>Cảnh báo cần người dùng chú ý ngay: ghi log và hiện toast.</summary>
@@ -140,25 +146,36 @@ namespace Falcon.Shared.BaseLevelEditor
             var menuBarH = Gui.Style.Layout.InnerSpacing * 2f + rowH;
             var settings = new ImTextSettings(Gui.Style.Layout.TextSize, 0.5f, 0.5f, true);
             var maxW = Mathf.Min(560f, screen.x - 40f);
+            var baseY = screen.y - menuBarH - rowH - 8f;
+            var n = _toasts.Count;
+            var ease = 1f - Mathf.Exp(-ToastEase * Mathf.Min(Time.unscaledDeltaTime, 0.05f));
+            var rects = new ImRect[n];
+            for (var i = 0; i < n; i++)
+            {
+                var item = _toasts[i];
+                item.offset = Mathf.Lerp(item.offset, i * ToastPeek, ease); // đích: toast thứ i (từ cũ tới mới) thấp hơn i × ToastPeek
+                var depth = n - 1 - i; // 0 = toast mới nhất, nằm trên cùng
+                var size = Gui.MeasureTextSize(item.msg, in settings, new Vector2(maxW - 32f, 0f));
+                var w = Mathf.Max(80f, Mathf.Min(maxW, size.x + 32f) - depth * 2f * ToastInset);
+                var h = size.y + 16f;
+                rects[i] = new ImRect((screen.x - w) / 2f, baseY - item.offset - h, w, h);
+            }
+
             var clicked = -1;
-            var y = screen.y - menuBarH - rowH - 8f;
+            if (Gui.Input.WasMouseDownThisFrame)
+                for (var i = n - 1; i >= 0; i--)
+                    if (rects[i].Contains(Gui.Input.MousePosition)) { clicked = i; break; } // lớp trên cùng được bấm trước
 
             Gui.Canvas.PushOrder(ImWindow.WINDOW_ORDER_OFFSET * 8); // nổi trên mọi panel
-            for (var i = _toasts.Count - 1; i >= 0; i--)
+            for (var i = 0; i < n; i++) // lớp cũ vẽ trước, toast mới nhất vẽ sau cùng đè lên
             {
-                var (msg, start) = _toasts[i];
-                var alpha = Mathf.Clamp01((ToastSeconds - (Time.unscaledTime - start)) / ToastFade);
-                var size = Gui.MeasureTextSize(msg, in settings, new Vector2(maxW - 32f, 0f));
-                var w = Mathf.Min(maxW, size.x + 32f);
-                var h = size.y + 16f;
-                y -= h;
-                var rect = new ImRect((screen.x - w) / 2f, y, w, h);
-                y -= ToastGap;
-
-                if (Gui.Input.WasMouseDownThisFrame && rect.Contains(Gui.Input.MousePosition)) clicked = i;
-                Gui.Canvas.Rect(rect, new Color32(127, 29, 29, (byte)(235 * alpha)));
-                Gui.Canvas.RectOutline(rect, new Color32(252, 165, 165, (byte)(255 * alpha)), 1.5f);
-                Gui.Canvas.Text(msg, new Color32(255, 255, 255, (byte)(255 * alpha)), rect, in settings);
+                var depth = n - 1 - i;
+                var age = Time.unscaledTime - _toasts[i].start;
+                var alpha = Mathf.Min(Mathf.Clamp01(age / ToastIn), Mathf.Clamp01((ToastSeconds - age) / ToastFade));
+                var shade = Mathf.Pow(0.78f, depth); // lớp càng cũ càng tối
+                Gui.Canvas.Rect(rects[i], new Color32((byte)(127 * shade), (byte)(29 * shade), (byte)(29 * shade), (byte)(240 * alpha)));
+                Gui.Canvas.RectOutline(rects[i], new Color32((byte)(252 * shade), (byte)(165 * shade), (byte)(165 * shade), (byte)(255 * alpha)), 1.5f);
+                if (depth == 0) Gui.Canvas.Text(_toasts[i].msg, new Color32(255, 255, 255, (byte)(255 * alpha)), rects[i], in settings);
             }
             Gui.Canvas.PopOrder();
 

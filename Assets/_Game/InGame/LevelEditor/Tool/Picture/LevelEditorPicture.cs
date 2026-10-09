@@ -41,6 +41,10 @@ namespace Falcon.InGame.LevelEditor
         private RectInt? _sourceCrop;
         private Task<PictureProperty> _job;
         private Stopwatch _jobWatch;
+        private Task _bg; // việc nền của thao tác sửa tranh (cắt, chia, gộp, xoá, lỗ)
+        private Action _bgDone;
+        private string _bgText;
+        private Stopwatch _bgWatch;
         private SaveCondition _hasPicture;
         private PictureModel _model;
         private LevelEditorInputHandler _input;
@@ -68,11 +72,13 @@ namespace Falcon.InGame.LevelEditor
         private int _selectedLine = -1; // nét trang trí đang chọn (Delete để xoá)
         private PenDrag _penDrag;
 
+        public event Action Generated; // tranh vừa tạo xong (kết quả Generate đã áp vào level)
+
         public GenSettings Settings { get; private set; } = new();
         public bool HasSource => _source;
         public Texture2D SourceTexture => _source;
-        public bool IsBusy => _job != null;
-        public string BusyText => $"Đang tạo tranh ({(_jobWatch?.ElapsedMilliseconds ?? 0) / 1000}s)";
+        public bool IsBusy => _job != null || _bg != null;
+        public string BusyText => _bg != null ? $"{_bgText} ({_bgWatch.ElapsedMilliseconds / 1000}s)" : $"Đang tạo tranh ({(_jobWatch?.ElapsedMilliseconds ?? 0) / 1000}s)";
         public PictureProperty Picture => _propertyData;
         public bool ShowColor { get; private set; } = true;
         public bool ShowGlass { get; private set; } = true;
@@ -122,6 +128,7 @@ namespace Falcon.InGame.LevelEditor
         public int PenAnchorCount => _pen.Count;
         public int SelectedCount => _selected.Count;
         public bool IsSelected(int index) => _selected.Contains(index);
+        public int SplitPattern { get; set; } // kiểu chia mảnh (SubdividePattern); 0 = tự động
         public int SplitCount { get; set; } = 2; // số mảnh sau khi chia mảnh đang chọn (mặc định = gợi ý theo diện tích)
         public int SelectedIndex => _selected.Count == 1 ? _selected[0] : -1;
         public int PrimarySelected => _selected.Count > 0 ? _selected[0] : -1; // mảnh chọn đầu tiên (nhiều mảnh: đại diện cho nhóm)
@@ -216,12 +223,53 @@ namespace Falcon.InGame.LevelEditor
             EndDrag();
             var settings = Settings.Clone();
             _jobWatch = Stopwatch.StartNew();
-            var px = PictureGenerator.Compose(_source, settings, out var w, out var h, out var bgId);
-            _job = Task.Run(() => PictureGenerator.Generate(px, w, h, settings, bgId));
+            var snap = new PictureGenerator.SourceImage(_source); // đọc điểm ảnh ở luồng chính; ghép khung và thuật toán chạy nền để popup hiện ngay
+            var crop = _sourceCrop;
+            _job = Task.Run(() =>
+            {
+                var px = PictureGenerator.Compose(snap, settings, out var w, out var h, out var bgId, crop);
+                return PictureGenerator.Generate(px, w, h, settings, bgId);
+            });
+        }
+
+        // Chạy work ở luồng nền (chỉ C# thuần), xong thì done chạy ở luồng chính; trong lúc chạy IsBusy = true nên popup chờ hiện và thao tác khác bị chặn
+        private void RunBusy<T>(string text, Func<T> work, Action<T> done)
+        {
+            if (IsBusy) return;
+            var baseData = _propertyData;
+            var t = Task.Run(work);
+            _bg = t;
+            _bgText = text;
+            _bgWatch = Stopwatch.StartNew();
+            _bgDone = () =>
+            {
+                if (_propertyData != baseData) // vd undo giữa chừng: kết quả không còn khớp dữ liệu hiện tại
+                {
+                    LevelEditorMainUI.Warn("Dữ liệu đã đổi trong lúc xử lý, bỏ kết quả");
+                    return;
+                }
+                done(t.Result);
+            };
+        }
+
+        private void FinishBusy()
+        {
+            var t = _bg;
+            var done = _bgDone;
+            _bg = null;
+            _bgDone = null;
+            if (t.IsFaulted)
+            {
+                UnityEngine.Debug.LogError(t.Exception);
+                LevelEditorMainUI.Warn("Lỗi khi xử lý, xem Console");
+                return;
+            }
+            done();
         }
 
         private void Update()
         {
+            if (_bg != null && _bg.IsCompleted) FinishBusy();
             if (_job == null || !_job.IsCompleted) return;
             var job = _job;
             _job = null;
@@ -242,6 +290,7 @@ namespace Falcon.InGame.LevelEditor
             SourceAlpha = 0f; // đã có tranh: ẩn ảnh gốc, kéo slider để đè so sánh
             Execute(result);
             FitView();
+            Generated?.Invoke();
             var colors = result.regions.Select(r => r.colorId).Distinct().Count();
             LevelEditorMainUI.Log($"{result.regions.Count} mảnh · {colors} màu · {_jobWatch.ElapsedMilliseconds / 1000}s");
         }
@@ -934,23 +983,31 @@ namespace Falcon.InGame.LevelEditor
         private void EditHoleAlong(IReadOnlyList<Vector3> world, EdgeRun run)
         {
             var work = new PictureModel(_propertyData.Clone());
-            if (!work.ReplaceHole(run.a, run.hole, WorldToRing(world), out var err))
+            var ring = WorldToRing(world);
+            RunBusy("Đang sửa lỗ", () =>
             {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            FinishHoleEdit(work, run.a, "Đã sửa lỗ");
+                var ok = work.ReplaceHole(run.a, run.hole, ring, out var err);
+                return (ok, err);
+            }, r =>
+            {
+                if (!r.ok) LevelEditorMainUI.Warn(r.err);
+                else FinishHoleEdit(work, run.a, "Đã sửa lỗ");
+            });
         }
 
         private void AddHoleAlong(IReadOnlyList<Vector3> world, int index)
         {
             var work = new PictureModel(_propertyData.Clone());
-            if (!work.AddHole(index, WorldToRing(world), out var err))
+            var ring = WorldToRing(world);
+            RunBusy("Đang khoét lỗ", () =>
             {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            FinishHoleEdit(work, index, "Đã khoét lỗ");
+                var ok = work.AddHole(index, ring, out var err);
+                return (ok, err);
+            }, r =>
+            {
+                if (!r.ok) LevelEditorMainUI.Warn(r.err);
+                else FinishHoleEdit(work, index, "Đã khoét lỗ");
+            });
         }
 
         // Xoá lỗ h của mảnh đang chọn: phần lỗ thuộc lại về mảnh
@@ -959,12 +1016,19 @@ namespace Falcon.InGame.LevelEditor
             var index = SelectedIndex;
             if (index < 0 || _propertyData == null || IsBusy) return;
             var work = new PictureModel(_propertyData.Clone());
-            if (!work.RemoveHole(index, h, out var err))
+            RunBusy("Đang xoá lỗ", () =>
             {
-                if (err != null) LevelEditorMainUI.Warn(err);
-                return;
-            }
-            FinishHoleEdit(work, index, "Đã xoá lỗ");
+                var ok = work.RemoveHole(index, h, out var err);
+                return (ok, err);
+            }, r =>
+            {
+                if (!r.ok)
+                {
+                    if (r.err != null) LevelEditorMainUI.Warn(r.err);
+                    return;
+                }
+                FinishHoleEdit(work, index, "Đã xoá lỗ");
+            });
         }
 
         public int EditingHole => _editRun != null ? _editRun.hole : -1;
@@ -993,13 +1057,20 @@ namespace Falcon.InGame.LevelEditor
             chain[0] = run.pts[0];
             chain[chain.Count - 1] = run.pts[run.pts.Count - 1];
             var work = new PictureModel(_propertyData.Clone());
-            if (!work.ReplaceRun(run, chain, out var err))
+            RunBusy("Đang sửa biên", () =>
             {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            Execute(work.Picture);
-            LevelEditorMainUI.Log("Đã sửa biên");
+                var ok = work.ReplaceRun(run, chain, out var err);
+                return (ok, err);
+            }, r =>
+            {
+                if (!r.ok)
+                {
+                    LevelEditorMainUI.Warn(r.err);
+                    return;
+                }
+                Execute(work.Picture);
+                LevelEditorMainUI.Log("Đã sửa biên");
+            });
         }
 
         // Xoá các mảnh đang chọn (một bước undo); chỗ mảnh để lại là khoảng trống, mảnh nằm trong lỗ thì lỗ trống ra
@@ -1007,10 +1078,13 @@ namespace Falcon.InGame.LevelEditor
         {
             if (_propertyData == null || _selected.Count == 0 || IsBusy) return;
             var work = new PictureModel(_propertyData.Clone());
-            var n = work.RemovePieces(_selected);
-            if (n == 0) return;
-            Execute(work.Picture);
-            LevelEditorMainUI.Log($"Đã xoá {n} mảnh");
+            var picked = new List<int>(_selected);
+            RunBusy("Đang xoá mảnh", () => work.RemovePieces(picked), n =>
+            {
+                if (n == 0) return;
+                Execute(work.Picture);
+                LevelEditorMainUI.Log($"Đã xoá {n} mảnh");
+            });
         }
 
         // Xoá nét trang trí đang chọn (Delete)
@@ -1027,14 +1101,21 @@ namespace Falcon.InGame.LevelEditor
         {
             var path = world.Select(w => view.WorldToPicture(w)).ToList();
             var work = new PictureModel(_propertyData.Clone());
-            var n = work.SplitPath(index, path, out var err, _propertyData.gen.inkGaps ? CutThickness : 0);
-            if (n == 0)
+            var gap = _propertyData.gen.inkGaps ? CutThickness : 0;
+            RunBusy("Đang tách mảnh", () =>
             {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            Execute(work.Picture);
-            LevelEditorMainUI.Log($"Tách thành {n + 1} mảnh");
+                var n = work.SplitPath(index, path, out var err, gap);
+                return (n, err);
+            }, r =>
+            {
+                if (r.n == 0)
+                {
+                    LevelEditorMainUI.Warn(r.err);
+                    return;
+                }
+                Execute(work.Picture);
+                LevelEditorMainUI.Log($"Tách thành {r.n + 1} mảnh");
+            });
         }
 
         // Chọn mọi mảnh cùng màu (bấm màu trong inspector tranh)
@@ -1086,6 +1167,7 @@ namespace Falcon.InGame.LevelEditor
         {
             if (Splitting && (_selected.Count != 1 || _selected[0] != _splitIndex)) CancelPen(); // bỏ chọn hoặc đổi mảnh: huỷ cắt và các điểm đã đặt
             view.SetSelection(_selected);
+            if (_selected.Count > 0) LevelEditorManager.Get<LevelEditorBoxQueue>()?.ClearSelection(); // mảnh và hộp không chọn cùng lúc
             if (_selected.Count == 0 || _propertyData == null) return;
             CurrentColorId = _propertyData.regions[_selected[_selected.Count - 1]].colorId; // bảng màu focus theo mảnh chọn gần nhất
             SplitCount = _model != null ? _model.RecommendSplit(_selected[0]) : 2;
@@ -1212,15 +1294,22 @@ namespace Falcon.InGame.LevelEditor
         public void MergeSelected()
         {
             if (_propertyData == null || _selected.Count < 2 || IsBusy) return;
-            var merged = PictureModel.MergeMany(_propertyData, _selected, out var err);
-            if (merged == null)
+            var source = _propertyData;
+            var picked = new List<int>(_selected);
+            RunBusy("Đang gộp mảnh", () =>
             {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            var count = _selected.Count;
-            Execute(merged);
-            LevelEditorMainUI.Log($"Gộp {count} mảnh thành 1");
+                var merged = PictureModel.MergeMany(source, picked, out var err);
+                return (merged, err);
+            }, r =>
+            {
+                if (r.merged == null)
+                {
+                    LevelEditorMainUI.Warn(r.err);
+                    return;
+                }
+                Execute(r.merged);
+                LevelEditorMainUI.Log($"Gộp {picked.Count} mảnh thành 1");
+            });
         }
 
         // Chia các mảnh đang chọn thành nhiều ô ôm theo hình thể; undo được như các thao tác khác
@@ -1228,15 +1317,24 @@ namespace Falcon.InGame.LevelEditor
         {
             if (_propertyData == null || _selected.Count == 0 || IsBusy) return;
             var work = new PictureModel(_propertyData.Clone());
-            var n = work.SubdivideRegions(_selected, SplitCount, out var err);
-            if (n == 0)
+            var picked = new List<int>(_selected);
+            var parts = SplitCount;
+            var pattern = (SubdividePattern)SplitPattern;
+            var gap = _propertyData.gen.inkGaps ? CutThickness : 0; // tranh có khe: các mảnh con cách nhau bằng khe như lúc tạo
+            RunBusy("Đang chia mảnh", () =>
             {
-                LevelEditorMainUI.Warn(err);
-                return;
-            }
-            var count = _selected.Count;
-            Execute(work.Picture);
-            LevelEditorMainUI.Log($"Chia {count} mảnh thành {count + n} mảnh");
+                var n = work.SubdivideRegions(picked, parts, out var err, gap, pattern);
+                return (n, err);
+            }, r =>
+            {
+                if (r.n == 0)
+                {
+                    LevelEditorMainUI.Warn(r.err);
+                    return;
+                }
+                Execute(work.Picture);
+                LevelEditorMainUI.Log($"Chia {picked.Count} mảnh thành {picked.Count + r.n} mảnh");
+            });
         }
 
         private bool IsValid(int index) => _propertyData != null && index >= 0 && index < _propertyData.regions.Count;

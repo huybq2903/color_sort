@@ -216,7 +216,19 @@ namespace Falcon.InGame.LevelEditor
                 var q = (Vector2)v / unit;
                 if (pts.Count == 0 || (pts[pts.Count - 1] - q).sqrMagnitude > 1e-6f) pts.Add(q);
             }
-            return pts.Count < 2 ? new List<CurveFitter.Cubic>() : CurveFitter.Fit(pts.ToArray(), FitTolerance);
+            if (pts.Count < 2) return new List<CurveFitter.Cubic>();
+            var d = pts.ToArray();
+            return CurveFitter.Fit(d, FitTolerance, EndTangent(d, 0, 1), EndTangent(d, d.Length - 1, -1));
+        }
+
+        // Tiếp tuyến tại đầu mút: hướng tới điểm đầu tiên cách đầu mút ≥ TangentReach ô (đoạn đầu dài thì chính là hướng đoạn đó); polyline thưa không bị kéo lệch bởi điểm xa
+        private const float TangentReach = 6f;
+
+        private static Vector2 EndTangent(Vector2[] d, int end, int dir)
+        {
+            var i = end + dir;
+            while (i + dir >= 0 && i + dir < d.Length && Vector2.Distance(d[i], d[end]) < TangentReach) i += dir;
+            return (d[i] - d[end]).normalized;
         }
 
         // Lấy mẫu chuỗi Bézier thành polyline int (×unit); hai đầu đúng bằng đầu và cuối đường cong

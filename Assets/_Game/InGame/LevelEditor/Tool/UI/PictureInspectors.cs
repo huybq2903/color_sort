@@ -45,6 +45,7 @@ namespace Falcon.InGame.LevelEditor
     public sealed class LineSelection : PictureSelection { }
     public sealed class HoleSelection : PictureSelection { }
     public sealed class PictureInfoSelection : PictureSelection { }
+    public sealed class BoxSelection : PictureSelection { }
 
     /// <summary>Inspector của một trạng thái tranh: vẽ bằng callback, tiêu đề cố định.</summary>
     public sealed class PictureInspector<T> : IEntityInspector where T : PictureSelection

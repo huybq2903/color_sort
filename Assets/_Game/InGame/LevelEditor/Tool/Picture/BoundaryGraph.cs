@@ -26,7 +26,8 @@ namespace Falcon.InGame.LevelEditor
             Build(map, sigma, unit, resampleStep, fitTolerance, out _);
 
         // holes[id] = các lỗ của vùng id (null nếu không có); polygon ngoài CCW, lỗ CW
-        public static int[][] Build(RegionMap map, float sigma, int unit, float resampleStep, float fitTolerance, out List<int[]>[] holes)
+        // flow: làm mượt mạnh theo độ dài đường (xem ContourSmoother.Flow), chỉ bật khi chia mảnh
+        public static int[][] Build(RegionMap map, float sigma, int unit, float resampleStep, float fitTolerance, out List<int[]>[] holes, bool flow = false)
         {
             int w = map.w, h = map.h, vw = w + 1;
             var mask = new byte[vw * (h + 1)];
@@ -100,13 +101,13 @@ namespace Falcon.InGame.LevelEditor
             var nodePos = new Dictionary<int, Vector2>();
             var smoothed = new Dictionary<Arc, List<Vector2>>();
             foreach (var chain in Chains(arcs))
-                if (chain.Count > 1) SmoothChain(chain, sigma, resampleStep, fitTolerance, smoothed, nodePos);
+                if (chain.Count > 1) SmoothChain(chain, sigma, resampleStep, fitTolerance, smoothed, nodePos, flow);
             foreach (var a in arcs)
             {
                 if (smoothed.ContainsKey(a)) continue;
                 smoothed[a] = a.closed
-                    ? ContourSmoother.Smooth(a.grid, sigma, resampleStep: resampleStep, fitTolerance: fitTolerance)
-                    : ContourSmoother.SmoothArc(a.grid, sigma, resampleStep: resampleStep, fitTolerance: fitTolerance);
+                    ? ContourSmoother.Smooth(a.grid, sigma, resampleStep: resampleStep, fitTolerance: fitTolerance, flow: flow)
+                    : ContourSmoother.SmoothArc(a.grid, sigma, resampleStep: resampleStep, fitTolerance: fitTolerance, flow: flow);
             }
             foreach (var a in arcs)
             {
@@ -389,7 +390,7 @@ namespace Falcon.InGame.LevelEditor
         }
 
         // Làm mượt cả chuỗi 1 lần rồi cắt lại tại các ngã ba; điểm cắt là vị trí mới của ngã ba
-        private static void SmoothChain(List<(Arc arc, bool rev)> chain, float sigma, float step, float fit, Dictionary<Arc, List<Vector2>> smoothed, Dictionary<int, Vector2> nodePos)
+        private static void SmoothChain(List<(Arc arc, bool rev)> chain, float sigma, float step, float fit, Dictionary<Arc, List<Vector2>> smoothed, Dictionary<int, Vector2> nodePos, bool flow)
         {
             var pts = new List<Vector2Int>();
             var nodeIdx = new List<int>();
@@ -403,7 +404,7 @@ namespace Falcon.InGame.LevelEditor
                 }
                 if (i + 1 < chain.Count) nodeIdx.Add(pts.Count - 1);
             }
-            var sm = ContourSmoother.SmoothArc(pts, sigma, resampleStep: step, fitTolerance: fit);
+            var sm = ContourSmoother.SmoothArc(pts, sigma, resampleStep: step, fitTolerance: fit, flow: flow);
 
             var cuts = new List<int> { 0 };
             foreach (var ni in nodeIdx)

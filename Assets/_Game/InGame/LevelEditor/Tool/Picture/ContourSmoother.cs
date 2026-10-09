@@ -15,12 +15,34 @@ namespace Falcon.InGame.LevelEditor
         // Hình/đoạn ngắn không được làm mượt quá tay: sigma tối đa 1/SigmaFraction độ dài (mẫu), nên mỏ, mắt nhỏ không bị bo tròn mất góc
         private const int SigmaFraction = 8;
 
+        // flow (chỉ khi chia mảnh): đoạn dài giữ độ cong chính, bỏ gợn nhỏ như nét vẽ tay: sigma tới 1/9 độ dài, nhưng không lệch quá 1,2% độ dài so với đường làm mượt nhẹ (lệch nhiều thì khe đen hai bên không còn đều)
+        private static readonly float[] FlowDivisors = { 9f, 14f, 24f };
+        private const float FlowDrift = 0.012f;
+        private const int FlowMinLength = 24;
+
+        private static Vector2[] Flow(Vector2[] seg, float sigma)
+        {
+            var basic = GaussOpen(seg, Fit(sigma, seg.Length));
+            if (seg.Length < FlowMinLength) return basic;
+            var limit = FlowDrift * seg.Length;
+            foreach (var div in FlowDivisors)
+            {
+                var s = seg.Length / div;
+                if (s <= sigma) break;
+                var o = GaussOpen(seg, s);
+                var dev = 0f;
+                for (var i = 0; i < o.Length && dev <= limit; i++) dev = Mathf.Max(dev, Vector2.Distance(o[i], basic[i]));
+                if (dev <= limit) return o;
+            }
+            return basic;
+        }
+
         private static float Fit(float sigma, int length) => Mathf.Min(sigma, Mathf.Max(1.5f, length / (float)SigmaFraction));
 
         private static int Arm(int n, int divisor) => Mathf.Clamp(n / divisor, 4, MaxCornerArm);
 
         // Vòng kín. resampleStep > 0: sau khi giảm điểm, nối bằng spline Catmull-Rom và lấy mẫu cách nhau ≤ step
-        public static List<Vector2> Smooth(IReadOnlyList<Vector2Int> loop, float sigma, float cornerDeg = 55f, float epsilon = 0.4f, float resampleStep = 0f, float fitTolerance = 0f)
+        public static List<Vector2> Smooth(IReadOnlyList<Vector2Int> loop, float sigma, float cornerDeg = 55f, float epsilon = 0.4f, float resampleStep = 0f, float fitTolerance = 0f, bool flow = false)
         {
             if (sigma <= 0f || loop.Count < 4) return ToFloat(loop);
             var q = Densify(loop);
@@ -41,14 +63,14 @@ namespace Falcon.InGame.LevelEditor
                 for (var i = 0; i < corners.Count; i++)
                 {
                     var seg = Segment(q, corners[i], corners[(i + 1) % corners.Count], corners.Count == 1);
-                    AddPiece(result, GaussOpen(seg, Fit(sigma, seg.Length)), epsilon, resampleStep, fitTolerance, false);
+                    AddPiece(result, flow ? Flow(seg, sigma) : GaussOpen(seg, Fit(sigma, seg.Length)), epsilon, resampleStep, fitTolerance, false);
                 }
             }
             return result.Count >= 3 ? result : ToFloat(loop);
         }
 
         // Đường hở từ nút đến nút: hai đầu cố định. Trả về từ điểm đầu đến điểm cuối (bao gồm cả hai)
-        public static List<Vector2> SmoothArc(IReadOnlyList<Vector2Int> arc, float sigma, float cornerDeg = 55f, float epsilon = 0.4f, float resampleStep = 0f, float fitTolerance = 0f)
+        public static List<Vector2> SmoothArc(IReadOnlyList<Vector2Int> arc, float sigma, float cornerDeg = 55f, float epsilon = 0.4f, float resampleStep = 0f, float fitTolerance = 0f, bool flow = false)
         {
             var q = DensifyOpen(arc);
             if (sigma <= 0f || q.Length < 8) return ToFloat(arc);
@@ -77,7 +99,7 @@ namespace Falcon.InGame.LevelEditor
                 var len = cuts[c + 1] - cuts[c] + 1;
                 var seg = new Vector2[len];
                 Array.Copy(q, cuts[c], seg, 0, len);
-                AddPiece(result, GaussOpen(seg, Fit(sigma, seg.Length)), epsilon, resampleStep, fitTolerance, false);
+                AddPiece(result, flow ? Flow(seg, sigma) : GaussOpen(seg, Fit(sigma, seg.Length)), epsilon, resampleStep, fitTolerance, false);
             }
             result.Add(q[n - 1]);
             return result;
@@ -217,9 +239,13 @@ namespace Falcon.InGame.LevelEditor
             Spline(dst, key, step);
         }
 
+        private const float FitMinTolerance = 1.6f, FitSampleStep = 36f, FitSagitta = 0.5f; // đơn vị lưới: càng lớn càng ít điểm, đường vẫn cong mượt (độ võng 0,5 ô ≈ 0,03% khung)
+
         // Khớp ít Bézier bậc ba nhất trong dung sai, rồi lấy mẫu cách nhau ≤ step; vòng kín liền tiếp tuyến tại điểm nối
         private static void FitPiece(List<Vector2> dst, Vector2[] pts, float tol, float step, bool closedPiece)
         {
+            tol = Mathf.Max(tol, FitMinTolerance); // level cũ lưu dung sai nhỏ hơn: vẫn dùng mức mới để ít điểm
+            step = Mathf.Max(step, FitSampleStep);
             tol = Mathf.Min(tol, Mathf.Max(0.8f, pts.Length / 50f)); // đoạn ngắn: dung sai nhỏ để giữ hình dạng (ngà, mỏ)
             if (!closedPiece && IsStraight(pts, StraightTolFactor * tol))
             {
@@ -237,10 +263,10 @@ namespace Falcon.InGame.LevelEditor
             foreach (var c in CurveFitter.Fit(pts, tol, t1, t2))
             {
                 var len = Vector2.Distance(c.p0, c.p1) + Vector2.Distance(c.p1, c.p2) + Vector2.Distance(c.p2, c.p3);
-                // đoạn thẳng/cong nhẹ lấy thưa (tới step), chỗ cong gắt lấy dày để độ võng mỗi đoạn ≤ ~0.08
+                // đoạn thẳng/cong nhẹ lấy thưa (tới step), chỗ cong gắt lấy dày vừa đủ để độ võng mỗi đoạn ≤ FitSagitta
                 var chord = c.p3 - c.p0;
                 var dev = Mathf.Max(DistToLine(c.p1, c.p0, chord), DistToLine(c.p2, c.p0, chord));
-                var k = Mathf.Max(1, Mathf.Max(Mathf.CeilToInt(len / step), Mathf.CeilToInt(Mathf.Sqrt(0.75f * dev / 0.08f))));
+                var k = Mathf.Max(1, Mathf.Max(Mathf.CeilToInt(len / step), Mathf.CeilToInt(Mathf.Sqrt(0.75f * dev / FitSagitta))));
                 for (var j = 0; j < k; j++) dst.Add(j == 0 ? c.p0 : c.At(j / (float)k));
             }
         }
