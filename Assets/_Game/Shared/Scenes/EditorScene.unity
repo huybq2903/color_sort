@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: 1219928994}
   - component: {fileID: 1219928995}
   - component: {fileID: 1219928996}
+  - component: {fileID: 1219928997}
   m_Layer: 0
   m_Name: EditorRoot
   m_TagString: Untagged
@@ -465,7 +466,19 @@ MonoBehaviour:
   zoomStep: 0.1
   minOrthographicSize: 0.5
   maxOrthographicSize: 100
-  fitMargin: 1.15
+  fitFraction: 0.5
+--- !u!114 &1219928997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219928989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4ac0eedfe655b40a1ea9171321ffd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Falcon.Shared.BaseLevelEditor::Falcon.Shared.BaseLevelEditor.LevelEditorAgent
 --- !u!1 &1741917513
 GameObject:
   m_ObjectHideFlags: 0

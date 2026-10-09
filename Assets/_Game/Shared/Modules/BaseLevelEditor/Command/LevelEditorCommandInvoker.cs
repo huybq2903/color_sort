@@ -34,10 +34,47 @@ namespace Falcon.Shared.BaseLevelEditor
             _input.HotKeyDown(Key.Y).Subscribe(Redo);
         }
 
+        private List<ICommand> _group;
+
+        /// <summary>Các lệnh thực thi từ đây tới EndGroup gộp thành một bước undo.</summary>
+        public void BeginGroup() => _group = new List<ICommand>();
+
+        public void EndGroup()
+        {
+            var g = _group;
+            _group = null;
+            if (g == null || g.Count == 0) return;
+            _undoStack.Push(g.Count == 1 ? g[0] : new CompositeCommand(g));
+            _redoStack.Clear();
+        }
+
+        private sealed class CompositeCommand : ICommand
+        {
+            private readonly List<ICommand> _commands;
+
+            public CompositeCommand(List<ICommand> commands) => _commands = commands;
+
+            public bool Execute()
+            {
+                foreach (var c in _commands) c.Execute();
+                return true;
+            }
+
+            public void Undo()
+            {
+                for (var i = _commands.Count - 1; i >= 0; i--) _commands[i].Undo();
+            }
+        }
+
         // 1. Thực thi một lệnh mới
         public void ExecuteCommand(ICommand command)
         {
             if (!command.Execute()) return; // lệnh bị từ chối -> không ghi history
+            if (_group != null)
+            {
+                _group.Add(command);
+                return;
+            }
 
             _undoStack.Push(command); // Lưu vào lịch sử
             _redoStack.Clear();       // Khi có lệnh mới thì mất chuỗi Redo cũ

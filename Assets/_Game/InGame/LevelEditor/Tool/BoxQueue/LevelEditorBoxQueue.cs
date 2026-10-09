@@ -87,6 +87,30 @@ namespace Falcon.InGame.LevelEditor
             Edit(q => q.list.Add(new BoxData { colorId = colorId, value = Mathf.Clamp(value / PieceValue.Step * PieceValue.Step, PieceValue.Min, PieceValue.Max), column = column }));
         }
 
+        public bool CanAdd(int column) => column >= 0 && column < BoxQueueProperty.MaxColumns && column <= _propertyData.ColumnCount;
+
+        public bool Has(string id) => Find(id) != null;
+
+        // Đổi màu và/hoặc cát của một hộp theo id (một bước undo)
+        public bool SetBox(string id, int? colorId, int? value)
+        {
+            if (Find(id) == null) return false;
+            Edit(q =>
+            {
+                var b = q.list.Find(x => x.id == id);
+                if (colorId.HasValue) b.colorId = colorId.Value;
+                if (value.HasValue) b.value = ClampValue(value.Value);
+            });
+            return true;
+        }
+
+        public bool DeleteBox(string id)
+        {
+            if (Find(id) == null) return false;
+            Edit(q => q.list.RemoveAll(b => b.id == id));
+            return true;
+        }
+
         public void SetSelectedColor(int colorId) => EditSelected(b => b.colorId = colorId);
 
         public void SetSelectedValue(int value) => EditSelected(b => b.value = ClampValue(value));

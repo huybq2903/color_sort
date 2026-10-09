@@ -189,6 +189,28 @@ namespace Falcon.InGame.LevelEditor
             return Map.reg[y * Map.w + x] - 1;
         }
 
+        // Các cặp mảnh kề nhau (chỉ số, nhỏ trước): chạm nhau, hoặc cách một khe hẹp khi tranh có khe nét
+        public HashSet<(int, int)> AdjacentPairs()
+        {
+            var set = new HashSet<(int, int)>();
+            int w = Map.w, h = Map.h;
+            void Add(int a, int b)
+            {
+                if (a > 0 && b > 0 && a != b) set.Add(a < b ? (a - 1, b - 1) : (b - 1, a - 1));
+            }
+            for (var y = 0; y < h; y++)
+            for (var x = 0; x < w; x++)
+            {
+                var i = y * w + x;
+                var r = Map.reg[i];
+                if (r <= 0) continue;
+                if (x + 1 < w) Add(r, Map.reg[i + 1]);
+                if (y + 1 < h) Add(r, Map.reg[i + w]);
+            }
+            if (Picture.gen.inkGaps) PieceSize.ForEachGap(Map, (a, b, s, len, stride) => Add(a, b));
+            return set;
+        }
+
         public int Merge(int target, int other, out string error)
         {
             error = null;

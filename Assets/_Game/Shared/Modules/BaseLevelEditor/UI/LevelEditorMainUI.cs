@@ -132,6 +132,7 @@ namespace Falcon.Shared.BaseLevelEditor
             DrawNameFile();
             DrawRightPanel();
             DrawLogBar();
+            LevelEditorManager.Get<LevelEditorAgent>()?.DrawWindow(Gui, RightW);
             DrawToast();
         }
 

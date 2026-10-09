@@ -1130,6 +1130,36 @@ namespace Falcon.InGame.LevelEditor
             LevelEditorMainUI.Log($"Chọn {ids.Count} mảnh màu #{colorId}");
         }
 
+        // Chọn các mảnh theo chỉ số (cho trợ lý chỉ chỗ đề xuất)
+        public void SelectPieces(IEnumerable<int> indices)
+        {
+            SelectLine(-1);
+            SelectRegions(indices, false);
+        }
+
+        // Gộp ngay (không chạy nền, để nằm trong một nhóm undo): false kèm lý do nếu các mảnh không gộp được
+        public bool MergePiecesNow(IList<int> indices, out string error)
+        {
+            error = null;
+            if (_propertyData == null || IsBusy) { error = "Tranh đang bận"; return false; }
+            var merged = PictureModel.MergeMany(_propertyData, indices.ToList(), out error);
+            if (merged == null) return false;
+            Execute(merged);
+            LevelEditorMainUI.Log($"Gộp {indices.Count} mảnh thành 1");
+            return true;
+        }
+
+        // Cặp mảnh kề nhau của tranh hiện tại (cho trợ lý)
+        public HashSet<(int, int)> AdjacentPairs() => _propertyData == null ? new HashSet<(int, int)>() : new PictureModel(_propertyData.Clone()).AdjacentPairs();
+
+        // Thử gộp trên bản sao, không đổi tranh: trả tranh sau gộp, null kèm lý do nếu không gộp được
+        public PictureProperty TryMerge(IList<int> indices, out string error)
+        {
+            error = null;
+            if (_propertyData == null) { error = "Chưa có tranh"; return null; }
+            return PictureModel.MergeMany(_propertyData, indices.ToList(), out error);
+        }
+
         // Chọn ids; add = thêm vào lựa chọn hiện có, không thì thay thế
         private void SelectRegions(IEnumerable<int> ids, bool add)
         {

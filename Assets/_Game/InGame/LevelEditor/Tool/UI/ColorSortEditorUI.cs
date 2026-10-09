@@ -48,6 +48,7 @@ namespace Falcon.InGame.LevelEditor
             _picture = LevelEditorManager.Get<LevelEditorPicture>();
             _boxes = LevelEditorManager.Get<LevelEditorBoxQueue>();
             _boxPanel = new BoxQueuePanel(_boxes, _picture);
+            LevelEditorManager.Get<LevelEditorAgent>().Host = new ColorSortAgentHost(_picture, _boxes);
             Messenger<OnLoadLevel>.Register(OnLevelLoaded);
             _picture.Generated += OnPictureGenerated;
             RegisterPictureInspectors();
@@ -104,7 +105,7 @@ namespace Falcon.InGame.LevelEditor
             var logH = Gui.GetRowHeight();
             var rect = new ImRect(10f, 10f + logH, LeftW, screen.y - menuH - 10f - logH);
 
-            Gui.BeginWindow("Quy trình", rect, ImWindowFlag.NoMovingAndResizing);
+            Gui.BeginWindow("Quy trình", rect, ImWindowFlag.NoMovingAndResizing | ImWindowFlag.NoTitleBar);
             try
             {
                 DrawChoiceRow(StepLabels, _step, i => _step = i);
