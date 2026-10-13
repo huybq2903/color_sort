@@ -28,7 +28,7 @@ namespace Falcon.InGame.LevelEditor
             "Bấm màu trong Thông tin tranh  Chọn mọi mảnh màu đó\n" +
             "Delete  Xoá nét hoặc mảnh đang chọn  ·  Esc  Bỏ chọn\n\n" +
             "CẮT MẢNH (đang chọn đúng 1 mảnh)\n" +
-            "Shift+click  Đặt điểm cắt (điểm đầu trên biên hoặc trong mảnh)\n" +
+            "Shift+click  Đặt điểm cắt, sau khi bấm Tách hoặc Vẽ lỗ (điểm đầu trên biên hoặc trong mảnh)\n" +
             "Từ điểm thứ 3, bấm gần điểm đầu  Khép kín đường cắt\n" +
             "Enter  Cắt  ·  Bỏ chọn mảnh hoặc Esc  Huỷ\n" +
             "Đường khép kín + \"Khoét lỗ trống\"  Tạo lỗ trong mảnh (lỗ không chạm biên, không có cát)\n" +

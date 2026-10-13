@@ -300,6 +300,7 @@ namespace Falcon.InGame.LevelEditor
             var s = _picture.Settings;
             Gui.BeginHorizontal();
             if (_picture.Picture == null && Gui.Button("Import Image...")) _picture.ImportImage();
+            if (_picture.Picture == null && Gui.Button("Paste")) _picture.ImportClipboard();
             if ((_picture.Picture != null || _picture.HasSource) && Gui.Button("Clear")) _picture.Clear();
             Gui.EndHorizontal();
             Gui.Text(_picture.HasSource ? $"Ảnh: {s.sourceName}" : "Chưa nạp ảnh", true);
@@ -342,7 +343,7 @@ namespace Falcon.InGame.LevelEditor
             Gui.Separator("Thao tác");
             if (_picture.SelectedCount == 1)
             {
-                ToolButton("Tách (Shift+click)", Tip.Cut);
+                ToolButton("Tách", Tip.Cut);
                 ToolButton("Vẽ lỗ", Tip.Hole);
             }
             else if (_picture.SelectedCount >= 2 && Gui.Button("Gộp (M)")) _picture.MergeSelected();
@@ -377,6 +378,7 @@ namespace Falcon.InGame.LevelEditor
         // Tooltip công cụ nổi bên trái Inspector, ngang nút đã bấm: hướng dẫn và rãnh đen (Tách, Vẽ lỗ) hoặc kiểu chia và số mảnh (Chia mảnh)
         private void DrawToolTip()
         {
+            _picture.CutArmed = _tip is Tip.Cut or Tip.Hole;
             if (_tip == Tip.None) return;
             var sel = _picture.SelectedCount;
             if (_picture.Splitting) _tipSawSplitting = true;

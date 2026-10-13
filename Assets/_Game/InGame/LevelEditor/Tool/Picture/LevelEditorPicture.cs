@@ -99,6 +99,7 @@ namespace Falcon.InGame.LevelEditor
         public int NewLineThickness { get; set; } // độ dày nét sắp vẽ theo % viền; 0 = mặc định
         public bool IsLineTool => Tool == PictureTool.AddLine;
         public bool IsCutTool => Tool == PictureTool.Split;
+        public bool CutArmed { get; set; } // đã bấm Tách hoặc Vẽ lỗ: mới cho Shift+click đặt điểm cắt
         private bool _cutAsHole;
         public bool CutAsHole // đường cắt khép kín khoét thành lỗ trống thay vì tách mảnh con
         {
@@ -186,6 +187,37 @@ namespace Falcon.InGame.LevelEditor
             var ext = new[] { new ExtensionFilter("Image", "png", "jpg", "jpeg") };
             var paths = StandaloneFileBrowser.OpenFilePanel("Import Image", "", ext, false);
             return paths is { Length: > 0 } && !string.IsNullOrEmpty(paths[0]) && ImportImage(paths[0]);
+        }
+
+        // Lấy ảnh hoặc file ảnh (png/jpg) đang copy trong clipboard Windows qua PowerShell rồi nạp như ảnh thường
+        public bool ImportClipboard()
+        {
+            var tmp = Path.Combine(Path.GetTempPath(), "colorsort_clipboard.png");
+            try
+            {
+                if (File.Exists(tmp)) File.Delete(tmp);
+                var script = "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $i=[System.Windows.Forms.Clipboard]::GetImage(); if($i){$i.Save('" + tmp + "',[System.Drawing.Imaging.ImageFormat]::Png)} elseif([System.Windows.Forms.Clipboard]::ContainsFileDropList()){Copy-Item -LiteralPath ([System.Windows.Forms.Clipboard]::GetFileDropList()[0]) -Destination '" + tmp + "'}";
+                var psi = new ProcessStartInfo("powershell", $"-NoProfile -STA -Command \"{script}\"") { CreateNoWindow = true, UseShellExecute = false };
+                using var p = Process.Start(psi);
+                if (p == null || !p.WaitForExit(10000)) throw new IOException("PowerShell không phản hồi");
+                if (!File.Exists(tmp))
+                {
+                    LevelEditorMainUI.Warn("Clipboard không có ảnh: hãy copy ảnh rồi thử lại");
+                    return false;
+                }
+                var ok = ImportImage(tmp);
+                if (ok) Settings.sourceName = "clipboard";
+                return ok;
+            }
+            catch (Exception e) when (e is IOException or System.ComponentModel.Win32Exception or UnauthorizedAccessException)
+            {
+                LevelEditorMainUI.Warn($"Không lấy được ảnh từ clipboard ({e.Message})");
+                return false;
+            }
+            finally
+            {
+                try { File.Delete(tmp); } catch (IOException) { }
+            }
         }
 
         public bool ImportImage(string path)
@@ -411,7 +443,7 @@ namespace Falcon.InGame.LevelEditor
             }
             var shift = (e.Modifiers & KeyModifiers.Shift) != 0;
             var ctrl = (e.Modifiers & KeyModifiers.Ctrl) != 0;
-            if (shift && !ctrl && SelectedIndex >= 0) { StartCut(e, pic); return; } // chọn đúng 1 mảnh: Shift+click đặt điểm cắt
+            if (shift && !ctrl && SelectedIndex >= 0 && CutArmed) { StartCut(e, pic); return; } // chọn đúng 1 mảnh và đã bấm Tách/Vẽ lỗ: Shift+click đặt điểm cắt
             if (!shift && !ctrl && !Splitting && SelectedIndex >= 0 && BeginEditRun(pic)) return; // Ctrl+click (hoặc Shift khi chưa chọn đúng 1 mảnh) là chọn thêm/bớt
             _boxing = true;
             _boxShift = shift || ctrl;
